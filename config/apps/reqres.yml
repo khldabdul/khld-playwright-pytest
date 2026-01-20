@@ -1,0 +1,26 @@
+# ReqRes API Configuration
+name: reqres
+display_name: "ReqRes API"
+type: api
+
+base_urls:
+  dev: "https://reqres.in"
+  staging: "https://reqres.in"
+  production: "https://reqres.in"
+
+# Test credentials for login/register
+test_users:
+  valid:
+    email: "eve.holt@reqres.in"
+    password: "cityslicka"
+
+# API endpoints reference
+endpoints:
+  users: "/api/users"
+  user_by_id: "/api/users/{id}"
+  login: "/api/login"
+  register: "/api/register"
+  resources: "/api/unknown"
+
+settings:
+  default_timeout: 30000

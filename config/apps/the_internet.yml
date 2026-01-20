@@ -1,0 +1,27 @@
+# The Internet Configuration
+name: the_internet
+display_name: "The Internet - Heroku"
+type: e2e
+
+base_urls:
+  dev: "https://the-internet.herokuapp.com"
+  staging: "https://the-internet.herokuapp.com"
+  production: "https://the-internet.herokuapp.com"
+
+# Test credentials for form auth
+test_users:
+  default:
+    username: "tomsmith"
+    password: "SuperSecretPassword!"
+
+# Basic auth credentials
+basic_auth:
+  username: "admin"
+  password: "admin"
+
+settings:
+  default_timeout: 30000
+  screenshot_on_failure: true
+  viewport:
+    width: 1920
+    height: 1080

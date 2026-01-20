@@ -1,0 +1,32 @@
+# Petstore Swagger API Configuration
+name: petstore
+display_name: "Petstore Swagger API"
+type: api
+
+base_urls:
+  dev: "https://petstore.swagger.io/v2"
+  staging: "https://petstore.swagger.io/v2"
+  production: "https://petstore.swagger.io/v2"
+
+# API key for some operations
+auth:
+  type: "api_key"
+  header_name: "api_key"
+  value: "special-key"
+
+# API endpoints reference
+endpoints:
+  pet: "/pet"
+  pet_by_id: "/pet/{petId}"
+  pet_by_status: "/pet/findByStatus"
+  pet_upload_image: "/pet/{petId}/uploadImage"
+  store_inventory: "/store/inventory"
+  store_order: "/store/order"
+  user: "/user"
+  user_login: "/user/login"
+
+settings:
+  default_timeout: 30000
+  # Note: Public instance can be flaky
+  retry_on_failure: true
+  max_retries: 3

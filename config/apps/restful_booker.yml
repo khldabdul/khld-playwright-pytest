@@ -1,0 +1,29 @@
+# Restful Booker API Configuration
+name: restful_booker
+display_name: "Restful Booker API"
+type: api
+
+base_urls:
+  dev: "https://restful-booker.herokuapp.com"
+  staging: "https://restful-booker.herokuapp.com"
+  production: "https://restful-booker.herokuapp.com"
+
+# API authentication
+auth:
+  type: "token"
+  endpoint: "/auth"
+  credentials:
+    username: "admin"
+    password: "password123"
+
+# API endpoints reference
+endpoints:
+  ping: "/ping"
+  auth: "/auth"
+  booking: "/booking"
+  booking_by_id: "/booking/{id}"
+
+settings:
+  default_timeout: 30000
+  retry_on_failure: true
+  max_retries: 3

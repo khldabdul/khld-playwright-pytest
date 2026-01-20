@@ -1,0 +1,1 @@
+"""App configs package."""

@@ -1,0 +1,41 @@
+# OMDb API Configuration
+name: omdb
+display_name: "OMDb Movie API"
+type: api
+
+base_urls:
+  dev: "http://www.omdbapi.com"
+  staging: "http://www.omdbapi.com"
+  production: "http://www.omdbapi.com"
+
+# API key required - set via environment variable
+auth:
+  type: "api_key"
+  param_name: "apikey"
+  value_env: "OMDB_API_KEY"  # Set this in .env
+
+# Query parameters reference
+params:
+  title: "t"      # Search by title
+  search: "s"     # Search query
+  imdb_id: "i"    # IMDb ID
+  year: "y"       # Year filter
+  type: "type"    # movie/series/episode
+  plot: "plot"    # short/full
+  page: "page"    # Pagination
+
+# Test data
+test_data:
+  movies:
+    - title: "Inception"
+      imdb_id: "tt1375666"
+      year: 2010
+    - title: "The Dark Knight"
+      imdb_id: "tt0468569"
+      year: 2008
+    - title: "The Matrix"
+      imdb_id: "tt0133093"
+      year: 1999
+
+settings:
+  default_timeout: 30000

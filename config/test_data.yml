@@ -1,0 +1,48 @@
+# Shared Test Data
+# Data used across multiple apps and tests
+
+common:
+  # Pagination test data
+  pagination:
+    default_page_size: 10
+    test_page_sizes: [10, 25, 50, 100]
+  
+  # Search test data
+  search:
+    valid_queries: ["test", "example", "demo"]
+    invalid_queries: ["", "   ", "!@#$%"]
+    long_query: "a" * 500
+  
+  # Date formats
+  date_formats:
+    display: "%Y-%m-%d"
+    api: "%Y-%m-%dT%H:%M:%SZ"
+
+# Admin Portal specific test data
+admin_portal:
+  users:
+    valid:
+      - username: "testuser1"
+        email: "testuser1@example.com"
+        role: "editor"
+      - username: "testuser2"
+        email: "testuser2@example.com"
+        role: "viewer"
+    invalid:
+      - username: ""
+        email: "invalid-email"
+        expected_error: "Invalid email format"
+  
+  dashboard:
+    expected_widgets: ["Users", "Analytics", "Reports", "Settings"]
+
+# Customer Portal specific test data
+customer_portal:
+  products:
+    search_terms: ["laptop", "phone", "tablet"]
+    categories: ["Electronics", "Clothing", "Home"]
+  
+  checkout:
+    valid_card: "4111111111111111"
+    invalid_card: "1234567890123456"
+    cvv: "123"

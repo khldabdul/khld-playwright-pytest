@@ -1,0 +1,54 @@
+# Environment Configuration
+# Override URLs and settings per environment
+
+default_environment: dev
+
+environments:
+  dev:
+    description: "Development environment"
+    default_timeout: 30000
+    screenshot_on_failure: true
+    video: "retain-on-failure"
+    tracing: "retain-on-failure"
+
+  staging:
+    description: "Staging environment"
+    default_timeout: 45000
+    screenshot_on_failure: true
+    video: "retain-on-failure"
+    tracing: "retain-on-failure"
+
+  production:
+    description: "Production environment (read-only tests)"
+    default_timeout: 60000
+    screenshot_on_failure: true
+    video: "off"
+    tracing: "off"
+
+# Browser configuration
+browsers:
+  chromium:
+    channel: null  # Use default Chromium
+  chrome:
+    channel: "chrome"
+  msedge:
+    channel: "msedge"
+  firefox:
+    channel: null
+  webkit:
+    channel: null
+
+# Viewport configuration
+viewports:
+  desktop:
+    width: 1920
+    height: 1080
+  laptop:
+    width: 1366
+    height: 768
+  tablet:
+    width: 768
+    height: 1024
+  mobile:
+    width: 375
+    height: 812

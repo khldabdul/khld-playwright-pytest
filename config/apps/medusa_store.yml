@@ -1,0 +1,36 @@
+# Medusa Store Configuration
+name: medusa_store
+display_name: "Medusa JS Store"
+type: e2e
+
+base_urls:
+  dev: "https://next.medusajs.com/us/store"
+  staging: "https://next.medusajs.com/us/store"
+  production: "https://next.medusajs.com/us/store"
+
+# No login required - guest checkout
+test_users: {}
+
+settings:
+  default_timeout: 45000  # Longer timeout for dynamic content
+  screenshot_on_failure: true
+  viewport:
+    width: 1920
+    height: 1080
+
+# Test data for checkout
+test_checkout:
+  email: "test@example.com"
+  first_name: "John"
+  last_name: "Doe"
+  address: "123 Test Street"
+  city: "Test City"
+  postal_code: "12345"
+  country: "United States"
+  
+# Modern Next.js app notes
+notes:
+  - "Heavy client-side rendering"
+  - "Uses data-testid attributes extensively"
+  - "May need longer waits for hydration"
+  - "Guest checkout available"
