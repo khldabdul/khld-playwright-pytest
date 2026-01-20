@@ -54,8 +54,16 @@ def _attach_failure_artifacts(item, report, app_name: str) -> None:
         report: Test report
         app_name: Name of the app being tested
     """
+    # Skip if no page object (e.g., API tests)
     page: Page | None = item.funcargs.get("page")
     if not page:
+        # For API tests, just attach error details
+        if report.longrepr:
+            allure.attach(
+                str(report.longrepr),
+                name="Error Details",
+                attachment_type=allure.attachment_type.TEXT
+            )
         return
 
     test_name = _sanitize_filename(item.name)

@@ -1,0 +1,1 @@
+"""The Internet Tests Init."""
