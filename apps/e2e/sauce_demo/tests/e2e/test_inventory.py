@@ -9,6 +9,7 @@ from playwright.sync_api import expect
 @pytest.mark.app("sauce_demo")
 @pytest.mark.e2e
 @pytest.mark.critical
+@pytest.mark.testcase("TC-SD-010")
 def test_view_all_products(login_page, inventory_page, sauce_demo_config):
     """TC-SD-010: View all products on inventory page."""
     # Login
@@ -33,6 +34,7 @@ def test_view_all_products(login_page, inventory_page, sauce_demo_config):
 @allure.story("Inventory")
 @pytest.mark.app("sauce_demo")
 @pytest.mark.e2e
+@pytest.mark.testcase("TC-SD-011")
 def test_sort_by_price_low_to_high(login_page, inventory_page, sauce_demo_config):
     """TC-SD-011: Sort products by price (low to high)."""
     # Login
@@ -53,6 +55,7 @@ def test_sort_by_price_low_to_high(login_page, inventory_page, sauce_demo_config
 @allure.story("Inventory")
 @pytest.mark.app("sauce_demo")
 @pytest.mark.e2e
+@pytest.mark.testcase("TC-SD-012")
 def test_sort_by_name_z_to_a(login_page, inventory_page, sauce_demo_config):
     """TC-SD-012: Sort products by name (Z to A)."""
     # Login
@@ -73,6 +76,8 @@ def test_sort_by_name_z_to_a(login_page, inventory_page, sauce_demo_config):
 @pytest.mark.app("sauce_demo")
 @pytest.mark.e2e
 @pytest.mark.critical
+@pytest.mark.testcase("TC-SD-013")
+@pytest.mark.smoke
 def test_add_product_to_cart(login_page, inventory_page, sauce_demo_config):
     """TC-SD-013: Add product to cart."""
     # Login
@@ -95,6 +100,7 @@ def test_add_product_to_cart(login_page, inventory_page, sauce_demo_config):
 @allure.story("Inventory")
 @pytest.mark.app("sauce_demo")
 @pytest.mark.e2e
+@pytest.mark.testcase("TC-SD-014")
 def test_view_product_details(login_page, inventory_page, sauce_demo_config):
     """TC-SD-014: View product details page."""
     # Login

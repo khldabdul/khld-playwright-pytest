@@ -8,6 +8,7 @@ from playwright.sync_api import expect
 @allure.story("Frames & Windows")
 @pytest.mark.app("the_internet")
 @pytest.mark.e2e
+@pytest.mark.testcase("TC-TI-050")
 def test_iframe_editor(iframe_page, the_internet_config):
     """TC-TI-050: Access iFrame TinyMCE editor."""
     # Navigate
@@ -26,6 +27,7 @@ def test_iframe_editor(iframe_page, the_internet_config):
 @allure.story("Frames & Windows")
 @pytest.mark.app("the_internet")
 @pytest.mark.e2e
+@pytest.mark.testcase("TC-TI-051")
 def test_nested_frames(nested_frames_page, the_internet_config):
     """TC-TI-051: Read content from nested frames."""
     # Navigate
@@ -48,6 +50,7 @@ def test_nested_frames(nested_frames_page, the_internet_config):
 @allure.story("Frames & Windows")
 @pytest.mark.app("the_internet")
 @pytest.mark.e2e
+@pytest.mark.testcase("TC-TI-052")
 def test_multiple_windows(multiple_windows_page, the_internet_config, page):
     """TC-TI-052: Handle multiple windows/tabs."""
     # Navigate

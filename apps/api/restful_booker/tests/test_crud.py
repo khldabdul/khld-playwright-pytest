@@ -28,6 +28,7 @@ class TestBookingCRUD:
     @allure.story("Read Bookings")
     @allure.title("Get all booking IDs")
     @allure.severity(allure.severity_level.NORMAL)
+    @pytest.mark.testcase("TC-RB-020")
     @pytest.mark.smoke
     def test_get_all_bookings(self, restful_booker_client):
         """Test retrieving all booking IDs."""
@@ -42,6 +43,7 @@ class TestBookingCRUD:
     @allure.story("Read Bookings")
     @allure.title("Get bookings with filter")
     @allure.severity(allure.severity_level.NORMAL)
+    @pytest.mark.testcase("TC-RB-021")
     @pytest.mark.regression
     def test_get_bookings_with_filter(self, restful_booker_client):
         """Test retrieving bookings with query filters."""
@@ -58,6 +60,7 @@ class TestBookingCRUD:
     @allure.story("Read Bookings")
     @allure.title("Get single booking by ID")
     @allure.severity(allure.severity_level.CRITICAL)
+    @pytest.mark.testcase("TC-RB-022")
     @pytest.mark.smoke
     def test_get_single_booking(self, restful_booker_client):
         """Test retrieving a single booking."""
@@ -78,6 +81,7 @@ class TestBookingCRUD:
     @allure.story("Read Bookings")
     @allure.title("Get non-existent booking returns 404")
     @allure.severity(allure.severity_level.NORMAL)
+    @pytest.mark.testcase("TC-RB-023")
     @pytest.mark.regression
     def test_get_nonexistent_booking(self, restful_booker_client):
         """Test that getting a non-existent booking returns 404."""
@@ -88,6 +92,7 @@ class TestBookingCRUD:
     @allure.story("Create Booking")
     @allure.title("Create new booking")
     @allure.severity(allure.severity_level.CRITICAL)
+    @pytest.mark.testcase("TC-RB-024")
     @pytest.mark.smoke
     def test_create_booking(self, restful_booker_client, sample_booking):
         """Test creating a new booking."""
@@ -103,6 +108,7 @@ class TestBookingCRUD:
     @allure.story("Update Booking")
     @allure.title("Update booking with PUT")
     @allure.severity(allure.severity_level.CRITICAL)
+    @pytest.mark.testcase("TC-RB-025")
     @pytest.mark.regression
     def test_update_booking(self, authenticated_client, sample_booking):
         """Test updating a booking with PUT (full update)."""
@@ -125,6 +131,7 @@ class TestBookingCRUD:
     @allure.story("Update Booking")
     @allure.title("Partial update booking with PATCH")
     @allure.severity(allure.severity_level.NORMAL)
+    @pytest.mark.testcase("TC-RB-026")
     @pytest.mark.regression
     def test_partial_update_booking(self, authenticated_client, sample_booking):
         """Test partially updating a booking with PATCH."""
@@ -146,6 +153,7 @@ class TestBookingCRUD:
     @allure.story("Update Booking")
     @allure.title("Update fails without token")
     @allure.severity(allure.severity_level.NORMAL)
+    @pytest.mark.testcase("TC-RB-028")
     @pytest.mark.regression
     def test_update_without_token(self, restful_booker_client, sample_booking):
         """Test that update fails without authentication token."""
@@ -160,6 +168,7 @@ class TestBookingCRUD:
     @allure.story("Delete Booking")
     @allure.title("Delete booking")
     @allure.severity(allure.severity_level.CRITICAL)
+    @pytest.mark.testcase("TC-RB-027")
     @pytest.mark.regression
     def test_delete_booking(self, authenticated_client, sample_booking):
         """Test deleting a booking."""

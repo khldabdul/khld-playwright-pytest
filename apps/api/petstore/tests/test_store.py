@@ -17,6 +17,7 @@ class TestPetstoreStore:
     """Test suite for Petstore Store operations."""
 
     @allure.title("Get inventory")
+    @pytest.mark.testcase("TC-PS-020")
     def test_get_inventory(self, petstore_client):
         """Test retrieving store inventory."""
         inventory = petstore_client.get_inventory()
@@ -27,6 +28,7 @@ class TestPetstoreStore:
         assert any(k in inventory for k in ["available", "pending", "sold"])
 
     @allure.title("Place order")
+    @pytest.mark.testcase("TC-PS-021")
     def test_place_order(self, petstore_client):
         """Test placing an order."""
         order_id = random.randint(1, 9999)
@@ -52,6 +54,7 @@ class TestPetstoreStore:
         petstore_client.delete_order(order_id)
 
     @allure.title("Get order by ID")
+    @pytest.mark.testcase("TC-PS-022")
     def test_get_order(self, petstore_client):
         """Test retrieving an order by ID."""
         # Setup: Place an order
@@ -80,6 +83,7 @@ class TestPetstoreStore:
         petstore_client.delete_order(order_id)
 
     @allure.title("Delete order")
+    @pytest.mark.testcase("TC-PS-023")
     def test_delete_order(self, petstore_client):
         """Test deleting an order."""
         # Setup: Place an order

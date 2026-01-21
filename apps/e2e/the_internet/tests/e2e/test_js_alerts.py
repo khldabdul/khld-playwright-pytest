@@ -8,6 +8,7 @@ from playwright.sync_api import expect
 @allure.story("JavaScript Dialogs")
 @pytest.mark.app("the_internet")
 @pytest.mark.e2e
+@pytest.mark.testcase("TC-TI-040")
 def test_js_alert(js_alerts_page, the_internet_config):
     """TC-TI-040: Handle JavaScript alert."""
     # Navigate
@@ -28,6 +29,7 @@ def test_js_alert(js_alerts_page, the_internet_config):
 @allure.story("JavaScript Dialogs")
 @pytest.mark.app("the_internet")
 @pytest.mark.e2e
+@pytest.mark.testcase("TC-TI-041")
 def test_js_confirm_accept(js_alerts_page, the_internet_config):
     """TC-TI-041: Handle JavaScript confirm - Accept."""
     # Navigate
@@ -48,6 +50,7 @@ def test_js_confirm_accept(js_alerts_page, the_internet_config):
 @allure.story("JavaScript Dialogs")
 @pytest.mark.app("the_internet")
 @pytest.mark.e2e
+@pytest.mark.testcase("TC-TI-042")
 def test_js_confirm_dismiss(js_alerts_page, the_internet_config):
     """TC-TI-042: Handle JavaScript confirm - Dismiss."""
     # Navigate
@@ -68,6 +71,7 @@ def test_js_confirm_dismiss(js_alerts_page, the_internet_config):
 @allure.story("JavaScript Dialogs")
 @pytest.mark.app("the_internet")
 @pytest.mark.e2e
+@pytest.mark.testcase("TC-TI-043")
 def test_js_prompt(js_alerts_page, the_internet_config):
     """TC-TI-043: Handle JavaScript prompt."""
     # Navigate

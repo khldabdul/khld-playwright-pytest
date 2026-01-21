@@ -9,6 +9,8 @@ from playwright.sync_api import expect
 @pytest.mark.app("medusa_store")
 @pytest.mark.e2e
 @pytest.mark.critical
+@pytest.mark.testcase("TC-MS-040")
+@pytest.mark.smoke
 def test_guest_checkout_flow(
     store_page,
     product_page,

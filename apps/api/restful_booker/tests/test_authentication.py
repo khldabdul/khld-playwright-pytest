@@ -13,6 +13,7 @@ class TestAuthentication:
     @allure.story("Health Check")
     @allure.title("API is responsive")
     @allure.severity(allure.severity_level.CRITICAL)
+    @pytest.mark.testcase("TC-RB-001")
     @pytest.mark.smoke
     def test_ping_service(self, restful_booker_client):
         """Test that the API health check endpoint responds."""
@@ -25,6 +26,7 @@ class TestAuthentication:
     @allure.story("Token Creation")
     @allure.title("Create token with valid credentials")
     @allure.severity(allure.severity_level.CRITICAL)
+    @pytest.mark.testcase("TC-RB-010")
     @pytest.mark.smoke
     def test_create_token_valid_credentials(self, restful_booker_client):
         """Test successful token creation with valid credentials."""
@@ -39,6 +41,7 @@ class TestAuthentication:
     @allure.story("Token Creation")
     @allure.title("Create token fails with invalid credentials")
     @allure.severity(allure.severity_level.NORMAL)
+    @pytest.mark.testcase("TC-RB-011")
     @pytest.mark.regression
     def test_create_token_invalid_credentials(self, restful_booker_client):
         """Test that token creation fails with invalid credentials."""

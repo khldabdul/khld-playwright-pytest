@@ -12,6 +12,7 @@ class TestReqResResources:
     """Test suite for ReqRes resource operations."""
 
     @allure.title("Get list of resources")
+    @pytest.mark.testcase("TC-RR-030")
     def test_get_resources(self, reqres_client):
         """Test retrieving list of resources."""
         response = reqres_client.get_resources()
@@ -28,6 +29,7 @@ class TestReqResResources:
         assert "pantone_value" in resource
 
     @allure.title("Get single resource")
+    @pytest.mark.testcase("TC-RR-031")
     def test_get_single_resource(self, reqres_client):
         """Test retrieving a single resource."""
         resource_id = 2
@@ -41,6 +43,7 @@ class TestReqResResources:
         assert "pantone_value" in data
 
     @allure.title("Get resource not found")
+    @pytest.mark.testcase("TC-RR-032")
     def test_get_resource_not_found(self, reqres_client):
         """Test retrieving a non-existent resource returns 404."""
         with pytest.raises(requests.HTTPError) as exc:

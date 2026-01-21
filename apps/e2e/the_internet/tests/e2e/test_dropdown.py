@@ -8,8 +8,10 @@ from playwright.sync_api import expect
 @allure.story("Dropdown")
 @pytest.mark.app("the_internet")
 @pytest.mark.e2e
+@pytest.mark.testcase("TC-TI-011")
+@pytest.mark.smoke
 def test_dropdown_selection(dropdown_page, the_internet_config):
-    """Test dropdown selection."""
+    """TC-TI-011: Test dropdown selection."""
     # 1. Navigate
     dropdown_page.navigate_to_dropdown(the_internet_config.base_url)
     

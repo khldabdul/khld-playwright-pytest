@@ -8,6 +8,7 @@ from playwright.sync_api import expect
 @allure.story("Shopping Cart")
 @pytest.mark.app("sauce_demo")
 @pytest.mark.e2e
+@pytest.mark.testcase("TC-SD-020")
 def test_add_multiple_products(login_page, inventory_page, sauce_demo_config):
     """TC-SD-020: Add multiple products to cart."""
     # Login
@@ -29,6 +30,7 @@ def test_add_multiple_products(login_page, inventory_page, sauce_demo_config):
 @pytest.mark.app("sauce_demo")
 @pytest.mark.e2e
 @pytest.mark.critical
+@pytest.mark.testcase("TC-SD-021")
 def test_view_cart_contents(login_page, inventory_page, cart_page, sauce_demo_config):
     """TC-SD-021: View cart contents."""
     # Login
@@ -55,6 +57,7 @@ def test_view_cart_contents(login_page, inventory_page, cart_page, sauce_demo_co
 @allure.story("Shopping Cart")
 @pytest.mark.app("sauce_demo")
 @pytest.mark.e2e
+@pytest.mark.testcase("TC-SD-022")
 def test_remove_product_from_cart(login_page, inventory_page, cart_page, sauce_demo_config):
     """TC-SD-022: Remove product from cart."""
     # Login
@@ -86,6 +89,7 @@ def test_remove_product_from_cart(login_page, inventory_page, cart_page, sauce_d
 @allure.story("Shopping Cart")
 @pytest.mark.app("sauce_demo")
 @pytest.mark.e2e
+@pytest.mark.testcase("TC-SD-023")
 def test_continue_shopping(login_page, inventory_page, cart_page, sauce_demo_config):
     """TC-SD-023: Continue shopping from cart."""
     # Login

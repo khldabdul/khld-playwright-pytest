@@ -9,6 +9,8 @@ from playwright.sync_api import expect
 @pytest.mark.app("sauce_demo")
 @pytest.mark.e2e
 @pytest.mark.critical
+@pytest.mark.testcase("TC-SD-001")
+@pytest.mark.smoke
 def test_successful_login(login_page, inventory_page, sauce_demo_config):
     """TC-SD-001: Successful login with valid credentials."""
     # Navigate
@@ -27,6 +29,7 @@ def test_successful_login(login_page, inventory_page, sauce_demo_config):
 @allure.story("Authentication")
 @pytest.mark.app("sauce_demo")
 @pytest.mark.e2e
+@pytest.mark.testcase("TC-SD-002")
 def test_invalid_password(login_page, sauce_demo_config):
     """TC-SD-002: Login fails with invalid password."""
     # Navigate
@@ -45,6 +48,7 @@ def test_invalid_password(login_page, sauce_demo_config):
 @allure.story("Authentication")
 @pytest.mark.app("sauce_demo")
 @pytest.mark.e2e
+@pytest.mark.testcase("TC-SD-003")
 def test_locked_out_user(login_page, sauce_demo_config):
     """TC-SD-003: Locked out user cannot login."""
     # Navigate
@@ -63,6 +67,7 @@ def test_locked_out_user(login_page, sauce_demo_config):
 @allure.story("Authentication")
 @pytest.mark.app("sauce_demo")
 @pytest.mark.e2e
+@pytest.mark.testcase("TC-SD-004")
 def test_empty_credentials(login_page):
     """TC-SD-004: Login fails with empty credentials."""
     # Navigate

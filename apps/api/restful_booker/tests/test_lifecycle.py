@@ -28,6 +28,7 @@ class TestBookingLifecycle:
     @allure.story("Complete Lifecycle")
     @allure.title("Complete booking lifecycle: Create → Read → Update → Delete")
     @allure.severity(allure.severity_level.CRITICAL)
+    @pytest.mark.testcase("TC-RB-030")
     @pytest.mark.smoke
     def test_complete_booking_lifecycle(self, authenticated_client, sample_booking):
         """

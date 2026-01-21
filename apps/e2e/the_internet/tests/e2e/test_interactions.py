@@ -8,6 +8,7 @@ from playwright.sync_api import expect
 @allure.story("Interactions")
 @pytest.mark.app("the_internet")
 @pytest.mark.e2e
+@pytest.mark.testcase("TC-TI-030")
 def test_drag_and_drop(drag_drop_page, the_internet_config):
     """TC-TI-030: Drag and drop columns."""
     # Navigate
@@ -29,6 +30,7 @@ def test_drag_and_drop(drag_drop_page, the_internet_config):
 @allure.story("Interactions")
 @pytest.mark.app("the_internet")
 @pytest.mark.e2e
+@pytest.mark.testcase("TC-TI-031")
 def test_hover(hover_page, the_internet_config):
     """TC-TI-031: Hover to display hidden info."""
     # Navigate
@@ -53,6 +55,7 @@ def test_hover(hover_page, the_internet_config):
 @allure.story("Interactions")
 @pytest.mark.app("the_internet")
 @pytest.mark.e2e
+@pytest.mark.testcase("TC-TI-032")
 def test_sortable_tables(tables_page, the_internet_config):
     """TC-TI-032: Sort data tables by column."""
     # Navigate

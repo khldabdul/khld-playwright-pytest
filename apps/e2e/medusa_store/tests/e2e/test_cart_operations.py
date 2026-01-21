@@ -12,6 +12,7 @@ from playwright.sync_api import expect
 class TestCartOperations:
     """Test suite for shopping cart operations."""
 
+    @pytest.mark.testcase("TC-MS-021")
     @allure.title("TC-MS-021: View cart after adding product")
     def test_view_cart_with_items(self, store_page, product_page, cart_page, medusa_store_config):
         """Test viewing cart page after adding a product."""
@@ -23,6 +24,7 @@ class TestCartOperations:
         # Verify cart badge shows item
         product_page.verify_cart_badge_visible()
 
+    @pytest.mark.testcase("TC-MS-022")
     @allure.title("TC-MS-022: Cart page loads correctly")
     def test_cart_page_loads(self, cart_page, medusa_store_config):
         """Test that cart page loads (empty or with items)."""

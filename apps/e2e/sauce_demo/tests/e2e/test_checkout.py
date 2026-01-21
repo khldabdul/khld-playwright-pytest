@@ -9,6 +9,8 @@ from playwright.sync_api import expect
 @pytest.mark.app("sauce_demo")
 @pytest.mark.e2e
 @pytest.mark.critical
+@pytest.mark.testcase("TC-SD-030")
+@pytest.mark.smoke
 def test_complete_checkout_flow(
     login_page,
     inventory_page,
@@ -19,7 +21,7 @@ def test_complete_checkout_flow(
     sauce_demo_config
 ):
     """
-    Test complete checkout flow: Login -> Add Item -> Cart -> Checkout -> Finish.
+    TC-SD-030: Test complete checkout flow: Login -> Add Item -> Cart -> Checkout -> Finish.
     """
     # 1. Login
     login_page.attach()

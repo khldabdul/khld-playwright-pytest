@@ -12,10 +12,14 @@ help:
 	@echo "  make install-browsers Install Playwright browsers"
 	@echo ""
 	@echo "  make test             Run all tests"
+	@echo "  make test-api         Run API tests (parallel)"
+	@echo "  make test-e2e         Run E2E tests"
 	@echo "  make test-smoke       Run smoke tests only"
+	@echo "  make test-smoke-fast  Run smoke tests (parallel, no Allure)"
 	@echo "  make test-admin       Run admin portal tests"
 	@echo "  make test-customer    Run customer portal tests"
 	@echo "  make test-headed      Run tests with visible browser"
+	@echo "  make test-parallel    Run tests in parallel"
 	@echo ""
 	@echo "  make report           Generate and open Allure report"
 	@echo "  make report-serve     Serve Allure report on local server"
@@ -71,6 +75,16 @@ test-with-video:
 
 test-with-trace:
 	pytest apps/ -v --tracing=on --alluredir=test-results/allure-results
+
+# API and E2E specific
+test-api:
+	pytest apps/api/ -v -n auto --alluredir=test-results/allure-results
+
+test-e2e:
+	pytest apps/e2e/ -v --alluredir=test-results/allure-results
+
+test-smoke-fast:
+	pytest -m smoke -v -n auto --tb=short
 
 # Parallel testing
 test-parallel:

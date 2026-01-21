@@ -8,8 +8,10 @@ from playwright.sync_api import expect
 @allure.story("Checkboxes")
 @pytest.mark.app("the_internet")
 @pytest.mark.e2e
+@pytest.mark.testcase("TC-TI-010")
+@pytest.mark.smoke
 def test_checkboxes(checkboxes_page, the_internet_config):
-    """Test checkbox interactions."""
+    """TC-TI-010: Test checkbox interactions."""
     # 1. Navigate
     checkboxes_page.navigate_to_checkboxes(the_internet_config.base_url)
     

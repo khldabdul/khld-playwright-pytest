@@ -8,6 +8,7 @@ from playwright.sync_api import expect
 @allure.story("Checkout Validation")
 @pytest.mark.app("sauce_demo")
 @pytest.mark.e2e
+@pytest.mark.testcase("TC-SD-031")
 def test_checkout_empty_fields(
     login_page,
     inventory_page,
@@ -39,6 +40,7 @@ def test_checkout_empty_fields(
 @pytest.mark.app("sauce_demo")
 @pytest.mark.e2e
 @pytest.mark.critical
+@pytest.mark.testcase("TC-SD-032")
 def test_verify_order_total(
     login_page,
     inventory_page,
@@ -76,6 +78,7 @@ def test_verify_order_total(
 @allure.story("Checkout Validation")
 @pytest.mark.app("sauce_demo")
 @pytest.mark.e2e
+@pytest.mark.testcase("TC-SD-033")
 def test_cancel_checkout(
     login_page,
     inventory_page,

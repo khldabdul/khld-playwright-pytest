@@ -11,6 +11,8 @@ class TestOmdbSearch:
     """Test suite for OMDb search operations."""
 
     @allure.title("Search for existing movie")
+    @pytest.mark.testcase("TC-OMD-001")
+    @pytest.mark.smoke
     def test_search_movie(self, omdb_client):
         """Test searching for a known movie (Inception)."""
         response = omdb_client.search(title="Inception", type="movie")
@@ -26,6 +28,7 @@ class TestOmdbSearch:
         assert "imdbID" in first_match
 
     @allure.title("Get movie by ID")
+    @pytest.mark.testcase("TC-OMD-020")
     def test_get_movie_by_id(self, omdb_client):
         """Test retrieving a movie by valid IMDb ID."""
         # The Matrix
@@ -38,6 +41,7 @@ class TestOmdbSearch:
         assert response["Director"] == "Lana Wachowski, Lilly Wachowski"
 
     @allure.title("Get movie by Title")
+    @pytest.mark.testcase("TC-OMD-002")
     def test_get_movie_by_title(self, omdb_client):
         """Test retrieving a movie by exact title."""
         response = omdb_client.get_by_title(title="The Dark Knight", year="2008")
@@ -48,6 +52,7 @@ class TestOmdbSearch:
         assert "Christopher Nolan" in response["Director"]
 
     @allure.title("Search non-existent movie")
+    @pytest.mark.testcase("TC-OMD-003")
     def test_search_nonexistent(self, omdb_client):
         """Test searching for a movie that doesn't exist."""
         # Random string unlikely to be a movie
@@ -57,6 +62,7 @@ class TestOmdbSearch:
         assert response["Error"] == "Movie not found!"
 
     @allure.title("Get with invalid ID")
+    @pytest.mark.testcase("TC-OMD-021")
     def test_invalid_id(self, omdb_client):
         """Test retrieving with invalid IMDb ID."""
         response = omdb_client.get_by_id(imdb_id="tt0000000000")

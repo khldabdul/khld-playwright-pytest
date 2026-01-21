@@ -46,6 +46,8 @@ class TestPetstorePets:
             pass
 
     @allure.title("Add new pet")
+    @pytest.mark.testcase("TC-PS-001")
+    @pytest.mark.smoke
     def test_add_pet(self, petstore_client):
         """Test adding a new pet."""
         pet_id = random.randint(100000, 999999)
@@ -70,6 +72,8 @@ class TestPetstorePets:
         petstore_client.delete_pet(pet_id)
 
     @allure.title("Get pet by ID")
+    @pytest.mark.testcase("TC-PS-002")
+    @pytest.mark.smoke
     def test_get_pet(self, petstore_client, new_pet):
         """Test retrieving a pet by ID."""
         pet_id = new_pet["id"]
@@ -80,6 +84,7 @@ class TestPetstorePets:
         assert response["name"] == new_pet["name"]
 
     @allure.title("Update pet")
+    @pytest.mark.testcase("TC-PS-004")
     def test_update_pet(self, petstore_client, new_pet):
         """Test updating a pet."""
         new_pet["status"] = "sold"
@@ -95,6 +100,7 @@ class TestPetstorePets:
         assert updated["status"] == "sold"
 
     @allure.title("Find pets by status")
+    @pytest.mark.testcase("TC-PS-006")
     def test_find_pets_by_status(self, petstore_client):
         """Test finding pets by status."""
         status = "available"
@@ -105,6 +111,7 @@ class TestPetstorePets:
         assert pets[0]["status"] == status
 
     @allure.title("Delete pet")
+    @pytest.mark.testcase("TC-PS-005")
     def test_delete_pet(self, petstore_client):
         """Test deleting a pet."""
         # Create a pet specifically to delete

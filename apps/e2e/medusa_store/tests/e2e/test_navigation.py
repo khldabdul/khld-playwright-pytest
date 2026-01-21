@@ -12,6 +12,7 @@ from playwright.sync_api import expect
 class TestNavigation:
     """Test suite for store navigation."""
 
+    @pytest.mark.testcase("TC-MS-001")
     @allure.title("TC-MS-001: Homepage loads with products")
     def test_homepage_loads(self, store_page, medusa_store_config):
         """Test that homepage loads and displays products."""
@@ -25,6 +26,7 @@ class TestNavigation:
         product_count = store_page.get_product_count()
         assert product_count > 0, f"Expected products on homepage, found {product_count}"
 
+    @pytest.mark.testcase("TC-MS-003")
     @allure.title("TC-MS-003: Category navigation works")
     def test_category_navigation(self, store_page, medusa_store_config):
         """Test navigation to product categories."""

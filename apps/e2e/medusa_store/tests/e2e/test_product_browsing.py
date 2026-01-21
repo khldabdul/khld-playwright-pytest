@@ -12,6 +12,8 @@ from playwright.sync_api import expect
 class TestProductBrowsing:
     """Test suite for product browsing."""
 
+    @pytest.mark.testcase("TC-MS-010")
+    @pytest.mark.smoke
     @allure.title("TC-MS-010: View product details")
     def test_view_product_details(self, store_page, product_page, medusa_store_config):
         """Test viewing product detail page."""
@@ -24,6 +26,7 @@ class TestProductBrowsing:
         # Verify product details are visible
         product_page.verify_product_details_visible()
 
+    @pytest.mark.testcase("TC-MS-020")
     @allure.title("TC-MS-020: Add product to cart")
     def test_add_to_cart(self, store_page, product_page, medusa_store_config):
         """Test adding a product to cart."""

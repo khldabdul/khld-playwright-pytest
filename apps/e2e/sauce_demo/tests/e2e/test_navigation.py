@@ -8,6 +8,7 @@ from playwright.sync_api import expect
 @allure.story("Navigation")
 @pytest.mark.app("sauce_demo")
 @pytest.mark.e2e
+@pytest.mark.testcase("TC-SD-040")
 def test_logout(login_page, inventory_page, sauce_demo_config):
     """TC-SD-040: Logout functionality."""
     # Login
@@ -35,6 +36,7 @@ def test_logout(login_page, inventory_page, sauce_demo_config):
 @allure.story("Navigation")
 @pytest.mark.app("sauce_demo")
 @pytest.mark.e2e
+@pytest.mark.testcase("TC-SD-041")
 def test_reset_app_state(login_page, inventory_page, sauce_demo_config):
     """TC-SD-041: Reset app state clears cart."""
     # Login

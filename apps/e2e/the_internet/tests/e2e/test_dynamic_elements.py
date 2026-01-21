@@ -8,6 +8,7 @@ from playwright.sync_api import expect
 @allure.story("Dynamic Elements")
 @pytest.mark.app("the_internet")
 @pytest.mark.e2e
+@pytest.mark.testcase("TC-TI-020")
 def test_dynamic_loading_element_appears(dynamic_loading_page, the_internet_config):
     """TC-TI-020: Dynamic loading - element becomes visible."""
     # Navigate to example 1 (element hidden)
@@ -28,6 +29,7 @@ def test_dynamic_loading_element_appears(dynamic_loading_page, the_internet_conf
 @allure.story("Dynamic Elements")
 @pytest.mark.app("the_internet")
 @pytest.mark.e2e
+@pytest.mark.testcase("TC-TI-021")
 def test_dynamic_loading_element_rendered(dynamic_loading_page, the_internet_config):
     """TC-TI-021: Dynamic loading - element added to DOM."""
     # Navigate to example 2 (element not in DOM)
@@ -49,6 +51,7 @@ def test_dynamic_loading_element_rendered(dynamic_loading_page, the_internet_con
 @allure.story("Dynamic Elements")
 @pytest.mark.app("the_internet")
 @pytest.mark.e2e
+@pytest.mark.testcase("TC-TI-022")
 def test_add_remove_elements(add_remove_page, the_internet_config):
     """TC-TI-022: Add and remove elements dynamically."""
     # Navigate
@@ -72,6 +75,7 @@ def test_add_remove_elements(add_remove_page, the_internet_config):
 @allure.story("Dynamic Elements")
 @pytest.mark.app("the_internet")
 @pytest.mark.e2e
+@pytest.mark.testcase("TC-TI-023")
 def test_disappearing_elements(disappearing_page, the_internet_config):
     """TC-TI-023: Verify elements can disappear on reload."""
     # Navigate

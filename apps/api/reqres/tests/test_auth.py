@@ -12,6 +12,7 @@ class TestReqResAuth:
     """Test suite for ReqRes authentication."""
 
     @allure.title("Register successful")
+    @pytest.mark.testcase("TC-RR-022")
     def test_register_successful(self, reqres_client):
         """Test successful registration with defined user."""
         email = "eve.holt@reqres.in"
@@ -24,6 +25,7 @@ class TestReqResAuth:
         assert response["token"] is not None
 
     @allure.title("Register unsuccessful")
+    @pytest.mark.testcase("TC-RR-023")
     def test_register_unsuccessful(self, reqres_client):
         """Test registration failure without password."""
         email = "sydney@fife"
@@ -35,6 +37,8 @@ class TestReqResAuth:
         assert exc.value.response.json()["error"] == "Missing password"
 
     @allure.title("Login successful")
+    @pytest.mark.testcase("TC-RR-020")
+    @pytest.mark.smoke
     def test_login_successful(self, reqres_client):
         """Test successful login."""
         email = "eve.holt@reqres.in"
@@ -46,6 +50,7 @@ class TestReqResAuth:
         assert response["token"] is not None
 
     @allure.title("Login unsuccessful")
+    @pytest.mark.testcase("TC-RR-021")
     def test_login_unsuccessful(self, reqres_client):
         """Test login failure without password."""
         email = "peter@klaven"

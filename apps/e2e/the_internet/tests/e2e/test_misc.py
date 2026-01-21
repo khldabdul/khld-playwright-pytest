@@ -11,6 +11,7 @@ import tempfile
 @allure.story("File Upload")
 @pytest.mark.app("the_internet")
 @pytest.mark.e2e
+@pytest.mark.testcase("TC-TI-060")
 def test_file_upload(file_upload_page, the_internet_config):
     """TC-TI-060: Upload a file."""
     # Create a temporary test file
@@ -38,6 +39,7 @@ def test_file_upload(file_upload_page, the_internet_config):
 @allure.story("Authentication")
 @pytest.mark.app("the_internet")
 @pytest.mark.e2e
+@pytest.mark.testcase("TC-TI-001")
 def test_basic_auth(basic_auth_page, the_internet_config):
     """TC-TI-001: Basic HTTP authentication."""
     # Get credentials from config
@@ -56,6 +58,7 @@ def test_basic_auth(basic_auth_page, the_internet_config):
 @allure.story("Authentication")
 @pytest.mark.app("the_internet")
 @pytest.mark.e2e
+@pytest.mark.testcase("TC-TI-004")
 def test_logout(login_page, secure_page, the_internet_config):
     """TC-TI-004: Logout functionality."""
     # Login first
@@ -75,6 +78,7 @@ def test_logout(login_page, secure_page, the_internet_config):
 @allure.story("Form Elements")
 @pytest.mark.app("the_internet")
 @pytest.mark.e2e
+@pytest.mark.testcase("TC-TI-012")
 def test_number_input(number_input_page, the_internet_config):
     """TC-TI-012: Number input field with arrow keys."""
     # Navigate

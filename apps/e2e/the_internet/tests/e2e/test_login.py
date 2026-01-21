@@ -8,8 +8,10 @@ from playwright.sync_api import expect
 @allure.story("Form Authentication")
 @pytest.mark.app("the_internet")
 @pytest.mark.e2e
+@pytest.mark.testcase("TC-TI-002")
+@pytest.mark.smoke
 def test_login_success(login_page, the_internet_config):
-    """Test successful login."""
+    """TC-TI-002: Test successful login."""
     # 1. Navigate
     login_page.navigate_to_login(the_internet_config.base_url)
     
@@ -25,8 +27,9 @@ def test_login_success(login_page, the_internet_config):
 @allure.story("Form Authentication")
 @pytest.mark.app("the_internet")
 @pytest.mark.e2e
+@pytest.mark.testcase("TC-TI-003")
 def test_login_failure(login_page, the_internet_config):
-    """Test failed login."""
+    """TC-TI-003: Test failed login."""
     # 1. Navigate
     login_page.navigate_to_login(the_internet_config.base_url)
     

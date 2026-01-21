@@ -11,6 +11,8 @@ class TestReqResUsers:
     """Test suite for ReqRes user operations."""
 
     @allure.title("Get list of users")
+    @pytest.mark.testcase("TC-RR-002")
+    @pytest.mark.smoke
     def test_get_users_list(self, reqres_client):
         """Test retrieving a paginated list of users."""
         response = reqres_client.get_users(page=2)
@@ -29,6 +31,7 @@ class TestReqResUsers:
         assert "avatar" in user
 
     @allure.title("Get single user")
+    @pytest.mark.testcase("TC-RR-003")
     def test_get_single_user(self, reqres_client):
         """Test retrieving a single user by ID."""
         user_id = 2
@@ -41,6 +44,7 @@ class TestReqResUsers:
         assert "last_name" in user
 
     @allure.title("Get user not found")
+    @pytest.mark.testcase("TC-RR-004")
     def test_get_user_not_found(self, reqres_client):
         """Test retrieving a non-existent user returns 404."""
         import requests
@@ -49,6 +53,7 @@ class TestReqResUsers:
         assert exc.value.response.status_code == 404
 
     @allure.title("Create user")
+    @pytest.mark.testcase("TC-RR-010")
     def test_create_user(self, reqres_client):
         """Test creating a new user."""
         name = "morpheus"
@@ -62,6 +67,7 @@ class TestReqResUsers:
         assert "createdAt" in response
 
     @allure.title("Update user (PUT)")
+    @pytest.mark.testcase("TC-RR-011")
     def test_update_user(self, reqres_client):
         """Test updating a user with PUT."""
         user_id = 2
@@ -75,6 +81,7 @@ class TestReqResUsers:
         assert "updatedAt" in response
 
     @allure.title("Update user (PATCH)")
+    @pytest.mark.testcase("TC-RR-012")
     def test_patch_user(self, reqres_client):
         """Test partially updating a user with PATCH."""
         user_id = 2
@@ -86,6 +93,7 @@ class TestReqResUsers:
         assert "updatedAt" in response
 
     @allure.title("Delete user")
+    @pytest.mark.testcase("TC-RR-013")
     def test_delete_user(self, reqres_client):
         """Test deleting a user."""
         user_id = 2

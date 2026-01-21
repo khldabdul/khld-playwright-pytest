@@ -8,6 +8,7 @@ from playwright.sync_api import expect
 @allure.story("Edge Cases")
 @pytest.mark.app("the_internet")
 @pytest.mark.e2e
+@pytest.mark.testcase("TC-TI-070")
 def test_broken_images(broken_images_page, the_internet_config):
     """TC-TI-070: Identify broken images."""
     # Navigate
@@ -36,6 +37,7 @@ def test_broken_images(broken_images_page, the_internet_config):
 @allure.story("Edge Cases")
 @pytest.mark.app("the_internet")
 @pytest.mark.e2e
+@pytest.mark.testcase("TC-TI-071")
 def test_challenging_dom(challenging_dom_page, the_internet_config):
     """TC-TI-071: Find elements despite dynamic IDs."""
     # Navigate
@@ -58,6 +60,7 @@ def test_challenging_dom(challenging_dom_page, the_internet_config):
 @allure.story("Edge Cases")
 @pytest.mark.app("the_internet")
 @pytest.mark.e2e
+@pytest.mark.testcase("TC-TI-072")
 def test_infinite_scroll(infinite_scroll_page, the_internet_config):
     """TC-TI-072: Infinite scroll loads new content."""
     # Navigate
