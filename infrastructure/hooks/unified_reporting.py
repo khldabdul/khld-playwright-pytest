@@ -138,18 +138,47 @@ def _attach_trace(item, app_name: str, test_name: str, timestamp: str) -> None:
 
 
 def _attach_test_metadata(item, app_name: str) -> None:
-    """Attach test metadata to Allure."""
-    metadata: dict[str, Any] = {
-        "test_id": item.nodeid,
-        "app": app_name,
-        "markers": [mark.name for mark in item.iter_markers()],
-        "file": str(item.fspath),
-        "function": item.name,
+    """
+    Attach test metadata to Allure.
+
+    Extracts structured metadata from pytest markers and fixtures,
+    including test case IDs, requirements, and custom tags.
+    """
+    # Extract test_id from testcase marker if present
+    testcase_marker = item.get_closest_marker("testcase")
+    test_id = testcase_marker.args[0] if testcase_marker else item.nodeid
+
+    # Extract requirements from custom markers (format: @pytest.mark.requirement("REQ-123"))
+    requirements = []
+    for mark in item.iter_markers():
+        if mark.name == "requirement" and mark.args:
+            requirements.extend(mark.args)
+
+    # Extract user-defined tags (anything that's not a built-in pytest/allure marker)
+    built_in_markers = {
+        "app", "api", "ui", "e2e", "smoke", "regression", "slow", "critical",
+        "flaky", "integration", "testcase", "requirement", "allure_link",
+        "allure_label", "allure_description", "allure_step", "allure_title",
+        "allure_story", "allure_feature", "allure_epic", "allure_severity",
+        "allure_tag", "allure_id", "allure_issue", "allure_tms", "allure_owner",
     }
+    custom_tags = [mark.name for mark in item.iter_markers() if mark.name not in built_in_markers]
+
+    metadata: dict[str, Any] = {
+        "test_id": test_id,
+        "app": app_name,
+        "test_name": item.name,
+        "file": str(item.fspath),
+        "requirements": requirements if requirements else None,
+        "tags": custom_tags if custom_tags else None,
+    }
+
+    # Remove None values
+    metadata = {k: v for k, v in metadata.items() if v is not None}
 
     allure.attach(
         json.dumps(metadata, indent=2),
-        name="Test Metadata",
+        name="📋 Test Metadata",
         attachment_type=allure.attachment_type.JSON
     )
 

@@ -1,16 +1,60 @@
-"""Medusa Store Checkout Tests."""
+"""Medusa Store - Guest Checkout Tests.
+
+This test suite covers guest checkout flow including:
+- Product selection
+- Adding to cart
+- Checkout process
+- Order placement
+
+Application: Medusa Store E-commerce Demo
+"""
+
+from __future__ import annotations
 
 import pytest
 import allure
 from playwright.sync_api import expect
 
-@allure.feature("Medusa Store")
+from infrastructure.utils.allure_helpers import markdown_to_html
+
+
+@allure.epic("Medusa Store E2E")
+@allure.feature("Checkout")
 @allure.story("Guest Checkout")
+@allure.label("layer", "e2e")
+@allure.label("type", "functional")
+@allure.label("app", "medusa_store")
 @pytest.mark.app("medusa_store")
 @pytest.mark.e2e
 @pytest.mark.critical
 @pytest.mark.testcase("TC-MS-040")
+@pytest.mark.requirement("US-MS-CHECKOUT-001")
 @pytest.mark.smoke
+@allure.severity(allure.severity_level.CRITICAL)
+@allure.description_html(markdown_to_html("""
+Verify complete guest checkout flow.
+
+**Test Steps:**
+1. Navigate to store
+2. Select product (Hoodie)
+3. Add product to cart
+4. Navigate to cart
+5. Proceed to checkout
+6. Fill shipping information
+7. Select delivery option
+8. Select payment option
+9. Place order
+10. Verify order confirmation with order ID
+
+**Test Coverage:**
+- End-to-end guest checkout
+- Shipping form handling
+- Delivery and payment selection
+- Order confirmation
+
+**Business Value:**
+Core revenue-generating user journey for completing purchases.
+"""))
 def test_guest_checkout_flow(
     store_page,
     product_page,
@@ -19,40 +63,39 @@ def test_guest_checkout_flow(
     medusa_store_config
 ):
     """
-    Test guest checkout flow: 
+    Test guest checkout flow:
     Store -> Product -> Add to Cart -> Cart -> Checkout -> Payment -> Order.
     """
-    # 1. Navigate to Store
-    store_page.navigate_to_store()
-    
-    # 2. Select Product
-    # Using 'Hoodie' as verified in manual steps
-    store_page.select_product("Hoodie")
-    
-    # 3. Add to Cart
-    product_page.add_to_cart()
-    # Wait for cart icon to show items (optional visual check) or just click it
-    product_page.go_to_cart()
-    
-    # 4. Proceed to Checkout
-    cart_page.checkout()
-    
-    # 5. Fill Shipping Info
+    product_name = "Hoodie"
     checkout_data = medusa_store_config.extra_config["test_checkout"]
-    checkout_page.fill_shipping(checkout_data)
-    
-    # 6. Select Delivery
-    checkout_page.select_delivery()
-    
-    # 7. Select Payment
-    checkout_page.select_payment()
-    
-    # 8. Place Order
-    checkout_page.place_order()
-    
-    # 9. Verify Confirmation
-    # The order-id span contains just the number, not "Order #..."
-    order_id_element = checkout_page.page.locator('[data-testid="order-id"]')
-    expect(order_id_element).to_be_visible()
-    order_id = order_id_element.inner_text()
-    assert order_id.isdigit(), f"Expected numeric order ID, got: {order_id}"
+
+    with allure.step("Navigate to store"):
+        store_page.navigate_to_store()
+
+    with allure.step(f"Select product '{product_name}'"):
+        store_page.select_product(product_name)
+
+    with allure.step("Add product to cart and navigate to cart"):
+        product_page.add_to_cart()
+        product_page.go_to_cart()
+
+    with allure.step("Proceed to checkout"):
+        cart_page.checkout()
+
+    with allure.step("Fill shipping information"):
+        checkout_page.fill_shipping(checkout_data)
+
+    with allure.step("Select delivery option"):
+        checkout_page.select_delivery()
+
+    with allure.step("Select payment option"):
+        checkout_page.select_payment()
+
+    with allure.step("Place order"):
+        checkout_page.place_order()
+
+    with allure.step("Verify order confirmation with numeric order ID"):
+        order_id_element = checkout_page.page.locator('[data-testid="order-id"]')
+        expect(order_id_element).to_be_visible()
+        order_id = order_id_element.inner_text()
+        assert order_id.isdigit(), f"Expected numeric order ID, got: {order_id}"

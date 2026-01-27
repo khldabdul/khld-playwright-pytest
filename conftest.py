@@ -6,10 +6,15 @@ This module provides:
 - App marker registration and filtering
 - Session-scoped fixtures for shared resources
 - Browser context configuration
+- Environment information attachment for Allure reports
 """
 
+import json
+import os
+import platform
 from pathlib import Path
 
+import allure
 import pytest
 from playwright.sync_api import Playwright
 
@@ -178,6 +183,92 @@ def browser_type_launch_args(browser_type_launch_args, env_config):
         **browser_type_launch_args,
         "slow_mo": 0,  # Can be set via --slowmo CLI option
     }
+
+
+@pytest.fixture(scope="session", autouse=True)
+def attach_environment_information(request):
+    """
+    Attach environment information to Allure report.
+
+    This fixture automatically attaches comprehensive environment details
+    to every test run, including:
+    - System information (OS, platform, hostname)
+    - Python and pytest versions
+    - Test environment (dev/staging/production)
+    - Parallel execution worker ID (if applicable)
+
+    This information is crucial for:
+    - Reproducing failed tests accurately
+    - Tracking flakiness across environments
+    - Understanding test execution context
+    """
+    import sys
+
+    env_info = {
+        "environment": request.config.getoption("--env", "dev"),
+        "python_version": sys.version,
+        "platform": platform.platform(),
+        "system": f"{platform.system()} {platform.release()}",
+        "processor": platform.processor(),
+        "python_implementation": platform.python_implementation(),
+        "hostname": platform.node(),
+    }
+
+    # Add pytest version
+    try:
+        env_info["pytest_version"] = pytest.__version__
+    except AttributeError:
+        env_info["pytest_version"] = "unknown"
+
+    # Add parallel execution info (if using xdist)
+    worker_id = os.getenv("PYTEST_XDIST_WORKER", "master")
+    if worker_id != "master":
+        env_info["worker_id"] = worker_id
+        env_info["parallel_execution"] = True
+    else:
+        env_info["parallel_execution"] = False
+
+    # Add CI/CD information (if available)
+    if os.getenv("CI"):
+        env_info["ci_environment"] = True
+        env_info["ci_provider"] = os.getenv("CI_PROVIDER", "unknown")
+        if os.getenv("GITHUB_ACTIONS"):
+            env_info["ci_provider"] = "GitHub Actions"
+            env_info["run_id"] = os.getenv("GITHUB_RUN_ID", "unknown")
+        elif os.getenv("GITLAB_CI"):
+            env_info["ci_provider"] = "GitLab CI"
+        elif os.getenv("JENKINS_HOME"):
+            env_info["ci_provider"] = "Jenkins"
+
+    # Attach to Allure report
+    allure.attach(
+        json.dumps(env_info, indent=2, default=str),
+        name="🖥️ Environment Information",
+        attachment_type=allure.attachment_type.JSON,
+    )
+
+    # Also attach as a human-readable table
+    env_table = "\n".join([
+        "## Environment Information",
+        "",
+        f"| Key | Value |",
+        f"|-----|-------|",
+        f"| Environment | {env_info['environment']} |",
+        f"| Python | {env_info['python_version'].split()[0]} |",
+        f"| Platform | {env_info['platform']} |",
+        f"| System | {env_info['system']} |",
+        f"| Hostname | {env_info['hostname']} |",
+        f"| Pytest | {env_info['pytest_version']} |",
+        f"| Parallel | {'Yes (' + worker_id + ')' if env_info['parallel_execution'] else 'No'} |",
+    ] + [
+        f"| CI | {env_info.get('ci_provider', 'N/A')} |",
+    ] if env_info.get("ci_environment") else [])
+
+    allure.attach(
+        env_table,
+        name="🖥️ Environment (Summary)",
+        attachment_type=allure.attachment_type.TEXT,
+    )
 
 
 # Re-export fixtures to make them available

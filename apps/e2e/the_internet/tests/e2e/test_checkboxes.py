@@ -1,27 +1,59 @@
-"""The Internet Checkboxes Tests."""
+"""The Internet Checkboxes Tests.
+
+This test suite covers checkbox interaction operations including:
+- Checking and unchecking checkboxes
+- Verifying checkbox state
+
+Application: https://the-internet.herokuapp.com/
+"""
+
+from __future__ import annotations
 
 import pytest
 import allure
 from playwright.sync_api import expect
 
-@allure.feature("The Internet")
+from infrastructure.utils.allure_helpers import markdown_to_html
+
+
+@allure.epic("The Internet E2E")
+@allure.feature("Form Elements")
 @allure.story("Checkboxes")
+@allure.label("layer", "e2e")
+@allure.label("type", "functional")
+@allure.label("app", "the_internet")
 @pytest.mark.app("the_internet")
 @pytest.mark.e2e
 @pytest.mark.testcase("TC-TI-010")
+@pytest.mark.requirement("US-TI-FORM-001")
 @pytest.mark.smoke
+@allure.severity(allure.severity_level.NORMAL)
+@allure.description_html(markdown_to_html("""
+Verify that checkboxes can be checked and unchecked.
+
+**Test Steps:**
+1. Navigate to checkboxes page
+2. Toggle checkbox 1 to checked
+3. Toggle checkbox 2 to unchecked
+4. Verify both states
+
+**Test Coverage:**
+- Checkbox state manipulation
+- State verification after toggle
+
+**Business Value:**
+Core UI interaction for form controls and settings.
+"""))
 def test_checkboxes(checkboxes_page, the_internet_config):
     """TC-TI-010: Test checkbox interactions."""
-    # 1. Navigate
-    checkboxes_page.navigate_to_checkboxes(the_internet_config.base_url)
-    
-    # 2. Check initial state (usually 2nd is checked)
-    # assert not checkboxes_page.is_checked(0)
-    # assert checkboxes_page.is_checked(1)
-    
-    # 3. Toggle
-    checkboxes_page.toggle_checkbox(0, True)
-    assert checkboxes_page.is_checked(0)
-    
-    checkboxes_page.toggle_checkbox(1, False)
-    assert not checkboxes_page.is_checked(1)
+
+    with allure.step("Navigate to checkboxes page"):
+        checkboxes_page.navigate_to_checkboxes(the_internet_config.base_url)
+
+    with allure.step("Toggle checkbox 1 to checked"):
+        checkboxes_page.toggle_checkbox(0, True)
+        assert checkboxes_page.is_checked(0)
+
+    with allure.step("Toggle checkbox 2 to unchecked"):
+        checkboxes_page.toggle_checkbox(1, False)
+        assert not checkboxes_page.is_checked(1)

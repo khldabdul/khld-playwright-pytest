@@ -1,4 +1,16 @@
-"""Petstore API - Pet Tests."""
+"""Petstore API - Pet Tests.
+
+This test suite covers pet management operations including:
+- Adding new pets
+- Retrieving pets by ID
+- Updating pet information
+- Finding pets by status
+- Deleting pets
+
+API Documentation: https://petstore.swagger.io/
+"""
+
+from __future__ import annotations
 
 import pytest
 import allure
@@ -8,14 +20,18 @@ from typing import Any
 
 from requests import HTTPError
 
+from infrastructure.utils.allure_helpers import markdown_to_html
+
 
 def generate_random_string(length: int = 8) -> str:
     """Generate random string."""
     return ''.join(random.choices(string.ascii_letters, k=length))
 
 
-@allure.feature("Petstore API")
-@allure.story("Pet Management")
+@allure.epic("Petstore API")
+@allure.feature("Pet Management")
+@allure.label("layer", "api")
+@allure.label("type", "functional")
 @pytest.mark.app("petstore")
 @pytest.mark.api
 class TestPetstorePets:
@@ -26,7 +42,7 @@ class TestPetstorePets:
         """Fixture to create a new pet and clean it up."""
         pet_id = random.randint(100000, 999999)
         name = f"pet_{generate_random_string()}"
-        
+
         pet_data = {
             "id": pet_id,
             "category": {"id": 1, "name": "dogs"},
@@ -35,83 +51,164 @@ class TestPetstorePets:
             "tags": [{"id": 1, "name": "friendly"}],
             "status": "available"
         }
-        
+
         pet = petstore_client.add_pet(pet_data)
         yield pet
-        
+
         # Cleanup
         try:
             petstore_client.delete_pet(pet_id)
         except:
             pass
 
-    @allure.title("Add new pet")
+    @allure.story("Create Pet")
+    @allure.title("Add new pet to store")
+    @allure.description_html(markdown_to_html("""
+    Verify that a new pet can be added to the store.
+
+    **Test Coverage:**
+    - Pet creation with valid data
+    - Response contains pet ID and name
+    - Pet data is persisted correctly
+
+    **Business Value:**
+    Core functionality for adding pets to the inventory.
+    """))
+    @allure.severity(allure.severity_level.CRITICAL)
+    @allure.link("https://petstore.swagger.io/#/pet/addPet", name="API Docs")
     @pytest.mark.testcase("TC-PS-001")
+    @pytest.mark.requirement("US-PET-001")
     @pytest.mark.smoke
     def test_add_pet(self, petstore_client):
         """Test adding a new pet."""
         pet_id = random.randint(100000, 999999)
         name = f"pet_{generate_random_string()}"
-        
-        pet_data = {
-            "id": pet_id,
-            "category": {"id": 1, "name": "cats"},
-            "name": name,
-            "photoUrls": [],
-            "tags": [],
-            "status": "available"
-        }
-        
-        response = petstore_client.add_pet(pet_data)
-        
-        assert response["id"] == pet_id
-        assert response["name"] == name
-        assert response["status"] == "available"
-        
+
+        with allure.step("Add new pet"):
+            pet_data = {
+                "id": pet_id,
+                "category": {"id": 1, "name": "cats"},
+                "name": name,
+                "photoUrls": [],
+                "tags": [],
+                "status": "available"
+            }
+            response = petstore_client.add_pet(pet_data)
+
+        with allure.step("Verify pet was added"):
+            assert response["id"] == pet_id
+            assert response["name"] == name
+            assert response["status"] == "available"
+
         # Cleanup
         petstore_client.delete_pet(pet_id)
 
+    @allure.story("View Pet Details")
     @allure.title("Get pet by ID")
+    @allure.description_html(markdown_to_html("""
+    Verify that a pet can be retrieved by its ID.
+
+    **Test Coverage:**
+    - Retrieve pet by ID
+    - All pet fields are present
+    - Data accuracy is maintained
+
+    **Business Value:**
+    Essential for viewing individual pet information.
+    """))
+    @allure.severity(allure.severity_level.CRITICAL)
+    @allure.link("https://petstore.swagger.io/#/pet/getPetById", name="API Docs")
     @pytest.mark.testcase("TC-PS-002")
+    @pytest.mark.requirement("US-PET-002")
     @pytest.mark.smoke
     def test_get_pet(self, petstore_client, new_pet):
         """Test retrieving a pet by ID."""
         pet_id = new_pet["id"]
-        
-        response = petstore_client.get_pet(pet_id)
-        
-        assert response["id"] == pet_id
-        assert response["name"] == new_pet["name"]
 
-    @allure.title("Update pet")
+        with allure.step(f"Get pet by ID: {pet_id}"):
+            response = petstore_client.get_pet(pet_id)
+
+        with allure.step("Verify pet details"):
+            assert response["id"] == pet_id
+            assert response["name"] == new_pet["name"]
+
+    @allure.story("Update Pet")
+    @allure.title("Update pet information")
+    @allure.description_html(markdown_to_html("""
+    Verify that a pet's information can be updated.
+
+    **Test Coverage:**
+    - Pet update with modified data
+    - Changes are persisted correctly
+    - Data integrity is maintained
+
+    **Business Value:**
+    Enables users to modify pet details in the inventory.
+    """))
+    @allure.severity(allure.severity_level.NORMAL)
+    @allure.link("https://petstore.swagger.io/#/pet/updatePet", name="API Docs")
     @pytest.mark.testcase("TC-PS-004")
+    @pytest.mark.requirement("US-PET-003")
     def test_update_pet(self, petstore_client, new_pet):
         """Test updating a pet."""
-        new_pet["status"] = "sold"
-        new_pet["name"] = f"sold_{new_pet['name']}"
-        
-        response = petstore_client.update_pet(new_pet)
-        
-        assert response["status"] == "sold"
-        assert response["name"] == new_pet["name"]
-        
-        # Verify update with get
-        updated = petstore_client.get_pet(new_pet["id"])
-        assert updated["status"] == "sold"
+        with allure.step("Update pet status and name"):
+            new_pet["status"] = "sold"
+            new_pet["name"] = f"sold_{new_pet['name']}"
+            response = petstore_client.update_pet(new_pet)
 
+        with allure.step("Verify update was applied"):
+            assert response["status"] == "sold"
+            assert response["name"] == new_pet["name"]
+
+        with allure.step("Verify update with get"):
+            updated = petstore_client.get_pet(new_pet["id"])
+            assert updated["status"] == "sold"
+
+    @allure.story("Search Pets")
     @allure.title("Find pets by status")
+    @allure.description_html(markdown_to_html("""
+    Verify that pets can be filtered by status.
+
+    **Test Coverage:**
+    - Filter pets by status (available, pending, sold)
+    - Results match filter criteria
+    - Response structure is correct
+
+    **Business Value:**
+    Enables users to find pets by their current status.
+    """))
+    @allure.severity(allure.severity_level.NORMAL)
+    @allure.link("https://petstore.swagger.io/#/pet/findPetsByStatus", name="API Docs")
     @pytest.mark.testcase("TC-PS-006")
+    @pytest.mark.requirement("US-PET-004")
     def test_find_pets_by_status(self, petstore_client):
         """Test finding pets by status."""
         status = "available"
-        
-        pets = petstore_client.find_pets_by_status(status)
-        
-        assert len(pets) > 0
-        assert pets[0]["status"] == status
 
-    @allure.title("Delete pet")
+        with allure.step(f"Find pets with status: {status}"):
+            pets = petstore_client.find_pets_by_status(status)
+
+        with allure.step("Verify results match status"):
+            assert len(pets) > 0
+            assert pets[0]["status"] == status
+
+    @allure.story("Delete Pet")
+    @allure.title("Delete pet from store")
+    @allure.description_html(markdown_to_html("""
+    Verify that a pet can be deleted from the store.
+
+    **Test Coverage:**
+    - Pet deletion returns success
+    - Deleted pet is no longer accessible
+    - Proper HTTP status code (404) for deleted pets
+
+    **Business Value:**
+    Critical for inventory management and removal.
+    """))
+    @allure.severity(allure.severity_level.NORMAL)
+    @allure.link("https://petstore.swagger.io/#/pet/deletePet", name="API Docs")
     @pytest.mark.testcase("TC-PS-005")
+    @pytest.mark.requirement("US-PET-005")
     def test_delete_pet(self, petstore_client):
         """Test deleting a pet."""
         # Create a pet specifically to delete
@@ -122,12 +219,14 @@ class TestPetstorePets:
             "photoUrls": [],
             "status": "available"
         }
-        petstore_client.add_pet(pet_data)
-        
-        # Delete it
-        assert petstore_client.delete_pet(pet_id) is True
-        
-        # Verify it's gone
-        with pytest.raises(HTTPError) as exc:
-            petstore_client.get_pet(pet_id)
-        assert exc.value.response.status_code == 404
+
+        with allure.step("Create pet for deletion"):
+            petstore_client.add_pet(pet_data)
+
+        with allure.step(f"Delete pet {pet_id}"):
+            assert petstore_client.delete_pet(pet_id) is True
+
+        with allure.step("Verify pet no longer exists"):
+            with pytest.raises(HTTPError) as exc:
+                petstore_client.get_pet(pet_id)
+            assert exc.value.response.status_code == 404

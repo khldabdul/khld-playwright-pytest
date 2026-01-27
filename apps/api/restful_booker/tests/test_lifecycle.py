@@ -1,11 +1,26 @@
-"""Restful Booker API - Full Lifecycle Tests."""
+"""Restful Booker API - Full Lifecycle Tests.
+
+This test suite covers complete booking lifecycle operations:
+- Create → Read → Update → Delete (CRUD)
+- End-to-end workflow validation
+- Cleanup on failure
+
+API Documentation: https://restful-booker.herokuapp.com/apidoc/index.html
+"""
+
+from __future__ import annotations
 
 import allure
 import pytest
 
+from infrastructure.utils.allure_helpers import markdown_to_html
+
 
 @allure.epic("Restful Booker API")
 @allure.feature("Booking Lifecycle")
+@allure.label("layer", "api")
+@allure.label("type", "functional")
+@pytest.mark.app("restful_booker")
 @pytest.mark.api
 class TestBookingLifecycle:
     """Test suite for complete booking lifecycle."""
@@ -26,23 +41,32 @@ class TestBookingLifecycle:
         }
 
     @allure.story("Complete Lifecycle")
-    @allure.title("Complete booking lifecycle: Create → Read → Update → Delete")
+    @allure.title("Complete CRUD lifecycle: Create → Read → Update → Delete")
+    @allure.description_html(markdown_to_html("""
+    Verify the complete lifecycle of a booking from creation to deletion.
+
+    **Test Steps:**
+    1. Create new booking
+    2. Verify booking exists (GET)
+    3. Update booking (PUT)
+    4. Verify update was persisted
+    5. Delete booking
+    6. Verify deletion (GET returns 404)
+
+    **Test Coverage:**
+    - End-to-end booking workflow
+    - Data persistence across operations
+    - Proper cleanup and resource management
+
+    **Business Value:**
+    Validates the complete user journey for booking management.
+    """))
     @allure.severity(allure.severity_level.CRITICAL)
     @pytest.mark.testcase("TC-RB-030")
+    @pytest.mark.requirement("US-LIFECYCLE-001")
     @pytest.mark.smoke
     def test_complete_booking_lifecycle(self, authenticated_client, sample_booking):
-        """
-        Test the complete lifecycle of a booking.
-
-        Steps:
-        1. Create auth token
-        2. Create new booking
-        3. Verify booking exists (GET)
-        4. Update booking (PUT)
-        5. Verify update
-        6. Delete booking
-        7. Verify deletion (GET returns 404)
-        """
+        """Test the complete lifecycle of a booking."""
         booking_id = None
 
         try:

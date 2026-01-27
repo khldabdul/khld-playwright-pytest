@@ -1,109 +1,219 @@
-"""Sauce Demo Shopping Cart Tests."""
+"""Sauce Demo Shopping Cart Tests.
+
+This test suite covers shopping cart operations including:
+- Adding multiple products to cart
+- Viewing cart contents
+- Removing products from cart
+- Continuing shopping from cart
+
+Application: https://www.saucedemo.com/
+"""
+
+from __future__ import annotations
 
 import pytest
 import allure
 from playwright.sync_api import expect
 
-@allure.feature("Sauce Demo")
-@allure.story("Shopping Cart")
+from infrastructure.utils.allure_helpers import markdown_to_html
+
+
+@allure.epic("Sauce Demo E2E")
+@allure.feature("Shopping Cart")
+@allure.story("Add to Cart")
+@allure.label("layer", "e2e")
+@allure.label("type", "functional")
+@allure.label("app", "sauce_demo")
 @pytest.mark.app("sauce_demo")
 @pytest.mark.e2e
 @pytest.mark.testcase("TC-SD-020")
+@pytest.mark.requirement("US-CART-002")
+@allure.severity(allure.severity_level.NORMAL)
+@allure.description_html(markdown_to_html("""
+Verify that multiple products can be added to the cart.
+
+**Test Steps:**
+1. Login to the application
+2. Add 3 products to cart
+3. Verify cart badge shows correct count
+
+**Test Coverage:**
+- Multiple item addition
+- Cart counter accuracy
+- Button state changes
+
+**Business Value:**
+Enables users to add multiple items to cart for bulk purchases.
+"""))
 def test_add_multiple_products(login_page, inventory_page, sauce_demo_config):
     """TC-SD-020: Add multiple products to cart."""
-    # Login
-    login_page.attach()
     user = sauce_demo_config.test_users["standard"]
-    login_page.login(user["username"], user["password"])
-    
-    # Add 3 products
     products = ["Sauce Labs Backpack", "Sauce Labs Bike Light", "Sauce Labs Bolt T-Shirt"]
-    for product in products:
-        inventory_page.add_to_cart(product)
-    
-    # Verify cart badge shows 3
-    assert inventory_page.get_cart_count() == 3
+
+    with allure.step("Login and navigate to inventory"):
+        login_page.attach()
+        login_page.login(user["username"], user["password"])
+
+    with allure.step("Add 3 products to cart"):
+        for product in products:
+            inventory_page.add_to_cart(product)
+
+    with allure.step("Verify cart badge shows 3"):
+        assert inventory_page.get_cart_count() == 3
 
 
-@allure.feature("Sauce Demo")
-@allure.story("Shopping Cart")
+@allure.epic("Sauce Demo E2E")
+@allure.feature("Shopping Cart")
+@allure.story("View Cart")
+@allure.label("layer", "e2e")
+@allure.label("type", "functional")
+@allure.label("app", "sauce_demo")
 @pytest.mark.app("sauce_demo")
 @pytest.mark.e2e
 @pytest.mark.critical
 @pytest.mark.testcase("TC-SD-021")
+@pytest.mark.requirement("US-CART-003")
+@pytest.mark.smoke
+@allure.severity(allure.severity_level.CRITICAL)
+@allure.description_html(markdown_to_html("""
+Verify that cart contents are displayed correctly.
+
+**Test Steps:**
+1. Login to the application
+2. Add 2 products to cart
+3. Navigate to cart page
+4. Verify all products are displayed
+
+**Test Coverage:**
+- Cart page navigation
+- Product display in cart
+- Cart data accuracy
+
+**Business Value:**
+Core functionality for reviewing selected items before checkout.
+"""))
 def test_view_cart_contents(login_page, inventory_page, cart_page, sauce_demo_config):
     """TC-SD-021: View cart contents."""
-    # Login
-    login_page.attach()
     user = sauce_demo_config.test_users["standard"]
-    login_page.login(user["username"], user["password"])
-    
-    # Add products
     products = ["Sauce Labs Backpack", "Sauce Labs Bike Light"]
-    for product in products:
-        inventory_page.add_to_cart(product)
-    
-    # Go to cart
-    inventory_page.go_to_cart()
-    
-    # Verify products in cart
-    cart_items = cart_page.get_item_names()
-    assert len(cart_items) == 2
-    for product in products:
-        assert product in cart_items
+
+    with allure.step("Login and navigate to inventory"):
+        login_page.attach()
+        login_page.login(user["username"], user["password"])
+
+    with allure.step("Add 2 products to cart"):
+        for product in products:
+            inventory_page.add_to_cart(product)
+
+    with allure.step("Navigate to cart page"):
+        inventory_page.go_to_cart()
+
+    with allure.step("Verify all products are displayed"):
+        cart_items = cart_page.get_item_names()
+        assert len(cart_items) == 2
+        for product in products:
+            assert product in cart_items
 
 
-@allure.feature("Sauce Demo")
-@allure.story("Shopping Cart")
+@allure.epic("Sauce Demo E2E")
+@allure.feature("Shopping Cart")
+@allure.story("Remove from Cart")
+@allure.label("layer", "e2e")
+@allure.label("type", "functional")
+@allure.label("app", "sauce_demo")
 @pytest.mark.app("sauce_demo")
 @pytest.mark.e2e
 @pytest.mark.testcase("TC-SD-022")
+@pytest.mark.requirement("US-CART-004")
+@allure.severity(allure.severity_level.NORMAL)
+@allure.description_html(markdown_to_html("""
+Verify that products can be removed from the cart.
+
+**Test Steps:**
+1. Login to the application
+2. Add 2 products to cart
+3. Navigate to cart page
+4. Remove one product
+5. Verify cart updates correctly
+
+**Test Coverage:**
+- Product removal functionality
+- Cart counter update after removal
+- Cart data integrity
+
+**Business Value:**
+Enables users to remove unwanted items from cart.
+"""))
 def test_remove_product_from_cart(login_page, inventory_page, cart_page, sauce_demo_config):
     """TC-SD-022: Remove product from cart."""
-    # Login
-    login_page.attach()
     user = sauce_demo_config.test_users["standard"]
-    login_page.login(user["username"], user["password"])
-    
-    # Add products
     products = ["Sauce Labs Backpack", "Sauce Labs Bike Light"]
-    for product in products:
-        inventory_page.add_to_cart(product)
-    
-    # Go to cart
-    inventory_page.go_to_cart()
-    
-    # Remove one item
-    cart_page.remove_item("Sauce Labs Backpack")
-    
-    # Verify only 1 item remains
-    assert cart_page.get_item_count() == 1
-    
-    # Verify correct item removed
-    cart_items = cart_page.get_item_names()
-    assert "Sauce Labs Bike Light" in cart_items
-    assert "Sauce Labs Backpack" not in cart_items
+
+    with allure.step("Login and add products to cart"):
+        login_page.attach()
+        login_page.login(user["username"], user["password"])
+        for product in products:
+            inventory_page.add_to_cart(product)
+
+    with allure.step("Navigate to cart page"):
+        inventory_page.go_to_cart()
+
+    with allure.step("Remove 'Sauce Labs Backpack' from cart"):
+        cart_page.remove_item("Sauce Labs Backpack")
+
+    with allure.step("Verify only 1 item remains"):
+        assert cart_page.get_item_count() == 1
+
+    with allure.step("Verify correct item was removed"):
+        cart_items = cart_page.get_item_names()
+        assert "Sauce Labs Bike Light" in cart_items
+        assert "Sauce Labs Backpack" not in cart_items
 
 
-@allure.feature("Sauce Demo")
-@allure.story("Shopping Cart")
+@allure.epic("Sauce Demo E2E")
+@allure.feature("Shopping Cart")
+@allure.story("Continue Shopping")
+@allure.label("layer", "e2e")
+@allure.label("type", "functional")
+@allure.label("app", "sauce_demo")
 @pytest.mark.app("sauce_demo")
 @pytest.mark.e2e
 @pytest.mark.testcase("TC-SD-023")
+@pytest.mark.requirement("US-CART-005")
+@allure.severity(allure.severity_level.NORMAL)
+@allure.description_html(markdown_to_html("""
+Verify that user can continue shopping from cart.
+
+**Test Steps:**
+1. Login to the application
+2. Add product to cart
+3. Navigate to cart page
+4. Click continue shopping
+5. Verify redirect to inventory page
+
+**Test Coverage:**
+- Continue shopping navigation
+- Cart to inventory redirect
+- Shopping flow continuity
+
+**Business Value:**
+Enables users to easily return to shopping from cart view.
+"""))
 def test_continue_shopping(login_page, inventory_page, cart_page, sauce_demo_config):
     """TC-SD-023: Continue shopping from cart."""
-    # Login
-    login_page.attach()
     user = sauce_demo_config.test_users["standard"]
-    login_page.login(user["username"], user["password"])
-    
-    # Add product and go to cart
-    inventory_page.add_to_cart("Sauce Labs Backpack")
-    inventory_page.go_to_cart()
-    
-    # Continue shopping
-    cart_page.continue_shopping()
-    
-    # Verify back on inventory page
-    expect(login_page.page).to_have_url("https://www.saucedemo.com/inventory.html")
-    expect(inventory_page.inventory_list).to_be_visible()
+
+    with allure.step("Login and add product to cart"):
+        login_page.attach()
+        login_page.login(user["username"], user["password"])
+        inventory_page.add_to_cart("Sauce Labs Backpack")
+
+    with allure.step("Navigate to cart page"):
+        inventory_page.go_to_cart()
+
+    with allure.step("Click continue shopping"):
+        cart_page.continue_shopping()
+
+    with allure.step("Verify back on inventory page"):
+        expect(login_page.page).to_have_url("https://www.saucedemo.com/inventory.html")
+        expect(inventory_page.inventory_list).to_be_visible()
