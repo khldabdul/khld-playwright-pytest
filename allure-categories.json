@@ -1,0 +1,42 @@
+[
+  {
+    "name": "🐛 Product Bugs",
+    "matchedStatuses": ["failed"],
+    "description": "Tests that failed due to actual product/application defects",
+    "pattern": ".*\\[Product Bug\\].*"
+  },
+  {
+    "name": "⚙️ Infrastructure Failures",
+    "matchedStatuses": ["failed"],
+    "description": "Tests that failed due to infrastructure issues (network, API down, environment)",
+    "pattern": ".*(ConnectionError|TimeoutError|NetworkError|502|503|504|Service Unavailable|Connection refused).*"
+  },
+  {
+    "name": "🧪 Test Code Defects",
+    "matchedStatuses": ["failed", "broken"],
+    "description": "Tests that failed due to issues with the test code itself (flaky, wrong assertions, etc.)",
+    "pattern": ".*(AssertionError|AttributeError|KeyError|ValueError|IndexError|TypeError).*(test_|tests/).*"
+  },
+  {
+    "name": "⏱️ Performance Issues",
+    "matchedStatuses": ["failed"],
+    "description": "Tests that failed due to performance problems (slow loading, timeouts)",
+    "pattern": ".*(TimeoutError|slow|performance|latency|took too long).*"
+  },
+  {
+    "name": "🔧 Environment-Specific Failures",
+    "matchedStatuses": ["failed"],
+    "description": "Tests that failed only in specific environments (dev/staging/production)",
+    "pattern": ".*\\[ENV-specific\\].*"
+  },
+  {
+    "name": "📋 Ignored Tests",
+    "matchedStatuses": ["skipped"],
+    "description": "Tests that were skipped or marked as flaky"
+  },
+  {
+    "name": "✅ Passed Tests",
+    "matchedStatuses": ["passed"],
+    "description": "All tests that passed successfully"
+  }
+]

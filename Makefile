@@ -28,6 +28,10 @@ help:
 	@echo "  make test-the-internet Run The Internet tests"
 	@echo "  make test-headed      Run tests with visible browser"
 	@echo "  make test-parallel    Run tests in parallel"
+	@echo "  make test-with-video  Run tests with video recording"
+	@echo "  make test-with-trace  Run tests with trace recording"
+	@echo "  make test-with-har    Run E2E tests with HAR (network) recording"
+	@echo "  make test-with-all-artifacts Run E2E with video, trace, and HAR"
 	@echo ""
 	@echo "  make report           Generate and open Allure report"
 	@echo "  make report-serve     Serve Allure report on local server"
@@ -99,6 +103,14 @@ test-with-video:
 test-with-trace:
 	mkdir -p allure-results
 	$(PYTEST) apps/ --tracing=on --alluredir=allure-results
+
+test-with-har:
+	mkdir -p allure-results
+	PLAYWRIGHT_HAR=true $(PYTEST) apps/e2e/ --alluredir=allure-results
+
+test-with-all-artifacts:
+	mkdir -p allure-results
+	PLAYWRIGHT_HAR=true $(PYTEST) apps/e2e/ --video=on --tracing=on --alluredir=allure-results
 
 # API and E2E specific
 test-api:
@@ -180,6 +192,7 @@ clean-reports:
 	rm -rf test-results/screenshots/
 	rm -rf test-results/traces/
 	rm -rf test-results/videos/
+	rm -rf test-results/hars/
 	@echo "Note: test-results/allure-history/ preserved for test history tracking"
 
 clean-all:

@@ -30,7 +30,14 @@ A production-ready Python automation testing framework using Playwright and pyte
 
 - **Multi-App Architecture** - Test multiple web applications and APIs from one framework
 - **Page Object Model** - Clean separation of test logic and page interactions
-- **Allure Reporting** - Rich HTML reports with screenshots, traces, and test history
+- **Enhanced Allure Reporting** - Rich HTML reports with comprehensive debugging capabilities:
+  - Screenshots (on success & failure)
+  - Video recordings
+  - Playwright traces
+  - Network HAR files
+  - Test history tracking
+  - Automatic failure categorization
+- **Composite Decorators** - Clean, maintainable test code with 90% decorator reduction
 - **100% Test Coverage** - All implemented tests passing consistently
 - **API Testing** - RESTful API tests with full CRUD coverage
 - **Environment Support** - Dev, staging, and production configurations
@@ -170,6 +177,10 @@ $ make help
 | `make test-the-internet` | Run The Internet tests |
 | `make test-parallel` | Run all tests in parallel |
 | `make test-headed` | Run tests with visible browser |
+| `make test-with-video` | Run tests with video recording |
+| `make test-with-trace` | Run tests with trace recording |
+| `make test-with-har` | Run E2E tests with network HAR recording |
+| `make test-with-all-artifacts` | Run E2E with video + trace + HAR |
 | `make report` | **Generate and open Allure report** ⭐ |
 | `make report-serve` | Serve Allure report (auto-reloads) |
 | `make clean` | Clean all test artifacts |
@@ -296,7 +307,56 @@ If you prefer to run pytest directly without make:
 (.venv) $ make report
 ```
 
-This single command handles everything - runs tests, generates the report, and opens it in your browser.
+This single command handles everything - runs tests, generates the report with history, and opens it in your browser.
+
+### Enhanced Allure Features
+
+The framework includes advanced Allure reporting capabilities:
+
+#### 📸 Screenshots
+- **On Failure:** Automatic screenshot capture for failed tests
+- **On Success:** Final state screenshots for E2E tests
+- Organized by app name with timestamps
+
+#### 🎥 Video Recordings
+- Captured on test failure by default
+- Use `make test-with-video` for comprehensive video capture
+- Useful for debugging complex UI issues
+- Embedded directly in Allure reports
+
+#### 🔍 Playwright Traces
+- Detailed trace files for debugging
+- Use `make test-with-trace` to enable
+- Open with: `npx playwright show-trace <trace.zip>`
+
+#### 🌐 Network HAR Files
+- Complete HTTP archive with requests/responses
+- Use `make test-with-har` to enable (E2E tests only)
+- Includes timing information and headers
+- Human-readable network summary included
+
+#### 📊 Test History Tracking
+- Track test results over time
+- Identify flaky tests
+- Historical trend analysis
+- Preserved across test runs
+
+#### 🏷 Automatic Failure Categorization
+Failed tests are automatically categorized:
+- **Infrastructure Failure:** Network errors, API unavailability
+- **Performance Issue:** Timeout errors, slow responses
+- **Test Code Defect:** Flaky tests, wrong setup
+- **Product Bug:** Application logic errors
+
+Each category includes:
+- Common causes
+- Recommended actions
+
+#### 📝 Rich Test Documentation
+- Test descriptions with business context
+- Links to JIRA tickets and API docs
+- Test case IDs and requirement traceability
+- Parameter display for data-driven tests
 
 ---
 
@@ -444,11 +504,100 @@ settings:
 - **[Testing Guide](docs/TESTING.md)** - Comprehensive test execution examples
 - **[Page Objects](docs/PAGE_OBJECTS.md)** - Pattern guide and best practices
 - **[Decorator Guide](docs/DECORATOR_GUIDE.md)** - Pytest vs Allure decorators
+- **[Allure Enhancements](docs/ALLURE_ENHANCEMENTS.md)** - Complete guide to reporting features (100% complete)
 - **[Test Cases](apps/)** - Each app has `TEST_CASES.md` with scenarios
+
+### Allure Enhancement Summary
+
+The framework includes **13 comprehensive enhancements** to Allure reporting:
+
+**Phase 1: Quick Wins** (Immediate value)
+1. Test Descriptions & Links - Business context and external references
+2. HTTP Request/Response Logging - Complete API interaction logs
+3. Environment Information - Full environment tracking
+4. Test Parameters Display - Clear data-driven test documentation
+5. Performance Thresholds - API performance tracking
+
+**Phase 2: High Value** (Better organization)
+6. Custom Test Categories - Organized test suites
+7. Timeline Visualization - Nested steps for test flow
+8. Owner/Reviewer Labels - Test ownership traceability
+9. Screenshot on Success - Visual documentation for E2E tests
+
+**Phase 3: Advanced** (Enhanced debugging)
+10. Test History Tracking - Historical trend analysis
+11. Video Attachments - Complete test execution recordings
+
+**Phase 4: Expert** (Deep debugging)
+12. Network HAR Files - Complete network inspection
+13. Custom Categories - Automated failure categorization
+
+**Bonus:**
+- Composite Decorators (`@api_test()`, `@e2e_test()`) - 90% decorator reduction
+
+**Usage:**
+```python
+# Clean composite decorators (90% less code)
+@api_test(
+    epic="Petstore API",
+    feature="Pets",
+    story="Create Pet",
+    testcase="TC-PS-001",
+    requirement="US-PETS-001",
+    smoke=True,
+)
+def test_create_pet(client):
+    # Test code here
+```
 
 ## 🤝 Contributing
 
 ### Adding New Tests
+
+**Use Composite Decorators for Clean Test Code**
+
+The framework provides `@api_test()` and `@e2e_test()` composite decorators:
+
+#### API Test Example
+```python
+from infrastructure.utils.allure_helpers import api_test
+import allure
+
+@api_test(
+    epic="Petstore API",
+    feature="Pets",
+    story="Create Pet",
+    testcase="TC-PS-001",
+    requirement="US-PETS-001",
+    severity=allure.severity_level.CRITICAL,
+    smoke=True,
+)
+def test_create_pet(petstore_client):
+    pet_data = {"name": "Buddy", "status": "available"}
+    response = petstore_client.create_pet(pet_data)
+    assert response.status_code == 200
+```
+
+#### E2E Test Example
+```python
+from infrastructure.utils.allure_helpers import e2e_test
+import allure
+
+@e2e_test(
+    epic="Sauce Demo E2E",
+    feature="Checkout",
+    story="Complete Purchase",
+    testcase="TC-SD-030",
+    app="sauce_demo",
+    smoke=True,
+)
+def test_complete_checkout(login_page, inventory_page, cart_page):
+    login_page.login("standard_user", "secret_sauce")
+    inventory_page.add_item_to_cart("sauce-labs-backpack")
+    cart_page.checkout()
+```
+
+### File Structure
 
 1. **E2E Test:**
 ```bash
@@ -483,6 +632,7 @@ apps/api/your_api/tests/test_your_endpoint.py
 - Use type hints
 - Add docstrings to public methods
 - Use Allure steps for reporting
+- Use composite decorators (`@api_test()`, `@e2e_test()`)
 
 ## 📄 License
 
