@@ -18,13 +18,6 @@ from playwright.sync_api import expect
 from infrastructure.utils.allure_helpers import e2e_test
 
 
-@allure.epic("Sauce Demo E2E")
-@allure.feature("Shopping Cart")
-@allure.label("layer", "e2e")
-@allure.label("type", "functional")
-@allure.label("app", "sauce_demo")
-@pytest.mark.app("sauce_demo")
-@pytest.mark.e2e
 @e2e_test(
     epic="Sauce Demo E2E",
     feature="Shopping Cart",
@@ -69,13 +62,6 @@ def test_add_multiple_products(login_page, inventory_page, sauce_demo_config):
         assert inventory_page.get_cart_count() == 3
 
 
-@allure.epic("Sauce Demo E2E")
-@allure.feature("Shopping Cart")
-@allure.label("layer", "e2e")
-@allure.label("type", "functional")
-@allure.label("app", "sauce_demo")
-@pytest.mark.app("sauce_demo")
-@pytest.mark.e2e
 @e2e_test(
     epic="Sauce Demo E2E",
     feature="Shopping Cart",
@@ -129,13 +115,6 @@ def test_view_cart_contents(login_page, inventory_page, cart_page, sauce_demo_co
             assert product in cart_items
 
 
-@allure.epic("Sauce Demo E2E")
-@allure.feature("Shopping Cart")
-@allure.label("layer", "e2e")
-@allure.label("type", "functional")
-@allure.label("app", "sauce_demo")
-@pytest.mark.app("sauce_demo")
-@pytest.mark.e2e
 @e2e_test(
     epic="Sauce Demo E2E",
     feature="Shopping Cart",
@@ -191,13 +170,6 @@ def test_remove_product_from_cart(login_page, inventory_page, cart_page, sauce_d
         assert "Sauce Labs Backpack" not in cart_items
 
 
-@allure.epic("Sauce Demo E2E")
-@allure.feature("Shopping Cart")
-@allure.label("layer", "e2e")
-@allure.label("type", "functional")
-@allure.label("app", "sauce_demo")
-@pytest.mark.app("sauce_demo")
-@pytest.mark.e2e
 @e2e_test(
     epic="Sauce Demo E2E",
     feature="Shopping Cart",

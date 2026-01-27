@@ -17,14 +17,6 @@ from playwright.sync_api import expect
 from infrastructure.utils.allure_helpers import e2e_test
 
 
-@allure.epic("The Internet E2E")
-@allure.feature("Edge Cases")
-@allure.story("Broken Images")
-@allure.label("layer", "e2e")
-@allure.label("type", "functional")
-@allure.label("app", "the_internet")
-@pytest.mark.app("the_internet")
-@pytest.mark.e2e
 @e2e_test(
     epic="The Internet E2E",
     feature="Edge Cases",
@@ -76,14 +68,6 @@ def test_broken_images(broken_images_page, the_internet_config):
         assert broken_count > 0, "Should have at least one broken image"
 
 
-@allure.epic("The Internet E2E")
-@allure.feature("Edge Cases")
-@allure.story("Dynamic IDs")
-@allure.label("layer", "e2e")
-@allure.label("type", "functional")
-@allure.label("app", "the_internet")
-@pytest.mark.app("the_internet")
-@pytest.mark.e2e
 @e2e_test(
     epic="The Internet E2E",
     feature="Edge Cases",
@@ -131,14 +115,6 @@ def test_challenging_dom(challenging_dom_page, the_internet_config):
         assert first_cell
 
 
-@allure.epic("The Internet E2E")
-@allure.feature("Edge Cases")
-@allure.story("Infinite Scroll")
-@allure.label("layer", "e2e")
-@allure.label("type", "functional")
-@allure.label("app", "the_internet")
-@pytest.mark.app("the_internet")
-@pytest.mark.e2e
 @e2e_test(
     epic="The Internet E2E",
     feature="Edge Cases",

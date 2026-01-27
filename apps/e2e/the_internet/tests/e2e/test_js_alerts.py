@@ -17,14 +17,6 @@ from playwright.sync_api import expect
 from infrastructure.utils.allure_helpers import e2e_test
 
 
-@allure.epic("The Internet E2E")
-@allure.feature("JavaScript Dialogs")
-@allure.story("Alert Handling")
-@allure.label("layer", "e2e")
-@allure.label("type", "functional")
-@allure.label("app", "the_internet")
-@pytest.mark.app("the_internet")
-@pytest.mark.e2e
 @e2e_test(
     epic="The Internet E2E",
     feature="JavaScript Dialogs",
@@ -68,14 +60,6 @@ def test_js_alert(js_alerts_page, the_internet_config):
         assert "You successfully clicked an alert" in result
 
 
-@allure.epic("The Internet E2E")
-@allure.feature("JavaScript Dialogs")
-@allure.story("Confirm Dialog")
-@allure.label("layer", "e2e")
-@allure.label("type", "functional")
-@allure.label("app", "the_internet")
-@pytest.mark.app("the_internet")
-@pytest.mark.e2e
 @e2e_test(
     epic="The Internet E2E",
     feature="JavaScript Dialogs",
@@ -119,14 +103,6 @@ def test_js_confirm_accept(js_alerts_page, the_internet_config):
         assert "You clicked: Ok" in result
 
 
-@allure.epic("The Internet E2E")
-@allure.feature("JavaScript Dialogs")
-@allure.story("Confirm Dialog")
-@allure.label("layer", "e2e")
-@allure.label("type", "functional")
-@allure.label("app", "the_internet")
-@pytest.mark.app("the_internet")
-@pytest.mark.e2e
 @e2e_test(
     epic="The Internet E2E",
     feature="JavaScript Dialogs",
@@ -170,14 +146,6 @@ def test_js_confirm_dismiss(js_alerts_page, the_internet_config):
         assert "You clicked: Cancel" in result
 
 
-@allure.epic("The Internet E2E")
-@allure.feature("JavaScript Dialogs")
-@allure.story("Prompt Dialog")
-@allure.label("layer", "e2e")
-@allure.label("type", "functional")
-@allure.label("app", "the_internet")
-@pytest.mark.app("the_internet")
-@pytest.mark.e2e
 @e2e_test(
     epic="The Internet E2E",
     feature="JavaScript Dialogs",

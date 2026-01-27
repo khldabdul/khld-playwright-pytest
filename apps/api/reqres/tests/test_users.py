@@ -27,9 +27,6 @@ from infrastructure.utils.allure_helpers import api_test
 class TestReqResUsers:
     """Test suite for ReqRes user operations."""
 
-    @allure.story("List Users")
-    @allure.title("Get paginated list of users")
-    @allure.link("https://reqres.in/api-docs/#/Users/List_users", name="API Docs")
     @api_test(
         epic="ReqRes API",
         feature="User Management",
@@ -73,9 +70,6 @@ class TestReqResUsers:
             assert "last_name" in user
             assert "avatar" in user
 
-    @allure.story("View User Details")
-    @allure.title("Get single user by ID")
-    @allure.link("https://reqres.in/api-docs/#/Users/Single_user", name="API Docs")
     @api_test(
         epic="ReqRes API",
         feature="User Management",
@@ -107,8 +101,6 @@ class TestReqResUsers:
         assert "first_name" in user
         assert "last_name" in user
 
-    @allure.story("View User Details")
-    @allure.title("Get non-existent user returns 404")
     @api_test(
         epic="ReqRes API",
         feature="User Management",
@@ -136,9 +128,6 @@ class TestReqResUsers:
             reqres_client.get_user(23)
         assert exc.value.response.status_code == 404
 
-    @allure.story("Create User")
-    @allure.title("Create new user")
-    @allure.link("https://reqres.in/api-docs/#/Users/Create_user", name="API Docs")
     @api_test(
         epic="ReqRes API",
         feature="User Management",
@@ -172,9 +161,6 @@ class TestReqResUsers:
             assert "id" in response
             assert "createdAt" in response
 
-    @allure.story("Update User")
-    @allure.title("Update user with PUT (full update)")
-    @allure.link("https://reqres.in/api-docs/#/Users/Update_user", name="API Docs")
     @api_test(
         epic="ReqRes API",
         feature="User Management",
@@ -182,6 +168,9 @@ class TestReqResUsers:
         testcase="TC-RR-011",
         requirement="US-USER-011",
         severity=allure.severity_level.NORMAL,
+        title="Update user with PUT (full update)",
+        link="https://reqres.in/api-docs/#/Users/Update_user",
+        link_name="API Docs",
         description="""
         Verify that a user can be fully updated using PUT method.
 
@@ -208,9 +197,6 @@ class TestReqResUsers:
             assert response["job"] == job
             assert "updatedAt" in response
 
-    @allure.story("Update User")
-    @allure.title("Partially update user with PATCH")
-    @allure.link("https://reqres.in/api-docs/#/Users/Update__partial_user_", name="API Docs")
     @api_test(
         epic="ReqRes API",
         feature="User Management",
@@ -243,9 +229,6 @@ class TestReqResUsers:
             assert response["name"] == name
             assert "updatedAt" in response
 
-    @allure.story("Delete User")
-    @allure.title("Delete user")
-    @allure.link("https://reqres.in/api-docs/#/Users/Delete_user", name="API Docs")
     @api_test(
         epic="ReqRes API",
         feature="User Management",

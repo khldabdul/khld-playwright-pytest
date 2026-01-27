@@ -18,13 +18,6 @@ from playwright.sync_api import expect
 from infrastructure.utils.allure_helpers import e2e_test
 
 
-@allure.epic("Medusa Store E2E")
-@allure.feature("Checkout")
-@allure.label("layer", "e2e")
-@allure.label("type", "functional")
-@allure.label("app", "medusa_store")
-@pytest.mark.app("medusa_store")
-@pytest.mark.e2e
 @e2e_test(
     epic="Medusa Store E2E",
     feature="Checkout",

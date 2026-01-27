@@ -25,8 +25,6 @@ from infrastructure.utils.allure_helpers import api_test
 class TestAuthentication:
     """Test suite for Restful Booker authentication."""
 
-    @allure.story("Health Check")
-    @allure.title("API health check - ping service")
     @api_test(
         epic="Restful Booker API",
         feature="Authentication",
@@ -34,6 +32,7 @@ class TestAuthentication:
         testcase="TC-RB-001",
         requirement="US-AUTH-001",
         severity=allure.severity_level.CRITICAL,
+        title="API health check - ping service",
         smoke=True,
         description="""
         Verify that the API service is responsive and available.
@@ -55,9 +54,6 @@ class TestAuthentication:
         with allure.step("Verify API is responsive"):
             assert is_alive is True, "API should respond to ping"
 
-    @allure.story("Token Creation")
-    @allure.title("Create authentication token with valid credentials")
-    @allure.link("https://restful-booker.herokuapp.com/apidoc/index.html#header-Auth", name="API Docs")
     @api_test(
         epic="Restful Booker API",
         feature="Authentication",
@@ -65,6 +61,9 @@ class TestAuthentication:
         testcase="TC-RB-010",
         requirement="US-AUTH-002",
         severity=allure.severity_level.CRITICAL,
+        title="Create authentication token with valid credentials",
+        link="https://restful-booker.herokuapp.com/apidoc/index.html#header-Auth",
+        link_name="API Docs",
         smoke=True,
         description="""
         Verify that an authentication token can be created with valid credentials.
@@ -88,8 +87,6 @@ class TestAuthentication:
             assert isinstance(token, str), "Token should be a string"
             assert len(token) > 0, "Token should not be empty"
 
-    @allure.story("Token Creation")
-    @allure.title("Token creation fails with invalid credentials")
     @api_test(
         epic="Restful Booker API",
         feature="Authentication",
@@ -97,6 +94,7 @@ class TestAuthentication:
         testcase="TC-RB-011",
         requirement="US-AUTH-003",
         severity=allure.severity_level.NORMAL,
+        title="Token creation fails with invalid credentials",
         regression=True,
         description="""
         Verify that token creation fails with invalid credentials.

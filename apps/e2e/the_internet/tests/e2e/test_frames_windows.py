@@ -17,14 +17,6 @@ from playwright.sync_api import expect
 from infrastructure.utils.allure_helpers import e2e_test
 
 
-@allure.epic("The Internet E2E")
-@allure.feature("Frames & Windows")
-@allure.story("iFrame Editor")
-@allure.label("layer", "e2e")
-@allure.label("type", "functional")
-@allure.label("app", "the_internet")
-@pytest.mark.app("the_internet")
-@pytest.mark.e2e
 @e2e_test(
     epic="The Internet E2E",
     feature="Frames & Windows",
@@ -67,14 +59,6 @@ def test_iframe_editor(iframe_page, the_internet_config):
         assert len(text) > 0
 
 
-@allure.epic("The Internet E2E")
-@allure.feature("Frames & Windows")
-@allure.story("Nested Frames")
-@allure.label("layer", "e2e")
-@allure.label("type", "functional")
-@allure.label("app", "the_internet")
-@pytest.mark.app("the_internet")
-@pytest.mark.e2e
 @e2e_test(
     epic="The Internet E2E",
     feature="Frames & Windows",
@@ -124,14 +108,6 @@ def test_nested_frames(nested_frames_page, the_internet_config):
         assert "BOTTOM" in bottom_text
 
 
-@allure.epic("The Internet E2E")
-@allure.feature("Frames & Windows")
-@allure.story("Multiple Windows")
-@allure.label("layer", "e2e")
-@allure.label("type", "functional")
-@allure.label("app", "the_internet")
-@pytest.mark.app("the_internet")
-@pytest.mark.e2e
 @e2e_test(
     epic="The Internet E2E",
     feature="Frames & Windows",

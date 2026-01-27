@@ -27,9 +27,6 @@ from infrastructure.utils.allure_helpers import api_test
 class TestReqResAuth:
     """Test suite for ReqRes authentication."""
 
-    @allure.story("Register User")
-    @allure.title("Register new user successfully")
-    @allure.link("https://reqres.in/api-docs/#/Auth/Register", name="API Docs")
     @api_test(
         epic="ReqRes API",
         feature="Authentication",
@@ -37,6 +34,9 @@ class TestReqResAuth:
         testcase="TC-RR-022",
         requirement="US-AUTH-001",
         severity=allure.severity_level.CRITICAL,
+        title="Register new user successfully",
+        link="https://reqres.in/api-docs/#/Auth/Register",
+        link_name="API Docs",
         smoke=True,
         description="""
         Verify that a new user can be registered with valid credentials.
@@ -63,8 +63,6 @@ class TestReqResAuth:
             assert "token" in response
             assert response["token"] is not None
 
-    @allure.story("Register User")
-    @allure.title("Register user fails without password")
     @api_test(
         epic="ReqRes API",
         feature="Authentication",
@@ -72,6 +70,7 @@ class TestReqResAuth:
         testcase="TC-RR-023",
         requirement="US-AUTH-002",
         severity=allure.severity_level.NORMAL,
+        title="Register user fails without password",
         description="""
         Verify that registration fails with missing password.
 
@@ -96,9 +95,6 @@ class TestReqResAuth:
             assert exc.value.response.status_code == 400
             assert exc.value.response.json()["error"] == "Missing password"
 
-    @allure.story("Login")
-    @allure.title("Login user successfully")
-    @allure.link("https://reqres.in/api-docs/#/Auth/Login", name="API Docs")
     @api_test(
         epic="ReqRes API",
         feature="Authentication",
@@ -106,6 +102,9 @@ class TestReqResAuth:
         testcase="TC-RR-020",
         requirement="US-AUTH-003",
         severity=allure.severity_level.CRITICAL,
+        title="Login user successfully",
+        link="https://reqres.in/api-docs/#/Auth/Login",
+        link_name="API Docs",
         smoke=True,
         description="""
         Verify that a registered user can login with valid credentials.
@@ -131,8 +130,6 @@ class TestReqResAuth:
             assert "token" in response
             assert response["token"] is not None
 
-    @allure.story("Login")
-    @allure.title("Login user fails without password")
     @api_test(
         epic="ReqRes API",
         feature="Authentication",
@@ -140,6 +137,7 @@ class TestReqResAuth:
         testcase="TC-RR-021",
         requirement="US-AUTH-004",
         severity=allure.severity_level.NORMAL,
+        title="Login user fails without password",
         description="""
         Verify that login fails with missing password.
 

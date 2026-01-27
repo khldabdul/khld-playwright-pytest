@@ -17,14 +17,6 @@ from playwright.sync_api import expect
 from infrastructure.utils.allure_helpers import e2e_test
 
 
-@allure.epic("The Internet E2E")
-@allure.feature("User Interactions")
-@allure.story("Drag and Drop")
-@allure.label("layer", "e2e")
-@allure.label("type", "functional")
-@allure.label("app", "the_internet")
-@pytest.mark.app("the_internet")
-@pytest.mark.e2e
 @e2e_test(
     epic="The Internet E2E",
     feature="User Interactions",
@@ -71,14 +63,6 @@ def test_drag_and_drop(drag_drop_page, the_internet_config):
         assert drag_drop_page.get_column_b_text() == "A"
 
 
-@allure.epic("The Internet E2E")
-@allure.feature("User Interactions")
-@allure.story("Hover Effects")
-@allure.label("layer", "e2e")
-@allure.label("type", "functional")
-@allure.label("app", "the_internet")
-@pytest.mark.app("the_internet")
-@pytest.mark.e2e
 @e2e_test(
     epic="The Internet E2E",
     feature="User Interactions",
@@ -125,14 +109,6 @@ def test_hover(hover_page, the_internet_config):
         assert "user2" in hover_page.get_user_name(1)
 
 
-@allure.epic("The Internet E2E")
-@allure.feature("User Interactions")
-@allure.story("Table Sorting")
-@allure.label("layer", "e2e")
-@allure.label("type", "functional")
-@allure.label("app", "the_internet")
-@pytest.mark.app("the_internet")
-@pytest.mark.e2e
 @e2e_test(
     epic="The Internet E2E",
     feature="User Interactions",

@@ -31,9 +31,6 @@ from infrastructure.utils.allure_helpers import api_test
 class TestPetstoreStore:
     """Test suite for Petstore Store operations."""
 
-    @allure.story("View Inventory")
-    @allure.title("Get store inventory")
-    @allure.link("https://petstore.swagger.io/#/store/getInventory", name="API Docs")
     @api_test(
         epic="Petstore API",
         feature="Store Operations",
@@ -65,9 +62,6 @@ class TestPetstoreStore:
             # Common keys usually present
             assert any(k in inventory for k in ["available", "pending", "sold"])
 
-    @allure.story("Create Order")
-    @allure.title("Place new order")
-    @allure.link("https://petstore.swagger.io/#/store/placeOrder", name="API Docs")
     @api_test(
         epic="Petstore API",
         feature="Store Operations",
@@ -113,9 +107,6 @@ class TestPetstoreStore:
         # Cleanup
         petstore_client.delete_order(order_id)
 
-    @allure.story("View Order Details")
-    @allure.title("Get order by ID")
-    @allure.link("https://petstore.swagger.io/#/store/getOrderById", name="API Docs")
     @api_test(
         epic="Petstore API",
         feature="Store Operations",
@@ -164,9 +155,6 @@ class TestPetstoreStore:
         # Cleanup
         petstore_client.delete_order(order_id)
 
-    @allure.story("Delete Order")
-    @allure.title("Delete order")
-    @allure.link("https://petstore.swagger.io/#/store/deleteOrder", name="API Docs")
     @api_test(
         epic="Petstore API",
         feature="Store Operations",

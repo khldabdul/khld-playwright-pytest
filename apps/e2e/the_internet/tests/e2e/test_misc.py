@@ -20,14 +20,6 @@ import tempfile
 from infrastructure.utils.allure_helpers import e2e_test
 
 
-@allure.epic("The Internet E2E")
-@allure.feature("File Operations")
-@allure.story("File Upload")
-@allure.label("layer", "e2e")
-@allure.label("type", "functional")
-@allure.label("app", "the_internet")
-@pytest.mark.app("the_internet")
-@pytest.mark.e2e
 @e2e_test(
     epic="The Internet E2E",
     feature="File Operations",
@@ -77,14 +69,6 @@ def test_file_upload(file_upload_page, the_internet_config):
         Path(test_file_path).unlink(missing_ok=True)
 
 
-@allure.epic("The Internet E2E")
-@allure.feature("Authentication")
-@allure.story("Basic Auth")
-@allure.label("layer", "e2e")
-@allure.label("type", "functional")
-@allure.label("app", "the_internet")
-@pytest.mark.app("the_internet")
-@pytest.mark.e2e
 @e2e_test(
     epic="The Internet E2E",
     feature="Authentication",
@@ -127,14 +111,6 @@ def test_basic_auth(basic_auth_page, the_internet_config):
         assert "Congratulations" in message
 
 
-@allure.epic("The Internet E2E")
-@allure.feature("Authentication")
-@allure.story("Logout")
-@allure.label("layer", "e2e")
-@allure.label("type", "functional")
-@allure.label("app", "the_internet")
-@pytest.mark.app("the_internet")
-@pytest.mark.e2e
 @e2e_test(
     epic="The Internet E2E",
     feature="Authentication",
@@ -179,14 +155,6 @@ def test_logout(login_page, secure_page, the_internet_config):
         expect(login_page.username_input).to_be_visible()
 
 
-@allure.epic("The Internet E2E")
-@allure.feature("Form Elements")
-@allure.story("Number Input")
-@allure.label("layer", "e2e")
-@allure.label("type", "functional")
-@allure.label("app", "the_internet")
-@pytest.mark.app("the_internet")
-@pytest.mark.e2e
 @e2e_test(
     epic="The Internet E2E",
     feature="Form Elements",

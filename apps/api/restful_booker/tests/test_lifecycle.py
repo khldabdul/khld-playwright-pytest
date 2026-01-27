@@ -40,8 +40,6 @@ class TestBookingLifecycle:
             "additionalneeds": "WiFi"
         }
 
-    @allure.story("Complete Lifecycle")
-    @allure.title("Complete CRUD lifecycle: Create → Read → Update → Delete")
     @api_test(
         epic="Restful Booker API",
         feature="Booking Lifecycle",

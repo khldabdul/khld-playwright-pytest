@@ -18,9 +18,6 @@ from infrastructure.utils.allure_helpers import api_test
 class TestReqResResources:
     """Test suite for ReqRes resource operations."""
 
-    @allure.story("List Resources")
-    @allure.title("Get list of resources")
-    @allure.link("https://reqres.in/api-docs/#/Resources/List_resources", name="API Docs")
     @api_test(
         epic="ReqRes API",
         feature="Resource Management",
@@ -57,9 +54,6 @@ class TestReqResResources:
         assert "color" in resource
         assert "pantone_value" in resource
 
-    @allure.story("View Resource Details")
-    @allure.title("Get single resource")
-    @allure.link("https://reqres.in/api-docs/#/Resources/Single_resource", name="API Docs")
     @api_test(
         epic="ReqRes API",
         feature="Resource Management",
@@ -92,8 +86,6 @@ class TestReqResResources:
         assert data["color"] == "#C74375"
         assert "pantone_value" in data
 
-    @allure.story("View Resource Details")
-    @allure.title("Get non-existent resource returns 404")
     @api_test(
         epic="ReqRes API",
         feature="Resource Management",

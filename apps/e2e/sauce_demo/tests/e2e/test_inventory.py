@@ -18,13 +18,6 @@ from playwright.sync_api import expect
 from infrastructure.utils.allure_helpers import e2e_test
 
 
-@allure.epic("Sauce Demo E2E")
-@allure.feature("Inventory")
-@allure.label("layer", "e2e")
-@allure.label("type", "functional")
-@allure.label("app", "sauce_demo")
-@pytest.mark.app("sauce_demo")
-@pytest.mark.e2e
 @e2e_test(
     epic="Sauce Demo E2E",
     feature="Inventory",
@@ -75,13 +68,6 @@ def test_view_all_products(login_page, inventory_page, sauce_demo_config):
         assert all(price > 0 for price in prices)
 
 
-@allure.epic("Sauce Demo E2E")
-@allure.feature("Inventory")
-@allure.label("layer", "e2e")
-@allure.label("type", "functional")
-@allure.label("app", "sauce_demo")
-@pytest.mark.app("sauce_demo")
-@pytest.mark.e2e
 @e2e_test(
     epic="Sauce Demo E2E",
     feature="Inventory",
@@ -125,13 +111,6 @@ def test_sort_by_price_low_to_high(login_page, inventory_page, sauce_demo_config
         assert prices[0] == 7.99  # Lowest price item
 
 
-@allure.epic("Sauce Demo E2E")
-@allure.feature("Inventory")
-@allure.label("layer", "e2e")
-@allure.label("type", "functional")
-@allure.label("app", "sauce_demo")
-@pytest.mark.app("sauce_demo")
-@pytest.mark.e2e
 @e2e_test(
     epic="Sauce Demo E2E",
     feature="Inventory",
@@ -174,13 +153,6 @@ def test_sort_by_name_z_to_a(login_page, inventory_page, sauce_demo_config):
         assert names == sorted(names, reverse=True)
 
 
-@allure.epic("Sauce Demo E2E")
-@allure.feature("Shopping Cart")
-@allure.label("layer", "e2e")
-@allure.label("type", "functional")
-@allure.label("app", "sauce_demo")
-@pytest.mark.app("sauce_demo")
-@pytest.mark.e2e
 @e2e_test(
     epic="Sauce Demo E2E",
     feature="Shopping Cart",
@@ -230,13 +202,6 @@ def test_add_product_to_cart(login_page, inventory_page, sauce_demo_config):
         assert inventory_page.get_cart_count() == 1
 
 
-@allure.epic("Sauce Demo E2E")
-@allure.feature("Product Details")
-@allure.label("layer", "e2e")
-@allure.label("type", "functional")
-@allure.label("app", "sauce_demo")
-@pytest.mark.app("sauce_demo")
-@pytest.mark.e2e
 @e2e_test(
     epic="Sauce Demo E2E",
     feature="Product Details",

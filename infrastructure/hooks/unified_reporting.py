@@ -37,9 +37,12 @@ def pytest_runtest_makereport(item, call):
     app_marker = item.get_closest_marker("app")
     app_name = app_marker.args[0] if app_marker else "unknown"
 
-    # Attach artifacts on failure
+    # Attach artifacts on failure or success
     if report.failed:
         _attach_failure_artifacts(item, report, app_name)
+    elif report.passed:
+        # Attach success screenshots for E2E tests only
+        _attach_success_artifacts(item, report, app_name)
 
     # Always attach metadata
     _attach_test_metadata(item, app_name)
@@ -84,17 +87,51 @@ def _attach_failure_artifacts(item, report, app_name: str) -> None:
         )
 
 
-def _attach_screenshot(page: Page, app_name: str, test_name: str, timestamp: str) -> None:
+def _attach_success_artifacts(item, report, app_name: str) -> None:
+    """
+    Attach screenshots to Allure on successful E2E test completion.
+
+    This provides:
+    - Visual verification of test success
+    - Documentation of final application state
+    - Useful reference for smoke test verification
+
+    Args:
+        item: pytest test item
+        report: Test report
+        app_name: Name of the app being tested
+    """
+    # Only for E2E tests (have page object and e2e marker)
+    page: Page | None = item.funcargs.get("page")
+    if not page:
+        return
+
+    # Check if this is an E2E test
+    e2e_marker = item.get_closest_marker("e2e")
+    if not e2e_marker:
+        return
+
+    test_name = _sanitize_filename(item.name)
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+
+    # Attach final state screenshot
+    _attach_screenshot(page, app_name, test_name, timestamp, success=True)
+
+
+def _attach_screenshot(page: Page, app_name: str, test_name: str, timestamp: str, success: bool = False) -> None:
     """Attach screenshot to Allure report."""
     screenshot_dir = Path("test-results/screenshots") / app_name
     screenshot_dir.mkdir(parents=True, exist_ok=True)
-    screenshot_path = screenshot_dir / f"{test_name}_{timestamp}.png"
+
+    # Different naming for success vs failure screenshots
+    suffix = "success" if success else "failure"
+    screenshot_path = screenshot_dir / f"{test_name}_{timestamp}_{suffix}.png"
 
     try:
         page.screenshot(path=str(screenshot_path), full_page=True)
         allure.attach.file(
             str(screenshot_path),
-            name="Failure Screenshot",
+            name="✅ Success Screenshot" if success else "Failure Screenshot",
             attachment_type=allure.attachment_type.PNG
         )
     except Exception as e:

@@ -61,9 +61,6 @@ class TestPetstorePets:
         except:
             pass
 
-    @allure.story("Create Pet")
-    @allure.title("Add new pet to store")
-    @allure.link("https://petstore.swagger.io/#/pet/addPet", name="API Docs")
     @api_test(
         epic="Petstore API",
         feature="Pet Management",
@@ -108,9 +105,6 @@ class TestPetstorePets:
         # Cleanup
         petstore_client.delete_pet(pet_id)
 
-    @allure.story("View Pet Details")
-    @allure.title("Get pet by ID")
-    @allure.link("https://petstore.swagger.io/#/pet/getPetById", name="API Docs")
     @api_test(
         epic="Petstore API",
         feature="Pet Management",
@@ -142,9 +136,6 @@ class TestPetstorePets:
             assert response["id"] == pet_id
             assert response["name"] == new_pet["name"]
 
-    @allure.story("Update Pet")
-    @allure.title("Update pet information")
-    @allure.link("https://petstore.swagger.io/#/pet/updatePet", name="API Docs")
     @api_test(
         epic="Petstore API",
         feature="Pet Management",
@@ -179,9 +170,6 @@ class TestPetstorePets:
             updated = petstore_client.get_pet(new_pet["id"])
             assert updated["status"] == "sold"
 
-    @allure.story("Search Pets")
-    @allure.title("Find pets by status")
-    @allure.link("https://petstore.swagger.io/#/pet/findPetsByStatus", name="API Docs")
     @api_test(
         epic="Petstore API",
         feature="Pet Management",
@@ -212,9 +200,6 @@ class TestPetstorePets:
             assert len(pets) > 0
             assert pets[0]["status"] == status
 
-    @allure.story("Delete Pet")
-    @allure.title("Delete pet from store")
-    @allure.link("https://petstore.swagger.io/#/pet/deletePet", name="API Docs")
     @api_test(
         epic="Petstore API",
         feature="Pet Management",

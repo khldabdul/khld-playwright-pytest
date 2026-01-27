@@ -16,13 +16,6 @@ from playwright.sync_api import expect
 from infrastructure.utils.allure_helpers import e2e_test
 
 
-@allure.epic("Sauce Demo E2E")
-@allure.feature("Navigation")
-@allure.label("layer", "e2e")
-@allure.label("type", "functional")
-@allure.label("app", "sauce_demo")
-@pytest.mark.app("sauce_demo")
-@pytest.mark.e2e
 @e2e_test(
     epic="Sauce Demo E2E",
     feature="Navigation",
@@ -73,13 +66,6 @@ def test_logout(login_page, inventory_page, sauce_demo_config):
         expect(login_page.username_input).to_be_visible()
 
 
-@allure.epic("Sauce Demo E2E")
-@allure.feature("Navigation")
-@allure.label("layer", "e2e")
-@allure.label("type", "functional")
-@allure.label("app", "sauce_demo")
-@pytest.mark.app("sauce_demo")
-@pytest.mark.e2e
 @e2e_test(
     epic="Sauce Demo E2E",
     feature="Navigation",

@@ -26,9 +26,6 @@ from infrastructure.utils.allure_helpers import api_test
 class TestOmdbSearch:
     """Test suite for OMDb search operations."""
 
-    @allure.story("Search Movies")
-    @allure.title("Search for existing movie by title")
-    @allure.link("http://www.omdbapi.com/#parameters", name="API Docs")
     @api_test(
         epic="OMDb API",
         feature="Movie Search & Retrieval",
@@ -65,8 +62,6 @@ class TestOmdbSearch:
             assert first_match["Type"] == "movie"
             assert "imdbID" in first_match
 
-    @allure.story("View Movie Details")
-    @allure.title("Get movie by IMDb ID")
     @api_test(
         epic="OMDb API",
         feature="Movie Search & Retrieval",
@@ -99,8 +94,6 @@ class TestOmdbSearch:
             assert response["Year"] == "1999"
             assert response["Director"] == "Lana Wachowski, Lilly Wachowski"
 
-    @allure.story("View Movie Details")
-    @allure.title("Get movie by exact title")
     @api_test(
         epic="OMDb API",
         feature="Movie Search & Retrieval",
@@ -131,8 +124,6 @@ class TestOmdbSearch:
             assert response["Year"] == "2008"
             assert "Christopher Nolan" in response["Director"]
 
-    @allure.story("Error Handling")
-    @allure.title("Search for non-existent movie returns error")
     @api_test(
         epic="OMDb API",
         feature="Movie Search & Retrieval",
@@ -161,8 +152,6 @@ class TestOmdbSearch:
             assert response["Response"] == "False"
             assert response["Error"] == "Movie not found!"
 
-    @allure.story("Error Handling")
-    @allure.title("Get movie with invalid ID returns error")
     @api_test(
         epic="OMDb API",
         feature="Movie Search & Retrieval",

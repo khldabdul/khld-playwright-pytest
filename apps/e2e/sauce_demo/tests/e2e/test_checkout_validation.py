@@ -17,13 +17,6 @@ from playwright.sync_api import expect
 from infrastructure.utils.allure_helpers import e2e_test
 
 
-@allure.epic("Sauce Demo E2E")
-@allure.feature("Checkout")
-@allure.label("layer", "e2e")
-@allure.label("type", "functional")
-@allure.label("app", "sauce_demo")
-@pytest.mark.app("sauce_demo")
-@pytest.mark.e2e
 @e2e_test(
     epic="Sauce Demo E2E",
     feature="Checkout",
@@ -80,13 +73,6 @@ def test_checkout_empty_fields(
         assert "First Name is required" in error
 
 
-@allure.epic("Sauce Demo E2E")
-@allure.feature("Checkout")
-@allure.label("layer", "e2e")
-@allure.label("type", "functional")
-@allure.label("app", "sauce_demo")
-@pytest.mark.app("sauce_demo")
-@pytest.mark.e2e
 @e2e_test(
     epic="Sauce Demo E2E",
     feature="Checkout",
@@ -153,13 +139,6 @@ def test_verify_order_total(
         assert total < subtotal * 1.10  # Reasonable tax range
 
 
-@allure.epic("Sauce Demo E2E")
-@allure.feature("Checkout")
-@allure.label("layer", "e2e")
-@allure.label("type", "functional")
-@allure.label("app", "sauce_demo")
-@pytest.mark.app("sauce_demo")
-@pytest.mark.e2e
 @e2e_test(
     epic="Sauce Demo E2E",
     feature="Checkout",

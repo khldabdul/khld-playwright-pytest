@@ -17,13 +17,6 @@ from playwright.sync_api import expect
 from infrastructure.utils.allure_helpers import e2e_test
 
 
-@allure.epic("The Internet E2E")
-@allure.feature("Dynamic Elements")
-@allure.label("layer", "e2e")
-@allure.label("type", "functional")
-@allure.label("app", "the_internet")
-@pytest.mark.app("the_internet")
-@pytest.mark.e2e
 @e2e_test(
     epic="The Internet E2E",
     feature="Dynamic Elements",
@@ -67,13 +60,6 @@ def test_dynamic_loading_element_appears(dynamic_loading_page, the_internet_conf
         assert "Hello World!" in text
 
 
-@allure.epic("The Internet E2E")
-@allure.feature("Dynamic Elements")
-@allure.label("layer", "e2e")
-@allure.label("type", "functional")
-@allure.label("app", "the_internet")
-@pytest.mark.app("the_internet")
-@pytest.mark.e2e
 @e2e_test(
     epic="The Internet E2E",
     feature="Dynamic Elements",
@@ -118,13 +104,6 @@ def test_dynamic_loading_element_rendered(dynamic_loading_page, the_internet_con
         assert "Hello World!" in text
 
 
-@allure.epic("The Internet E2E")
-@allure.feature("Dynamic Elements")
-@allure.label("layer", "e2e")
-@allure.label("type", "functional")
-@allure.label("app", "the_internet")
-@pytest.mark.app("the_internet")
-@pytest.mark.e2e
 @e2e_test(
     epic="The Internet E2E",
     feature="Dynamic Elements",
@@ -172,13 +151,6 @@ def test_add_remove_elements(add_remove_page, the_internet_config):
         assert add_remove_page.get_delete_button_count() == 2
 
 
-@allure.epic("The Internet E2E")
-@allure.feature("Dynamic Elements")
-@allure.label("layer", "e2e")
-@allure.label("type", "functional")
-@allure.label("app", "the_internet")
-@pytest.mark.app("the_internet")
-@pytest.mark.e2e
 @e2e_test(
     epic="The Internet E2E",
     feature="Dynamic Elements",

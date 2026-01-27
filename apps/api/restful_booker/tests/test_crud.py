@@ -41,8 +41,6 @@ class TestBookingCRUD:
             "additionalneeds": "Breakfast"
         }
 
-    @allure.story("List Bookings")
-    @allure.title("Get all booking IDs")
     @api_test(
         epic="Restful Booker API",
         feature="Booking Management",
@@ -73,8 +71,6 @@ class TestBookingCRUD:
             assert len(bookings) > 0, "Should have at least one booking"
             assert "bookingid" in bookings[0], "Each booking should have bookingid"
 
-    @allure.story("List Bookings")
-    @allure.title("Get bookings with query filters")
     @api_test(
         epic="Restful Booker API",
         feature="Booking Management",
@@ -107,8 +103,6 @@ class TestBookingCRUD:
             assert isinstance(bookings, list), "Should return a list"
             # Results may be empty if no matching bookings exist
 
-    @allure.story("View Booking Details")
-    @allure.title("Get single booking by ID")
     @api_test(
         epic="Restful Booker API",
         feature="Booking Management",
@@ -145,8 +139,6 @@ class TestBookingCRUD:
             assert "totalprice" in booking, "Booking should have totalprice"
             assert "bookingdates" in booking, "Booking should have bookingdates"
 
-    @allure.story("View Booking Details")
-    @allure.title("Get non-existent booking returns 404")
     @api_test(
         epic="Restful Booker API",
         feature="Booking Management",
@@ -173,8 +165,6 @@ class TestBookingCRUD:
             with pytest.raises(Exception):  # requests.HTTPError
                 restful_booker_client.get_booking(999999)
 
-    @allure.story("Create Booking")
-    @allure.title("Create new booking")
     @api_test(
         epic="Restful Booker API",
         feature="Booking Management",
@@ -206,21 +196,19 @@ class TestBookingCRUD:
             assert result["booking"]["firstname"] == sample_booking["firstname"]
             assert result["booking"]["totalprice"] == sample_booking["totalprice"]
 
-    @allure.story("Update Booking")
-    @allure.title("Update booking with PUT (full update)")
     @api_test(
         epic="Restful Booker API",
         feature="Booking Management",
         story="Update Booking",
         testcase="TC-RB-025",
         requirement="US-BOOKING-006",
-        severity=allure.severity_level.CRITICAL,
-        regression=True,
+        severity=allure.severity_level.NORMAL,
+        smoke=True,
         description="""
-        Verify that a booking can be fully updated using PUT method.
+        Verify that a booking can be updated using PUT method.
 
         **Test Coverage:**
-        - Full booking update (all fields)
+        - Full booking update with PUT
         - Changes are persisted correctly
         - Authentication is required
 
@@ -246,8 +234,6 @@ class TestBookingCRUD:
             assert updated["totalprice"] == 200
             assert updated["lastname"] == sample_booking["lastname"]
 
-    @allure.story("Update Booking")
-    @allure.title("Partially update booking with PATCH")
     @api_test(
         epic="Restful Booker API",
         feature="Booking Management",
@@ -285,8 +271,6 @@ class TestBookingCRUD:
             # Other fields should remain the same
             assert updated["lastname"] == sample_booking["lastname"]
 
-    @allure.story("Update Booking")
-    @allure.title("Update booking fails without authentication")
     @api_test(
         epic="Restful Booker API",
         feature="Booking Management",
@@ -317,8 +301,6 @@ class TestBookingCRUD:
             with pytest.raises(ValueError, match="Token required"):
                 restful_booker_client.update_booking(booking_id, sample_booking)
 
-    @allure.story("Delete Booking")
-    @allure.title("Delete booking")
     @api_test(
         epic="Restful Booker API",
         feature="Booking Management",

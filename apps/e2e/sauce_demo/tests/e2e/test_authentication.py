@@ -18,13 +18,6 @@ from playwright.sync_api import expect
 from infrastructure.utils.allure_helpers import e2e_test
 
 
-@allure.epic("Sauce Demo E2E")
-@allure.feature("Authentication")
-@allure.label("layer", "e2e")
-@allure.label("type", "functional")
-@allure.label("app", "sauce_demo")
-@pytest.mark.app("sauce_demo")
-@pytest.mark.e2e
 @e2e_test(
     epic="Sauce Demo E2E",
     feature="Authentication",
@@ -68,13 +61,6 @@ def test_successful_login(login_page, inventory_page, sauce_demo_config):
         expect(login_page.page).to_have_url("https://www.saucedemo.com/inventory.html")
 
 
-@allure.epic("Sauce Demo E2E")
-@allure.feature("Authentication")
-@allure.label("layer", "e2e")
-@allure.label("type", "functional")
-@allure.label("app", "sauce_demo")
-@pytest.mark.app("sauce_demo")
-@pytest.mark.e2e
 @e2e_test(
     epic="Sauce Demo E2E",
     feature="Authentication",
@@ -115,13 +101,6 @@ def test_invalid_password(login_page, sauce_demo_config):
         assert "Username and password do not match" in error
 
 
-@allure.epic("Sauce Demo E2E")
-@allure.feature("Authentication")
-@allure.label("layer", "e2e")
-@allure.label("type", "functional")
-@allure.label("app", "sauce_demo")
-@pytest.mark.app("sauce_demo")
-@pytest.mark.e2e
 @e2e_test(
     epic="Sauce Demo E2E",
     feature="Authentication",
@@ -162,13 +141,6 @@ def test_locked_out_user(login_page, sauce_demo_config):
         assert "Sorry, this user has been locked out" in error
 
 
-@allure.epic("Sauce Demo E2E")
-@allure.feature("Authentication")
-@allure.label("layer", "e2e")
-@allure.label("type", "functional")
-@allure.label("app", "sauce_demo")
-@pytest.mark.app("sauce_demo")
-@pytest.mark.e2e
 @e2e_test(
     epic="Sauce Demo E2E",
     feature="Authentication",
