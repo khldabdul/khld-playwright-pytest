@@ -1,0 +1,34 @@
+version: '3.8'
+
+services:
+  tests:
+    build: .
+    volumes:
+      - ./test-results:/app/test-results
+    environment:
+      - OMDB_API_KEY=${OMDB_API_KEY:-}
+      - ENV=${ENV:-dev}
+    command: pytest apps/ -v --alluredir=test-results/allure-results
+
+  # Run specific test suites
+  api-tests:
+    build: .
+    volumes:
+      - ./test-results:/app/test-results
+    environment:
+      - OMDB_API_KEY=${OMDB_API_KEY:-}
+    command: pytest apps/api/ -v -n auto --alluredir=test-results/allure-results
+
+  e2e-tests:
+    build: .
+    volumes:
+      - ./test-results:/app/test-results
+    command: pytest apps/e2e/ -v --alluredir=test-results/allure-results
+
+  smoke-tests:
+    build: .
+    volumes:
+      - ./test-results:/app/test-results
+    environment:
+      - OMDB_API_KEY=${OMDB_API_KEY:-}
+    command: pytest -m smoke -v -n auto --alluredir=test-results/allure-results

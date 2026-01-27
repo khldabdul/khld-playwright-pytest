@@ -27,6 +27,7 @@ from infrastructure.fixtures.app_factory import (
     app_configs,
     current_app,
 )
+# Import unified reporting hooks for enhanced Allure integration
 from infrastructure.hooks.unified_reporting import (
     pytest_runtest_makereport,
     attach_screenshot,
@@ -85,7 +86,7 @@ def pytest_configure(config):
     # Create test results directories
     results_dir = Path("test-results")
     results_dir.mkdir(exist_ok=True)
-    (results_dir / "allure-results").mkdir(exist_ok=True)
+    Path("allure-results").mkdir(exist_ok=True)  # Allure results in root
     (results_dir / "screenshots").mkdir(exist_ok=True)
     (results_dir / "traces").mkdir(exist_ok=True)
     (results_dir / "videos").mkdir(exist_ok=True)

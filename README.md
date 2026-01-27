@@ -75,6 +75,43 @@ playwright-pytest/
 - Python 3.11+ ([pyenv](https://github.com/pyenv/pyenv) recommended)
 - Git
 
+### ⚠️ Virtual Environment Note
+
+**All `python`, `pip`, and `pytest` commands require your virtual environment to be activated.**
+
+Look for the `(.venv)` prefix in your terminal prompt. If you don't see it, activate first:
+
+```bash
+# Activate virtual environment (run this whenever you open a new terminal)
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+
+# You should see (.venv) in your prompt now
+```
+
+### pyenv Setup (if using pyenv)
+
+If you have pyenv installed but `python` command is not found, you need to initialize it:
+
+```bash
+# Install Python 3.11 (if not already installed)
+pyenv install 3.11
+
+# Set it as global or local version
+pyenv local 3.11  # Creates .python-version file
+
+# Initialize pyenv in your current shell
+eval "$(pyenv init -)"
+
+# Verify Python is available
+python --version
+```
+
+**Make it permanent:** Add this to your shell config (`~/.zshrc` or `~/.bashrc`):
+```bash
+echo 'eval "$(pyenv init -)"' >> ~/.zshrc
+source ~/.zshrc
+```
+
 ### Setup Steps
 
 ```bash
@@ -83,98 +120,243 @@ git clone <repository-url>
 cd playwright-pytest
 
 # 2. Create virtual environment
-python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
+$ python -m venv venv
+$ source venv/bin/activate  # On Windows: venv\Scripts\activate
+# You should now see (.venv) in your prompt
 
 # 3. Install dependencies
-pip install -e ".[dev]"
+(.venv) $ pip install -e ".[dev]"
 
 # 4. Install Playwright browsers
-playwright install chromium
+(.venv) $ playwright install chromium
 
 # 5. Configure API keys (optional, for OMDb tests)
-echo "OMDB_API_KEY=your_key_here" > .env
+(.venv) $ echo "OMDB_API_KEY=your_key_here" > .env
 ```
 
 **Note:** ReqRes API key is pre-configured. OMDb requires your own API key from [omdbapi.com](http://www.omdbapi.com/apikey.aspx).
 
+**Version Compatibility Note:**
+- The framework requires `pytest >= 8.0.0, < 9.0.0` and `allure-pytest >= 2.15.0` for proper Allure integration
+- These versions are automatically installed when running `make setup` or `pip install -e ".[dev]"`
+- Pytest 9.0+ has breaking API changes that are incompatible with current allure-pytest versions
+
 ## ⚡ Quick Start
+
+**Ensure virtual environment is activated before running any commands:**
+```bash
+source venv/bin/activate  # You should see (.venv) in prompt
+```
+
+### 🚀 Using Make Shortcuts (Recommended!)
+
+The project includes a **Makefile** with convenient shortcuts so you don't need to remember long commands.
+
+```bash
+# See all available commands
+$ make help
+```
+
+**Common commands:**
+
+| Command | What it does |
+|---------|--------------|
+| `make setup` | Full setup (install deps + browsers) |
+| `make test` | Run all tests with Allure results |
+| `make test-smoke` | Run smoke tests only |
+| `make test-api` | Run API tests (parallel) |
+| `make test-e2e` | Run E2E tests only |
+| `make test-sauce-demo` | Run Sauce Demo tests |
+| `make test-the-internet` | Run The Internet tests |
+| `make test-parallel` | Run all tests in parallel |
+| `make test-headed` | Run tests with visible browser |
+| `make report` | **Generate and open Allure report** ⭐ |
+| `make report-serve` | Serve Allure report (auto-reloads) |
+| `make clean` | Clean all test artifacts |
+
+**Note:** Make commands work regardless of venv activation. Python commands inside the Makefile will use your system's Python, so ensure your venv is active first OR the Makefile is configured to use the venv Python.
+
+**Examples:**
+
+```bash
+# One-time setup
+$ source venv/bin/activate
+(.venv) $ make setup
+
+# Run tests and view report
+(.venv) $ make test
+(.venv) $ make report
+
+# Quick smoke test
+(.venv) $ make test-smoke
+
+# Clean everything and start fresh
+(.venv) $ make clean
+```
+
+**Passing custom arguments to pytest:**
+
+```bash
+# Run specific test file
+(.venv) $ make test ARGS='apps/e2e/sauce_demo/tests/e2e/test_login.py'
+
+# Run tests matching a keyword
+(.venv) $ make test ARGS='-k "test_login"'
+
+# Run with visible browser
+(.venv) $ make test ARGS='--headed'
+
+# Run specific test with verbose output
+(.venv) $ make test ARGS='apps/api/reqres/tests/test_users.py::test_get_users -v'
+
+# Stop on first failure
+(.venv) $ make test ARGS='-x'
+
+# Combine multiple options
+(.venv) $ make test ARGS='apps/e2e/sauce_demo/ -k "login" --headed -x'
+```
+
+---
+
+### Direct Pytest Commands
+
+If you prefer to run pytest directly without make:
 
 ### Run All Tests
 ```bash
 # All tests (E2E + API)
-pytest
+(.venv) $ pytest
 
 # With verbose output
-pytest -v
+(.venv) $ pytest -v
 
-# With Allure reporting
-pytest --alluredir=test-results/allure-results
+# With Allure reporting (IMPORTANT: run tests FIRST to generate results)
+(.venv) $ pytest --alluredir=test-results/allure-results
 ```
 
 ### Run by Category
 
 ```bash
 # E2E tests only (45 tests)
-pytest apps/e2e/
+(.venv) $ pytest apps/e2e/
 
 # API tests only (41 tests)
-pytest apps/api/
+(.venv) $ pytest apps/api/
 
 # Specific application
-pytest apps/e2e/sauce_demo/      # 19 Sauce Demo tests
-pytest apps/api/restful_booker/  # 13 Restful Booker tests
+(.venv) $ pytest apps/e2e/sauce_demo/      # 19 Sauce Demo tests
+(.venv) $ pytest apps/api/restful_booker/  # 13 Restful Booker tests
 ```
 
 ### Run by Test Type
 
 ```bash
 # All E2E tests
-pytest -m e2e
+(.venv) $ pytest -m e2e
 
 # All API tests
-pytest -m api
+(.venv) $ pytest -m api
 
 # Smoke tests only
-pytest -m smoke
+(.venv) $ pytest -m smoke
 
 # Regression tests
-pytest -m regression
+(.venv) $ pytest -m regression
 ```
 
 ### Advanced Options
 
 ```bash
 # Headful mode (visible browser)
-pytest --headed apps/e2e/
+(.venv) $ pytest --headed apps/e2e/
 
 # Record video
-pytest --video on apps/e2e/sauce_demo/
+(.venv) $ pytest --video on apps/e2e/sauce_demo/
 
 # Enable tracing (for debugging)
-pytest --tracing on
+(.venv) $ pytest --tracing on
 
 # Parallel execution (4 workers)
-pytest -n 4
+(.venv) $ pytest -n 4
 
 # Stop on first failure
-pytest -x
+(.venv) $ pytest -x
 
 # Run last failed tests
-pytest --lf
+(.venv) $ pytest --lf
 ```
 
 ## 📊 Reports
 
 ### Allure Reports
 
+**🎯 Recommended: Use `make report`**
+
 ```bash
-# Generate and open report
-allure generate test-results/allure-results -o test-results/allure-report --clean
-allure open test-results/allure-report
+(.venv) $ make report
 ```
 
-**Note:** Allure commandline tool required: `npm install -g allure-commandline`
+This single command handles everything - runs tests, generates the report, and opens it in your browser.
+
+---
+
+**Manual Process (for understanding):**
+
+Allure is a TWO-step process:
+
+#### Step 1: Run Tests to Generate Results
+```bash
+# Run tests with --alluredir flag to collect test results
+(.venv) $ pytest --alluredir=allure-results
+
+# This creates the allure-results directory in the project root with test data
+```
+
+#### Step 2: Generate and View Report
+```bash
+# Now you can generate the HTML report from the results
+$ allure generate allure-results -o test-results/allure-report --clean
+# Note: allure command does NOT need venv - it's a standalone tool
+
+# Open the report in your browser
+$ allure open test-results/allure-report
+```
+
+#### Complete Example
+```bash
+# 1. Run tests with Allure results collection
+(.venv) $ pytest --alluredir=allure-results
+
+# 2. Generate report (only after tests have run)
+$ allure generate allure-results -o test-results/allure-report --clean
+
+# 3. View report
+$ allure open test-results/allure-report
+```
+
+#### Troubleshooting
+
+**Error: `allure-results does not exist`**
+- This means you haven't run tests with `--alluredir` flag yet
+- Run `pytest --alluredir=allure-results` FIRST, then generate report
+
+**Error: `AttributeError: 'str' object has no attribute 'iter_parents'`**
+- This is caused by pytest 9.0+ incompatibility with allure-pytest
+- Fix: Downgrade to pytest 8.x: `pip install 'pytest<9.0.0'`
+- The framework's pyproject.toml now pins pytest to `< 9.0.0` to prevent this issue
+- Verify versions: `pip list | grep -E "(pytest|allure)"` should show `pytest>=8.0.0,<9.0.0` and `allure-pytest>=2.15.0`
+
+**Install Allure CLI (if not installed):**
+```bash
+# Using npm (recommended)
+npm install -g allure-commandline
+
+# Or using Homebrew (macOS)
+brew install allure
+
+# Verify installation
+allure --version
+```
 
 ## 🧪 Test Applications
 
@@ -209,9 +391,9 @@ Use markers to categorize and filter tests:
 
 **Run examples:**
 ```bash
-pytest -m smoke                   # Smoke tests only
-pytest -m "e2e and smoke"         # E2E smoke tests
-pytest -m "not slow"              # Exclude slow tests
+(.venv) $ pytest -m smoke                   # Smoke tests only
+(.venv) $ pytest -m "e2e and smoke"         # E2E smoke tests
+(.venv) $ pytest -m "not slow"              # Exclude slow tests
 ```
 
 ## ⚙️ Configuration
@@ -220,11 +402,15 @@ pytest -m "not slow"              # Exclude slow tests
 
 Create `.env` file in project root:
 ```bash
-# API Keys
-OMDB_API_KEY=your_omdb_api_key_here
+(.venv) $ echo "OMDB_API_KEY=your_omdb_api_key_here" > .env
+(.venv) $ echo "ENV=dev" >> .env  # Optional: dev, staging, or production
+```
 
-# Environment selection (optional)
-ENV=dev  # dev, staging, or production
+Or create manually:
+```bash
+# .env file contents
+OMDB_API_KEY=your_omdb_api_key_here
+ENV=dev  # Optional: dev, staging, or production
 ```
 
 ### App Configuration
@@ -274,6 +460,9 @@ apps/e2e/your_app/tests/e2e/test_your_feature.py
 
 # Add configuration
 config/apps/your_app_config.yml
+
+# Run your new test
+(.venv) $ pytest apps/e2e/your_app/tests/e2e/test_your_feature.py -v
 ```
 
 2. **API Test:**
@@ -283,6 +472,9 @@ apps/api/your_api/clients/your_client.py
 
 # Create test
 apps/api/your_api/tests/test_your_endpoint.py
+
+# Run your new test
+(.venv) $ pytest apps/api/your_api/tests/test_your_endpoint.py -v
 ```
 
 ### Code Style

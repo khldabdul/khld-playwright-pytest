@@ -82,6 +82,32 @@ jobs:
     if: always()
     
     steps:
+      - name: Send Slack Notification
+        if: ${{ secrets.SLACK_WEBHOOK_URL != '' }}
+        uses: slackapi/slack-github-action@v1.25.0
+        with:
+          payload: |
+            {
+              "text": "Nightly Regression: ${{ needs.regression.result }}",
+              "blocks": [
+                {
+                  "type": "header",
+                  "text": {"type": "plain_text", "text": "🌙 Nightly Regression Results"}
+                },
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "*Status:* ${{ needs.regression.result }}\n*Branch:* ${{ github.ref_name }}\n<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|View Run>"
+                  }
+                }
+              ]
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
+        continue-on-error: true
+
       - name: Create summary
         run: |
           echo "## Nightly Regression Results 🌙" >> $GITHUB_STEP_SUMMARY

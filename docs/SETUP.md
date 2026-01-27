@@ -86,11 +86,29 @@ playwright install
 ### 6. Verify Installation
 
 ```bash
-# Run a simple test
-pytest apps/e2e/sauce_demo/tests/e2e/test_login.py -v
+# Verify pytest
+pytest --version  # Should show: pytest 9.0.2
 
-# Should see output like:
-# ✅ test_login_successful PASSED
+# Verify playwright
+playwright --version  # Should show: 1.57.0
+
+# Test API smoke suite (quick verification)
+pytest apps/api/ -m smoke --collect-only
+# Should collect 7 smoke tests
+
+# Run a simple API test
+pytest apps/api/omdb/tests/test_search.py::TestOmdbSearch::test_search_movie -v
+# ✅ Should PASS
+
+# Optional: Run a full E2E test (slower)
+pytest apps/e2e/sauce_demo/tests/e2e/test_authentication.py::TestAuthentication::test_successful_login -v
+```
+
+**Quick Health Check:**
+```bash
+# Collect all smoke tests
+pytest -m smoke --collect-only
+# Expected: 15 tests collected (8 E2E + 7 API)
 ```
 
 ---

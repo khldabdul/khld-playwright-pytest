@@ -96,6 +96,8 @@ config/local/
 *.local.yml
 *.local.yaml
 
-# Auth state files (contain sensitive data)
 *_auth.json
 storage_state*.json
+
+# Debug/scratch files
+debug_*.py
