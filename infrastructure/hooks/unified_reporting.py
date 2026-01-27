@@ -12,6 +12,8 @@ import allure
 import pytest
 from playwright.sync_api import Page
 
+from infrastructure.utils.allure_helpers import markdown_to_html
+
 
 @pytest.hookimpl(tryfirst=True, hookwrapper=True)
 def pytest_runtest_makereport(item, call):
@@ -708,8 +710,10 @@ This test failed due to a defect in the application code.
 
     description = descriptions.get(category, "")
     if description:
+        # Convert markdown to HTML for proper rendering in Allure
+        html_description = markdown_to_html(description.strip())
         allure.attach(
-            description,
+            html_description,
             name=f"Category: {category}",
-            attachment_type=allure.attachment_type.TEXT
+            attachment_type=allure.attachment_type.HTML
         )
