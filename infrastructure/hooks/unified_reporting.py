@@ -78,7 +78,10 @@ def _attach_failure_artifacts(item, report, app_name: str) -> None:
     # 2. Playwright Trace (if available)
     _attach_trace(item, app_name, test_name, timestamp)
 
-    # 3. Error message
+    # 3. Video Recording (if available)
+    _attach_video(item, app_name, test_name, timestamp, success=False)
+
+    # 4. Error message
     if report.longrepr:
         allure.attach(
             str(report.longrepr),
@@ -116,6 +119,9 @@ def _attach_success_artifacts(item, report, app_name: str) -> None:
 
     # Attach final state screenshot
     _attach_screenshot(page, app_name, test_name, timestamp, success=True)
+
+    # Attach video recording for E2E tests
+    _attach_video(item, app_name, test_name, timestamp, success=True)
 
 
 def _attach_screenshot(page: Page, app_name: str, test_name: str, timestamp: str, success: bool = False) -> None:
@@ -172,6 +178,52 @@ def _attach_trace(item, app_name: str, test_name: str, timestamp: str) -> None:
                     name="Trace Error",
                     attachment_type=allure.attachment_type.TEXT
                 )
+
+
+def _attach_video(item, app_name: str, test_name: str, timestamp: str, success: bool = False) -> None:
+    """
+    Attach video recording to Allure report.
+
+    Args:
+        item: pytest test item
+        app_name: Name of the app being tested
+        test_name: Sanitized test name
+        timestamp: Timestamp string
+        success: Whether test passed (affects attachment naming)
+    """
+    # Find video file from output_path fixture
+    if "output_path" not in item.funcargs:
+        return
+
+    output_path = Path(item.funcargs["output_path"])
+    video_files = list(output_path.glob("video*.webm"))
+
+    if not video_files:
+        return
+
+    video_path = video_files[0]
+    video_dir = Path("test-results/videos") / app_name
+    video_dir.mkdir(parents=True, exist_ok=True)
+
+    suffix = "success" if success else "failure"
+    organized_video = video_dir / f"{test_name}_{timestamp}_{suffix}.webm"
+
+    try:
+        # Copy to organized location
+        import shutil
+        shutil.copy2(video_path, organized_video)
+
+        allure.attach.file(
+            str(organized_video),
+            name=f"{'✅ ' if success else ''}Video Recording",
+            attachment_type=allure.attachment_type.WEBM
+        )
+    except Exception as e:
+        allure.attach(
+            f"Failed to attach video: {e}",
+            name="Video Error",
+            attachment_type=allure.attachment_type.TEXT
+        )
 
 
 def _attach_test_metadata(item, app_name: str) -> None:

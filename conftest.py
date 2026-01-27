@@ -12,6 +12,7 @@ This module provides:
 import json
 import os
 import platform
+from datetime import datetime
 from pathlib import Path
 
 import allure
@@ -27,6 +28,7 @@ from infrastructure.fixtures.session import (
     screenshots_dir,
     traces_dir,
     videos_dir,
+    run_id,
 )
 from infrastructure.fixtures.app_factory import (
     app_configs,
@@ -92,9 +94,11 @@ def pytest_configure(config):
     results_dir = Path("test-results")
     results_dir.mkdir(exist_ok=True)
     Path("allure-results").mkdir(exist_ok=True)  # Allure results in root
+    Path("allure-results/history").mkdir(exist_ok=True)  # History tracking
     (results_dir / "screenshots").mkdir(exist_ok=True)
     (results_dir / "traces").mkdir(exist_ok=True)
     (results_dir / "videos").mkdir(exist_ok=True)
+    (results_dir / "allure-history").mkdir(exist_ok=True)  # Persistent history storage
 
 
 def pytest_collection_modifyitems(items, config):
@@ -183,6 +187,57 @@ def browser_type_launch_args(browser_type_launch_args, env_config):
         **browser_type_launch_args,
         "slow_mo": 0,  # Can be set via --slowmo CLI option
     }
+
+
+@pytest.fixture(scope="session", autouse=True)
+def attach_run_information(request, run_id: str):
+    """
+    Attach run information to Allure for test history tracking.
+
+    This fixture attaches session-level metadata that helps track
+    test execution history across multiple runs in Allure reports.
+
+    Information attached:
+    - Run ID: Unique identifier for this test run
+    - Run timestamp: When this run started
+    - Environment: Which environment is being tested
+    """
+    import sys
+
+    run_info = {
+        "run_id": run_id,
+        "timestamp": datetime.now().isoformat(),
+        "environment": request.config.getoption("--env", "dev"),
+        "python_version": sys.version.split()[0],
+        "pytest_version": pytest.__version__,
+        "platform": platform.platform(),
+    }
+
+    # Add run info as a JSON attachment
+    allure.attach(
+        json.dumps(run_info, indent=2, default=str),
+        name="📊 Run Information",
+        attachment_type=allure.attachment_type.JSON,
+    )
+
+    # Also attach as human-readable text
+    run_text = "\n".join([
+        "## Test Run Information",
+        "",
+        f"| Key | Value |",
+        f"|-----|-------|",
+        f"| Run ID | {run_info['run_id']} |",
+        f"| Timestamp | {run_info['timestamp']} |",
+        f"| Environment | {run_info['environment']} |",
+        f"| Python | {run_info['python_version']} |",
+        f"| Platform | {run_info['platform']} |",
+    ])
+
+    allure.attach(
+        run_text,
+        name="📊 Run Info (Summary)",
+        attachment_type=allure.attachment_type.TEXT,
+    )
 
 
 @pytest.fixture(scope="session", autouse=True)
@@ -282,6 +337,7 @@ __all__ = [
     "videos_dir",
     "app_configs",
     "current_app",
+    "run_id",
     "attach_screenshot",
     "allure_step",
 ]

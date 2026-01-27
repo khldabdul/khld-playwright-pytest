@@ -119,14 +119,38 @@ test-parallel:
 
 # Reports
 report:
-	allure generate allure-results --clean -o test-results/allure-report
+	@echo "Generating Allure report with history..."
+	@if [ -d "test-results/allure-history" ]; then \
+		cp -r test-results/allure-history allure-results/history; \
+	fi
+	allure generate allure-results -o test-results/allure-report
+	@if [ -d "allure-results/history" ]; then \
+		rm -rf test-results/allure-history && \
+		cp -r allure-results/history test-results/allure-history; \
+	fi
 	allure open test-results/allure-report
 
 report-generate:
-	allure generate allure-results --clean -o test-results/allure-report
+	@echo "Generating Allure report with history..."
+	@if [ -d "test-results/allure-history" ]; then \
+		cp -r test-results/allure-history allure-results/history; \
+	fi
+	allure generate allure-results -o test-results/allure-report
+	@if [ -d "allure-results/history" ]; then \
+		rm -rf test-results/allure-history && \
+		cp -r allure-results/history test-results/allure-history; \
+	fi
 
 report-serve:
+	@echo "Serving Allure report with history..."
+	@if [ -d "test-results/allure-history" ]; then \
+		cp -r test-results/allure-history allure-results/history; \
+	fi
 	allure serve allure-results
+
+report-clean:
+	allure generate allure-results --clean -o test-results/allure-report
+	@echo "Report generated without history (clean mode)"
 
 # Code quality
 lint:
@@ -156,3 +180,13 @@ clean-reports:
 	rm -rf test-results/screenshots/
 	rm -rf test-results/traces/
 	rm -rf test-results/videos/
+	@echo "Note: test-results/allure-history/ preserved for test history tracking"
+
+clean-all:
+	rm -rf test-results/
+	rm -rf allure-results/
+	rm -rf .pytest_cache/
+	rm -rf **/__pycache__/
+	rm -rf *.egg-info/
+	rm -rf .mypy_cache/
+	rm -rf .ruff_cache/
