@@ -17,7 +17,7 @@ from playwright.sync_api import expect
 from pathlib import Path
 import tempfile
 
-from infrastructure.utils.allure_helpers import markdown_to_html
+from infrastructure.utils.allure_helpers import e2e_test
 
 
 @allure.epic("The Internet E2E")
@@ -28,10 +28,17 @@ from infrastructure.utils.allure_helpers import markdown_to_html
 @allure.label("app", "the_internet")
 @pytest.mark.app("the_internet")
 @pytest.mark.e2e
-@pytest.mark.testcase("TC-TI-060")
-@pytest.mark.requirement("US-TI-FILE-001")
-@allure.severity(allure.severity_level.NORMAL)
-@allure.description_html(markdown_to_html("""
+@e2e_test(
+    epic="The Internet E2E",
+    feature="File Operations",
+    story="File Upload",
+    testcase="TC-TI-060",
+    requirement="US-TI-FILE-001",
+    app="the_internet",
+    severity=allure.severity_level.NORMAL,
+    title="Upload a file",
+    link="https://the-internet.herokuapp.com/upload",
+    description="""
 Verify that files can be uploaded via web form.
 
 **Test Steps:**
@@ -47,7 +54,8 @@ Verify that files can be uploaded via web form.
 
 **Business Value:}
 Tests file upload capability for document/image handling.
-"""))
+""",
+)
 def test_file_upload(file_upload_page, the_internet_config):
     """TC-TI-060: Upload a file."""
     with tempfile.NamedTemporaryFile(mode='w', suffix='.txt', delete=False) as f:
@@ -77,12 +85,17 @@ def test_file_upload(file_upload_page, the_internet_config):
 @allure.label("app", "the_internet")
 @pytest.mark.app("the_internet")
 @pytest.mark.e2e
-@pytest.mark.critical
-@pytest.mark.testcase("TC-TI-001")
-@pytest.mark.requirement("US-TI-AUTH-001")
-@pytest.mark.smoke
-@allure.severity(allure.severity_level.CRITICAL)
-@allure.description_html(markdown_to_html("""
+@e2e_test(
+    epic="The Internet E2E",
+    feature="Authentication",
+    story="Basic Auth",
+    testcase="TC-TI-001",
+    requirement="US-TI-AUTH-001",
+    app="the_internet",
+    severity=allure.severity_level.CRITICAL,
+    title="Basic HTTP authentication",
+    link="https://the-internet.herokuapp.com/basic_auth",
+    description="""
 Verify that Basic HTTP authentication works.
 
 **Test Steps:**
@@ -97,7 +110,10 @@ Verify that Basic HTTP authentication works.
 
 **Business Value:}
 Tests HTTP authentication flow for protected resources.
-"""))
+""",
+    critical=True,
+    smoke=True,
+)
 def test_basic_auth(basic_auth_page, the_internet_config):
     """TC-TI-001: Basic HTTP authentication."""
     username = the_internet_config.extra_config.get("basic_auth", {}).get("username", "admin")
@@ -119,10 +135,17 @@ def test_basic_auth(basic_auth_page, the_internet_config):
 @allure.label("app", "the_internet")
 @pytest.mark.app("the_internet")
 @pytest.mark.e2e
-@pytest.mark.testcase("TC-TI-004")
-@pytest.mark.requirement("US-TI-AUTH-003")
-@allure.severity(allure.severity_level.NORMAL)
-@allure.description_html(markdown_to_html("""
+@e2e_test(
+    epic="The Internet E2E",
+    feature="Authentication",
+    story="Logout",
+    testcase="TC-TI-004",
+    requirement="US-TI-AUTH-003",
+    app="the_internet",
+    severity=allure.severity_level.NORMAL,
+    title="Logout functionality",
+    link="https://the-internet.herokuapp.com/login",
+    description="""
 Verify that logout functionality works.
 
 **Test Steps:**
@@ -138,7 +161,8 @@ Verify that logout functionality works.
 
 **Business Value:}
 Tests user session management and security.
-"""))
+""",
+)
 def test_logout(login_page, secure_page, the_internet_config):
     """TC-TI-004: Logout functionality."""
     user = the_internet_config.test_users["default"]
@@ -163,10 +187,17 @@ def test_logout(login_page, secure_page, the_internet_config):
 @allure.label("app", "the_internet")
 @pytest.mark.app("the_internet")
 @pytest.mark.e2e
-@pytest.mark.testcase("TC-TI-012")
-@pytest.mark.requirement("US-TI-FORM-003")
-@allure.severity(allure.severity_level.NORMAL)
-@allure.description_html(markdown_to_html("""
+@e2e_test(
+    epic="The Internet E2E",
+    feature="Form Elements",
+    story="Number Input",
+    testcase="TC-TI-012",
+    requirement="US-TI-FORM-003",
+    app="the_internet",
+    severity=allure.severity_level.NORMAL,
+    title="Number input field with arrow keys",
+    link="https://the-internet.herokuapp.com/inputs",
+    description="""
 Verify that number input controls work correctly.
 
 **Test Steps:**
@@ -185,7 +216,8 @@ Verify that number input controls work correctly.
 
 **Business Value:}
 Tests numeric input controls and increment/decrement patterns.
-"""))
+""",
+)
 def test_number_input(number_input_page, the_internet_config):
     """TC-TI-012: Number input field with arrow keys."""
 

@@ -15,6 +15,7 @@ import time
 from typing import Any, Callable
 
 import allure
+import pytest
 
 
 def attach_http_request(
@@ -485,8 +486,12 @@ def api_test(
     requirement: str,
     severity: str = allure.severity_level.NORMAL,
     description: str = "",
+    title: str = "",
+    link: str | None = None,
+    link_name: str = "API Docs",
     critical: bool = False,
     smoke: bool = False,
+    regression: bool = False,
 ) -> Callable:
     """
     Composite decorator for API tests that combines common Allure decorators.
@@ -501,8 +506,12 @@ def api_test(
         requirement: Requirement ID (e.g., "US-AUTH-001")
         severity: Severity level (default: NORMAL)
         description: Markdown description (optional)
+        title: Test title (optional, defaults to function name)
+        link: URL link to documentation (optional)
+        link_name: Name for the link (default: "API Docs")
         critical: Whether test is critical (default: False)
         smoke: Whether test is smoke test (default: False)
+        regression: Whether test is regression test (default: False)
 
     Usage:
         @api_test(
@@ -512,6 +521,8 @@ def api_test(
             testcase="TC-PS-001",
             requirement="US-AUTH-001",
             severity=allure.severity_level.CRITICAL,
+            title="Login with valid credentials",
+            link="https://api.example.com/docs/login",
             description=\"\"\"
             Verify user can login with valid credentials.
 
@@ -541,10 +552,16 @@ def api_test(
 
         if description:
             func = allure.description_html(markdown_to_html(description))(func)
+        if title:
+            func = allure.title(title)(func)
+        if link:
+            func = allure.link(link, name=link_name)(func)
         if critical:
             func = pytest.mark.critical(func)
         if smoke:
             func = pytest.mark.smoke(func)
+        if regression:
+            func = pytest.mark.regression(func)
 
         return func
 
@@ -560,8 +577,12 @@ def e2e_test(
     app: str,
     severity: str = allure.severity_level.NORMAL,
     description: str = "",
+    title: str = "",
+    link: str | None = None,
+    link_name: str = "App",
     critical: bool = False,
     smoke: bool = False,
+    regression: bool = False,
 ) -> Callable:
     """
     Composite decorator for E2E tests that combines common Allure decorators.
@@ -577,8 +598,12 @@ def e2e_test(
         app: Application name (e.g., "sauce_demo")
         severity: Severity level (default: NORMAL)
         description: Markdown description (optional)
+        title: Test title (optional, defaults to function name)
+        link: URL link to documentation (optional)
+        link_name: Name for the link (default: "App")
         critical: Whether test is critical (default: False)
         smoke: Whether test is smoke test (default: False)
+        regression: Whether test is regression test (default: False)
 
     Usage:
         @e2e_test(
@@ -589,6 +614,8 @@ def e2e_test(
             requirement="US-AUTH-001",
             app="sauce_demo",
             severity=allure.severity_level.CRITICAL,
+            title="Login with valid credentials",
+            link="https://www.saucedemo.com/",
             description=\"\"\"
             Verify user can login with valid credentials.
 
@@ -621,10 +648,16 @@ def e2e_test(
 
         if description:
             func = allure.description_html(markdown_to_html(description))(func)
+        if title:
+            func = allure.title(title)(func)
+        if link:
+            func = allure.link(link, name=link_name)(func)
         if critical:
             func = pytest.mark.critical(func)
         if smoke:
             func = pytest.mark.smoke(func)
+        if regression:
+            func = pytest.mark.regression(func)
 
         return func
 

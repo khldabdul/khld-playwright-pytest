@@ -13,7 +13,7 @@ import pytest
 import allure
 from playwright.sync_api import expect
 
-from infrastructure.utils.allure_helpers import markdown_to_html
+from infrastructure.utils.allure_helpers import e2e_test
 
 
 @allure.epic("Medusa Store E2E")
@@ -26,29 +26,34 @@ from infrastructure.utils.allure_helpers import markdown_to_html
 class TestProductBrowsing:
     """Test suite for product browsing."""
 
-    @allure.story("View Product Details")
-    @allure.title("TC-MS-010: View product details")
-    @allure.description_html(markdown_to_html("""
-    Verify that product details page displays correctly.
+    @e2e_test(
+        epic="Medusa Store E2E",
+        feature="Product Browsing",
+        story="View Product Details",
+        title="TC-MS-010: View product details",
+        description="""Verify that product details page displays correctly.
 
-    **Test Steps:**
-    1. Navigate to store homepage
-    2. Select a product (Hoodie)
-    3. Verify product details are visible
+**Test Steps:**
+1. Navigate to store homepage
+2. Select a product (Hoodie)
+3. Verify product details are visible
 
-    **Test Coverage:**
-    - Product detail page navigation
-    - Product information display
-    - Detail page accessibility
+**Test Coverage:**
+- Product detail page navigation
+- Product information display
+- Detail page accessibility
 
-    **Business Value:**
-    Essential for users to make informed purchase decisions.
-    """))
-    @allure.severity(allure.severity_level.CRITICAL)
-    @pytest.mark.critical
-    @pytest.mark.testcase("TC-MS-010")
-    @pytest.mark.requirement("US-MS-PROD-001")
-    @pytest.mark.smoke
+**Business Value:**
+Essential for users to make informed purchase decisions.
+""",
+        testcase="TC-MS-010",
+        requirement="US-MS-PROD-001",
+        app="medusa_store",
+        severity="critical",
+        link="https://demo.medusa-commerce.com/",
+        smoke=True,
+        critical=True
+    )
     def test_view_product_details(self, store_page, product_page, medusa_store_config):
         """Test viewing product detail page."""
         product_name = "Hoodie"
@@ -62,30 +67,35 @@ class TestProductBrowsing:
         with allure.step("Verify product details are visible"):
             product_page.verify_product_details_visible()
 
-    @allure.story("Add to Cart")
-    @allure.title("TC-MS-020: Add product to cart")
-    @allure.description_html(markdown_to_html("""
-    Verify that a product can be added to cart.
+    @e2e_test(
+        epic="Medusa Store E2E",
+        feature="Product Browsing",
+        story="Add to Cart",
+        title="TC-MS-020: Add product to cart",
+        description="""Verify that a product can be added to cart.
 
-    **Test Steps:**
-    1. Navigate to store homepage
-    2. Select a product (Hoodie)
-    3. Click add to cart button
-    4. Verify cart badge becomes visible
+**Test Steps:**
+1. Navigate to store homepage
+2. Select a product (Hoodie)
+3. Click add to cart button
+4. Verify cart badge becomes visible
 
-    **Test Coverage:**
-    - Add to cart functionality
-    - Cart badge visibility
-    - Cart state update
+**Test Coverage:**
+- Add to cart functionality
+- Cart badge visibility
+- Cart state update
 
-    **Business Value:**
-    Core functionality for starting the purchase process.
-    """))
-    @allure.severity(allure.severity_level.CRITICAL)
-    @pytest.mark.critical
-    @pytest.mark.testcase("TC-MS-020")
-    @pytest.mark.requirement("US-MS-PROD-002")
-    @pytest.mark.smoke
+**Business Value:**
+Core functionality for starting the purchase process.
+""",
+        testcase="TC-MS-020",
+        requirement="US-MS-PROD-002",
+        app="medusa_store",
+        severity="critical",
+        link="https://demo.medusa-commerce.com/",
+        smoke=True,
+        critical=True
+    )
     def test_add_to_cart(self, store_page, product_page, medusa_store_config):
         """Test adding a product to cart."""
         product_name = "Hoodie"

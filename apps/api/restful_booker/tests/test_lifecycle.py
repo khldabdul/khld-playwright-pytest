@@ -13,7 +13,7 @@ from __future__ import annotations
 import allure
 import pytest
 
-from infrastructure.utils.allure_helpers import markdown_to_html
+from infrastructure.utils.allure_helpers import api_test
 
 
 @allure.epic("Restful Booker API")
@@ -42,29 +42,34 @@ class TestBookingLifecycle:
 
     @allure.story("Complete Lifecycle")
     @allure.title("Complete CRUD lifecycle: Create → Read → Update → Delete")
-    @allure.description_html(markdown_to_html("""
-    Verify the complete lifecycle of a booking from creation to deletion.
+    @api_test(
+        epic="Restful Booker API",
+        feature="Booking Lifecycle",
+        story="Complete Lifecycle",
+        testcase="TC-RB-030",
+        requirement="US-LIFECYCLE-001",
+        severity=allure.severity_level.CRITICAL,
+        smoke=True,
+        description="""
+        Verify the complete lifecycle of a booking from creation to deletion.
 
-    **Test Steps:**
-    1. Create new booking
-    2. Verify booking exists (GET)
-    3. Update booking (PUT)
-    4. Verify update was persisted
-    5. Delete booking
-    6. Verify deletion (GET returns 404)
+        **Test Steps:**
+        1. Create new booking
+        2. Verify booking exists (GET)
+        3. Update booking (PUT)
+        4. Verify update was persisted
+        5. Delete booking
+        6. Verify deletion (GET returns 404)
 
-    **Test Coverage:**
-    - End-to-end booking workflow
-    - Data persistence across operations
-    - Proper cleanup and resource management
+        **Test Coverage:**
+        - End-to-end booking workflow
+        - Data persistence across operations
+        - Proper cleanup and resource management
 
-    **Business Value:**
-    Validates the complete user journey for booking management.
-    """))
-    @allure.severity(allure.severity_level.CRITICAL)
-    @pytest.mark.testcase("TC-RB-030")
-    @pytest.mark.requirement("US-LIFECYCLE-001")
-    @pytest.mark.smoke
+        **Business Value:**
+        Validates the complete user journey for booking management.
+        """,
+    )
     def test_complete_booking_lifecycle(self, authenticated_client, sample_booking):
         """Test the complete lifecycle of a booking."""
         booking_id = None

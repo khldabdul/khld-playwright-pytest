@@ -6,7 +6,7 @@ import pytest
 import allure
 import requests
 
-from infrastructure.utils.allure_helpers import markdown_to_html
+from infrastructure.utils.allure_helpers import api_test
 
 
 @allure.epic("ReqRes API")
@@ -20,23 +20,28 @@ class TestReqResResources:
 
     @allure.story("List Resources")
     @allure.title("Get list of resources")
-    @allure.description_html(markdown_to_html("""
-    Verify that the API returns a list of resources correctly.
-
-    **Test Coverage:**
-    - Response contains expected data structure
-    - Resource objects contain all required fields (id, name, year, color, pantone_value)
-    - Pagination metadata is present (total)
-
-    **Business Value:**
-    Ensures the resource catalog is accessible, which is essential
-    for browsing available resources in the system.
-    """))
-    @allure.severity(allure.severity_level.NORMAL)
     @allure.link("https://reqres.in/api-docs/#/Resources/List_resources", name="API Docs")
-    @pytest.mark.testcase("TC-RR-030")
-    @pytest.mark.requirement("US-RES-001")
-    @pytest.mark.smoke
+    @api_test(
+        epic="ReqRes API",
+        feature="Resource Management",
+        story="List Resources",
+        testcase="TC-RR-030",
+        requirement="US-RES-001",
+        severity=allure.severity_level.NORMAL,
+        smoke=True,
+        description="""
+        Verify that the API returns a list of resources correctly.
+
+        **Test Coverage:**
+        - Response contains expected data structure
+        - Resource objects contain all required fields (id, name, year, color, pantone_value)
+        - Pagination metadata is present (total)
+
+        **Business Value:**
+        Ensures the resource catalog is accessible, which is essential
+        for browsing available resources in the system.
+        """,
+    )
     def test_get_resources(self, reqres_client):
         """Test retrieving list of resources."""
         response = reqres_client.get_resources()
@@ -54,22 +59,27 @@ class TestReqResResources:
 
     @allure.story("View Resource Details")
     @allure.title("Get single resource")
-    @allure.description_html(markdown_to_html("""
-    Verify that a single resource can be retrieved by its ID.
-
-    **Test Coverage:**
-    - Valid resource ID returns resource data
-    - Resource data is complete and accurate
-    - All expected fields are present including color codes
-
-    **Business Value:**
-    Enables viewing individual resource details, a core feature
-    of any resource management system.
-    """))
-    @allure.severity(allure.severity_level.NORMAL)
     @allure.link("https://reqres.in/api-docs/#/Resources/Single_resource", name="API Docs")
-    @pytest.mark.testcase("TC-RR-031")
-    @pytest.mark.requirement("US-RES-002")
+    @api_test(
+        epic="ReqRes API",
+        feature="Resource Management",
+        story="View Resource Details",
+        testcase="TC-RR-031",
+        requirement="US-RES-002",
+        severity=allure.severity_level.NORMAL,
+        description="""
+        Verify that a single resource can be retrieved by its ID.
+
+        **Test Coverage:**
+        - Valid resource ID returns resource data
+        - Resource data is complete and accurate
+        - All expected fields are present including color codes
+
+        **Business Value:**
+        Enables viewing individual resource details, a core feature
+        of any resource management system.
+        """,
+    )
     def test_get_single_resource(self, reqres_client):
         """Test retrieving a single resource."""
         resource_id = 2
@@ -84,21 +94,26 @@ class TestReqResResources:
 
     @allure.story("View Resource Details")
     @allure.title("Get non-existent resource returns 404")
-    @allure.description_html(markdown_to_html("""
-    Verify that requesting a non-existent resource returns proper 404 error.
+    @api_test(
+        epic="ReqRes API",
+        feature="Resource Management",
+        story="View Resource Details",
+        testcase="TC-RR-032",
+        requirement="US-RES-003",
+        severity=allure.severity_level.NORMAL,
+        description="""
+        Verify that requesting a non-existent resource returns proper 404 error.
 
-    **Test Coverage:**
-    - Invalid resource ID handling
-    - Proper HTTP status code (404)
-    - Error message clarity
+        **Test Coverage:**
+        - Invalid resource ID handling
+        - Proper HTTP status code (404)
+        - Error message clarity
 
-    **Business Value:**
-    Ensures graceful error handling when users request
-    non-existent resources.
-    """))
-    @allure.severity(allure.severity_level.NORMAL)
-    @pytest.mark.testcase("TC-RR-032")
-    @pytest.mark.requirement("US-RES-003")
+        **Business Value:**
+        Ensures graceful error handling when users request
+        non-existent resources.
+        """,
+    )
     def test_get_resource_not_found(self, reqres_client):
         """Test retrieving a non-existent resource returns 404."""
         with pytest.raises(requests.HTTPError) as exc:

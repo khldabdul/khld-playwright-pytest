@@ -14,7 +14,7 @@ import pytest
 import allure
 from playwright.sync_api import expect
 
-from infrastructure.utils.allure_helpers import markdown_to_html
+from infrastructure.utils.allure_helpers import e2e_test
 
 
 @allure.epic("The Internet E2E")
@@ -25,10 +25,17 @@ from infrastructure.utils.allure_helpers import markdown_to_html
 @allure.label("app", "the_internet")
 @pytest.mark.app("the_internet")
 @pytest.mark.e2e
-@pytest.mark.testcase("TC-TI-070")
-@pytest.mark.requirement("US-TI-EDGE-001")
-@allure.severity(allure.severity_level.NORMAL)
-@allure.description_html(markdown_to_html("""
+@e2e_test(
+    epic="The Internet E2E",
+    feature="Edge Cases",
+    story="Broken Images",
+    testcase="TC-TI-070",
+    requirement="US-TI-EDGE-001",
+    app="the_internet",
+    severity=allure.severity_level.NORMAL,
+    title="Identify broken images",
+    link="https://the-internet.herokuapp.com/broken_images",
+    description="""
 Verify that broken images can be identified.
 
 **Test Steps:**
@@ -44,7 +51,8 @@ Verify that broken images can be identified.
 
 **Business Value:}
 Tests ability to detect and handle broken image assets.
-"""))
+""",
+)
 def test_broken_images(broken_images_page, the_internet_config):
     """TC-TI-070: Identify broken images."""
 
@@ -76,10 +84,17 @@ def test_broken_images(broken_images_page, the_internet_config):
 @allure.label("app", "the_internet")
 @pytest.mark.app("the_internet")
 @pytest.mark.e2e
-@pytest.mark.testcase("TC-TI-071")
-@pytest.mark.requirement("US-TI-EDGE-002")
-@allure.severity(allure.severity_level.NORMAL)
-@allure.description_html(markdown_to_html("""
+@e2e_test(
+    epic="The Internet E2E",
+    feature="Edge Cases",
+    story="Dynamic IDs",
+    testcase="TC-TI-071",
+    requirement="US-TI-EDGE-002",
+    app="the_internet",
+    severity=allure.severity_level.NORMAL,
+    title="Find elements despite dynamic IDs",
+    link="https://the-internet.herokuapp.com/challenging_dom",
+    description="""
 Verify that elements with dynamic IDs can be interacted with.
 
 **Test Steps:**
@@ -95,7 +110,8 @@ Verify that elements with dynamic IDs can be interacted with.
 
 **Business Value:}
 Tests robustness against dynamic element IDs in SPA frameworks.
-"""))
+""",
+)
 def test_challenging_dom(challenging_dom_page, the_internet_config):
     """TC-TI-071: Find elements despite dynamic IDs."""
 
@@ -123,10 +139,17 @@ def test_challenging_dom(challenging_dom_page, the_internet_config):
 @allure.label("app", "the_internet")
 @pytest.mark.app("the_internet")
 @pytest.mark.e2e
-@pytest.mark.testcase("TC-TI-072")
-@pytest.mark.requirement("US-TI-EDGE-003")
-@allure.severity(allure.severity_level.NORMAL)
-@allure.description_html(markdown_to_html("""
+@e2e_test(
+    epic="The Internet E2E",
+    feature="Edge Cases",
+    story="Infinite Scroll",
+    testcase="TC-TI-072",
+    requirement="US-TI-EDGE-003",
+    app="the_internet",
+    severity=allure.severity_level.NORMAL,
+    title="Infinite scroll loads new content",
+    link="https://the-internet.herokuapp.com/infinite_scroll",
+    description="""
 Verify that infinite scroll loads new content.
 
 **Test Steps:**
@@ -143,7 +166,8 @@ Verify that infinite scroll loads new content.
 
 **Business Value:}
 Tests common infinite scroll pattern in modern web apps.
-"""))
+""",
+)
 def test_infinite_scroll(infinite_scroll_page, the_internet_config):
     """TC-TI-072: Infinite scroll loads new content."""
 

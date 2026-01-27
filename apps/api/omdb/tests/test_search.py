@@ -14,7 +14,7 @@ from __future__ import annotations
 import pytest
 import allure
 
-from infrastructure.utils.allure_helpers import markdown_to_html
+from infrastructure.utils.allure_helpers import api_test
 
 
 @allure.epic("OMDb API")
@@ -28,22 +28,27 @@ class TestOmdbSearch:
 
     @allure.story("Search Movies")
     @allure.title("Search for existing movie by title")
-    @allure.description_html(markdown_to_html("""
-    Verify that movies can be searched by title.
-
-    **Test Coverage:**
-    - Search by movie title
-    - Response contains total results count
-    - Search results include required fields (Title, Type, imdbID)
-
-    **Business Value:**
-    Core functionality for movie discovery and search.
-    """))
-    @allure.severity(allure.severity_level.CRITICAL)
     @allure.link("http://www.omdbapi.com/#parameters", name="API Docs")
-    @pytest.mark.testcase("TC-OMD-001")
-    @pytest.mark.requirement("US-SEARCH-001")
-    @pytest.mark.smoke
+    @api_test(
+        epic="OMDb API",
+        feature="Movie Search & Retrieval",
+        story="Search Movies",
+        testcase="TC-OMD-001",
+        requirement="US-SEARCH-001",
+        severity=allure.severity_level.CRITICAL,
+        smoke=True,
+        description="""
+        Verify that movies can be searched by title.
+
+        **Test Coverage:**
+        - Search by movie title
+        - Response contains total results count
+        - Search results include required fields (Title, Type, imdbID)
+
+        **Business Value:**
+        Core functionality for movie discovery and search.
+        """,
+    )
     def test_search_movie(self, omdb_client):
         """Test searching for a known movie (Inception)."""
         with allure.step("Search for 'Inception'"):
@@ -62,20 +67,25 @@ class TestOmdbSearch:
 
     @allure.story("View Movie Details")
     @allure.title("Get movie by IMDb ID")
-    @allure.description_html(markdown_to_html("""
-    Verify that movie details can be retrieved by IMDb ID.
+    @api_test(
+        epic="OMDb API",
+        feature="Movie Search & Retrieval",
+        story="View Movie Details",
+        testcase="TC-OMD-020",
+        requirement="US-SEARCH-002",
+        severity=allure.severity_level.CRITICAL,
+        description="""
+        Verify that movie details can be retrieved by IMDb ID.
 
-    **Test Coverage:**
-    - Retrieve movie by IMDb ID
-    - All movie fields are present
-    - Data accuracy is maintained
+        **Test Coverage:**
+        - Retrieve movie by IMDb ID
+        - All movie fields are present
+        - Data accuracy is maintained
 
-    **Business Value:**
-    Essential for viewing complete movie information.
-    """))
-    @allure.severity(allure.severity_level.CRITICAL)
-    @pytest.mark.testcase("TC-OMD-020")
-    @pytest.mark.requirement("US-SEARCH-002")
+        **Business Value:**
+        Essential for viewing complete movie information.
+        """,
+    )
     def test_get_movie_by_id(self, omdb_client):
         """Test retrieving a movie by valid IMDb ID."""
         imdb_id = "tt0133093"  # The Matrix
@@ -91,20 +101,25 @@ class TestOmdbSearch:
 
     @allure.story("View Movie Details")
     @allure.title("Get movie by exact title")
-    @allure.description_html(markdown_to_html("""
-    Verify that movie details can be retrieved by exact title.
+    @api_test(
+        epic="OMDb API",
+        feature="Movie Search & Retrieval",
+        story="View Movie Details",
+        testcase="TC-OMD-002",
+        requirement="US-SEARCH-003",
+        severity=allure.severity_level.NORMAL,
+        description="""
+        Verify that movie details can be retrieved by exact title.
 
-    **Test Coverage:**
-    - Retrieve movie by title and year
-    - Response contains complete movie data
-    - Data accuracy is maintained
+        **Test Coverage:**
+        - Retrieve movie by title and year
+        - Response contains complete movie data
+        - Data accuracy is maintained
 
-    **Business Value:**
-    Alternative method for accessing movie information.
-    """))
-    @allure.severity(allure.severity_level.NORMAL)
-    @pytest.mark.testcase("TC-OMD-002")
-    @pytest.mark.requirement("US-SEARCH-003")
+        **Business Value:**
+        Alternative method for accessing movie information.
+        """,
+    )
     def test_get_movie_by_title(self, omdb_client):
         """Test retrieving a movie by exact title."""
         with allure.step("Get 'The Dark Knight' (2008)"):
@@ -118,20 +133,25 @@ class TestOmdbSearch:
 
     @allure.story("Error Handling")
     @allure.title("Search for non-existent movie returns error")
-    @allure.description_html(markdown_to_html("""
-    Verify that searching for non-existent movie returns proper error.
+    @api_test(
+        epic="OMDb API",
+        feature="Movie Search & Retrieval",
+        story="Error Handling",
+        testcase="TC-OMD-003",
+        requirement="US-SEARCH-004",
+        severity=allure.severity_level.NORMAL,
+        description="""
+        Verify that searching for non-existent movie returns proper error.
 
-    **Test Coverage:**
-    - Non-existent movie handling
-    - Error response structure
-    - Error message clarity
+        **Test Coverage:**
+        - Non-existent movie handling
+        - Error response structure
+        - Error message clarity
 
-    **Business Value:**
-    Ensures graceful error handling for invalid searches.
-    """))
-    @allure.severity(allure.severity_level.NORMAL)
-    @pytest.mark.testcase("TC-OMD-003")
-    @pytest.mark.requirement("US-SEARCH-004")
+        **Business Value:**
+        Ensures graceful error handling for invalid searches.
+        """,
+    )
     def test_search_nonexistent(self, omdb_client):
         """Test searching for a movie that doesn't exist."""
         with allure.step("Search for non-existent movie"):
@@ -143,19 +163,24 @@ class TestOmdbSearch:
 
     @allure.story("Error Handling")
     @allure.title("Get movie with invalid ID returns error")
-    @allure.description_html(markdown_to_html("""
-    Verify that retrieving with invalid IMDb ID returns proper error.
+    @api_test(
+        epic="OMDb API",
+        feature="Movie Search & Retrieval",
+        story="Error Handling",
+        testcase="TC-OMD-021",
+        requirement="US-SEARCH-005",
+        severity=allure.severity_level.NORMAL,
+        description="""
+        Verify that retrieving with invalid IMDb ID returns proper error.
 
-    **Test Coverage:**
-    - Invalid IMDb ID handling
-    - Error response structure
+        **Test Coverage:**
+        - Invalid IMDb ID handling
+        - Error response structure
 
-    **Business Value:**
-    Ensures proper error handling for invalid requests.
-    """))
-    @allure.severity(allure.severity_level.NORMAL)
-    @pytest.mark.testcase("TC-OMD-021")
-    @pytest.mark.requirement("US-SEARCH-005")
+        **Business Value:**
+        Ensures proper error handling for invalid requests.
+        """,
+    )
     def test_invalid_id(self, omdb_client):
         """Test retrieving with invalid IMDb ID."""
         with allure.step("Attempt to get movie with invalid ID"):

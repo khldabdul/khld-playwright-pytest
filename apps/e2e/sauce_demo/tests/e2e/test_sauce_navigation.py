@@ -13,37 +13,44 @@ import pytest
 import allure
 from playwright.sync_api import expect
 
-from infrastructure.utils.allure_helpers import markdown_to_html
+from infrastructure.utils.allure_helpers import e2e_test
 
 
 @allure.epic("Sauce Demo E2E")
 @allure.feature("Navigation")
-@allure.story("Session Management")
 @allure.label("layer", "e2e")
 @allure.label("type", "functional")
 @allure.label("app", "sauce_demo")
 @pytest.mark.app("sauce_demo")
 @pytest.mark.e2e
-@pytest.mark.testcase("TC-SD-040")
-@pytest.mark.requirement("US-NAV-001")
-@allure.severity(allure.severity_level.NORMAL)
-@allure.description_html(markdown_to_html("""
-Verify that a user can successfully log out.
+@e2e_test(
+    epic="Sauce Demo E2E",
+    feature="Navigation",
+    story="Session Management",
+    testcase="TC-SD-040",
+    requirement="US-NAV-001",
+    app="sauce_demo",
+    severity=allure.severity_level.NORMAL,
+    title="User logout",
+    link="https://www.saucedemo.com/",
+    description="""
+    Verify that a user can successfully log out.
 
-**Test Steps:**
-1. Login to the application
-2. Open hamburger menu
-3. Click logout link
-4. Verify redirect to login page
+    **Test Steps:**
+    1. Login to the application
+    2. Open hamburger menu
+    3. Click logout link
+    4. Verify redirect to login page
 
-**Test Coverage:**
-- User logout functionality
-- Session termination
-- Post-logout redirect verification
+    **Test Coverage:**
+    - User logout functionality
+    - Session termination
+    - Post-logout redirect verification
 
-**Business Value:**
-Critical for user session management and security.
-"""))
+    **Business Value:**
+    Critical for user session management and security.
+    """,
+)
 def test_logout(login_page, inventory_page, sauce_demo_config):
     """TC-SD-040: Logout functionality."""
     user = sauce_demo_config.test_users["standard"]
@@ -68,33 +75,40 @@ def test_logout(login_page, inventory_page, sauce_demo_config):
 
 @allure.epic("Sauce Demo E2E")
 @allure.feature("Navigation")
-@allure.story("State Management")
 @allure.label("layer", "e2e")
 @allure.label("type", "functional")
 @allure.label("app", "sauce_demo")
 @pytest.mark.app("sauce_demo")
 @pytest.mark.e2e
-@pytest.mark.testcase("TC-SD-041")
-@pytest.mark.requirement("US-NAV-002")
-@allure.severity(allure.severity_level.NORMAL)
-@allure.description_html(markdown_to_html("""
-Verify that resetting app state clears the cart.
+@e2e_test(
+    epic="Sauce Demo E2E",
+    feature="Navigation",
+    story="State Management",
+    testcase="TC-SD-041",
+    requirement="US-NAV-002",
+    app="sauce_demo",
+    severity=allure.severity_level.NORMAL,
+    title="Reset app state clears cart",
+    link="https://www.saucedemo.com/",
+    description="""
+    Verify that resetting app state clears the cart.
 
-**Test Steps:**
-1. Login to the application
-2. Add items to cart
-3. Open hamburger menu
-4. Click reset app state link
-5. Verify cart is cleared
+    **Test Steps:**
+    1. Login to the application
+    2. Add items to cart
+    3. Open hamburger menu
+    4. Click reset app state link
+    5. Verify cart is cleared
 
-**Test Coverage:**
-- Application state reset functionality
-- Cart clearing after reset
-- Button state restoration
+    **Test Coverage:**
+    - Application state reset functionality
+    - Cart clearing after reset
+    - Button state restoration
 
-**Business Value:**
-Enables users to reset their session and start fresh.
-"""))
+    **Business Value:**
+    Enables users to reset their session and start fresh.
+    """,
+)
 def test_reset_app_state(login_page, inventory_page, sauce_demo_config):
     """TC-SD-041: Reset app state clears cart."""
     user = sauce_demo_config.test_users["standard"]

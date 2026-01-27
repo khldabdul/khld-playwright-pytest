@@ -14,37 +14,44 @@ import pytest
 import allure
 from playwright.sync_api import expect
 
-from infrastructure.utils.allure_helpers import markdown_to_html
+from infrastructure.utils.allure_helpers import e2e_test
 
 
 @allure.epic("The Internet E2E")
 @allure.feature("Dynamic Elements")
-@allure.story("Dynamic Loading")
 @allure.label("layer", "e2e")
 @allure.label("type", "functional")
 @allure.label("app", "the_internet")
 @pytest.mark.app("the_internet")
 @pytest.mark.e2e
-@pytest.mark.testcase("TC-TI-020")
-@pytest.mark.requirement("US-TI-DYN-001")
-@allure.severity(allure.severity_level.NORMAL)
-@allure.description_html(markdown_to_html("""
-Verify that hidden elements become visible after loading.
+@e2e_test(
+    epic="The Internet E2E",
+    feature="Dynamic Elements",
+    story="Dynamic Loading",
+    testcase="TC-TI-020",
+    requirement="US-TI-DYN-001",
+    app="the_internet",
+    severity=allure.severity_level.NORMAL,
+    title="Element becomes visible after loading",
+    link="https://the-internet.herokuapp.com/",
+    description="""
+    Verify that hidden elements become visible after loading.
 
-**Test Steps:**
-1. Navigate to dynamic loading example 1
-2. Click start button
-3. Wait for loading to complete
-4. Verify text appears
+    **Test Steps:**
+    1. Navigate to dynamic loading example 1
+    2. Click start button
+    3. Wait for loading to complete
+    4. Verify text appears
 
-**Test Coverage:**
-- Waiting for hidden elements
-- Loading state handling
-- Dynamic content display
+    **Test Coverage:**
+    - Waiting for hidden elements
+    - Loading state handling
+    - Dynamic content display
 
-**Business Value:**
-Common pattern for lazy-loaded content in modern web apps.
-"""))
+    **Business Value:**
+    Common pattern for lazy-loaded content in modern web apps.
+    """,
+)
 def test_dynamic_loading_element_appears(dynamic_loading_page, the_internet_config):
     """TC-TI-020: Dynamic loading - element becomes visible."""
 
@@ -62,32 +69,39 @@ def test_dynamic_loading_element_appears(dynamic_loading_page, the_internet_conf
 
 @allure.epic("The Internet E2E")
 @allure.feature("Dynamic Elements")
-@allure.story("Dynamic Loading")
 @allure.label("layer", "e2e")
 @allure.label("type", "functional")
 @allure.label("app", "the_internet")
 @pytest.mark.app("the_internet")
 @pytest.mark.e2e
-@pytest.mark.testcase("TC-TI-021")
-@pytest.mark.requirement("US-TI-DYN-002")
-@allure.severity(allure.severity_level.NORMAL)
-@allure.description_html(markdown_to_html("""
-Verify that elements added to DOM after loading become visible.
+@e2e_test(
+    epic="The Internet E2E",
+    feature="Dynamic Elements",
+    story="Dynamic Loading",
+    testcase="TC-TI-021",
+    requirement="US-TI-DYN-002",
+    app="the_internet",
+    severity=allure.severity_level.NORMAL,
+    title="Element added to DOM becomes visible",
+    link="https://the-internet.herokuapp.com/",
+    description="""
+    Verify that elements added to DOM after loading become visible.
 
-**Test Steps:**
-1. Navigate to dynamic loading example 2
-2. Click start button
-3. Wait for loading to complete
-4. Verify element is added and visible
+    **Test Steps:**
+    1. Navigate to dynamic loading example 2
+    2. Click start button
+    3. Wait for loading to complete
+    4. Verify element is added and visible
 
-**Test Coverage:**
-- Waiting for DOM elements
-- Dynamic element rendering
-- Post-render verification
+    **Test Coverage:**
+    - Waiting for DOM elements
+    - Dynamic element rendering
+    - Post-render verification
 
-**Business Value:**
-Tests handling of AJAX and dynamic content insertion.
-"""))
+    **Business Value:**
+    Tests handling of AJAX and dynamic content insertion.
+    """,
+)
 def test_dynamic_loading_element_rendered(dynamic_loading_page, the_internet_config):
     """TC-TI-021: Dynamic loading - element added to DOM."""
 
@@ -106,33 +120,40 @@ def test_dynamic_loading_element_rendered(dynamic_loading_page, the_internet_con
 
 @allure.epic("The Internet E2E")
 @allure.feature("Dynamic Elements")
-@allure.story("Add/Remove Elements")
 @allure.label("layer", "e2e")
 @allure.label("type", "functional")
 @allure.label("app", "the_internet")
 @pytest.mark.app("the_internet")
 @pytest.mark.e2e
-@pytest.mark.testcase("TC-TI-022")
-@pytest.mark.requirement("US-TI-DYN-003")
-@allure.severity(allure.severity_level.NORMAL)
-@allure.description_html(markdown_to_html("""
-Verify that elements can be dynamically added and removed.
+@e2e_test(
+    epic="The Internet E2E",
+    feature="Dynamic Elements",
+    story="Add/Remove Elements",
+    testcase="TC-TI-022",
+    requirement="US-TI-DYN-003",
+    app="the_internet",
+    severity=allure.severity_level.NORMAL,
+    title="Add and remove elements dynamically",
+    link="https://the-internet.herokuapp.com/",
+    description="""
+    Verify that elements can be dynamically added and removed.
 
-**Test Steps:**
-1. Navigate to add/remove elements page
-2. Add 3 elements
-3. Verify 3 delete buttons exist
-4. Delete one element
-5. Verify 2 elements remain
+    **Test Steps:**
+    1. Navigate to add/remove elements page
+    2. Add 3 elements
+    3. Verify 3 delete buttons exist
+    4. Delete one element
+    5. Verify 2 elements remain
 
-**Test Coverage:**
-- Dynamic element addition
-- Dynamic element removal
-- Count verification
+    **Test Coverage:**
+    - Dynamic element addition
+    - Dynamic element removal
+    - Count verification
 
-**Business Value:**
-Tests handling of dynamically generated UI components.
-"""))
+    **Business Value:**
+    Tests handling of dynamically generated UI components.
+    """,
+)
 def test_add_remove_elements(add_remove_page, the_internet_config):
     """TC-TI-022: Add and remove elements dynamically."""
 
@@ -153,32 +174,39 @@ def test_add_remove_elements(add_remove_page, the_internet_config):
 
 @allure.epic("The Internet E2E")
 @allure.feature("Dynamic Elements")
-@allure.story("Disappearing Elements")
 @allure.label("layer", "e2e")
 @allure.label("type", "functional")
 @allure.label("app", "the_internet")
 @pytest.mark.app("the_internet")
 @pytest.mark.e2e
-@pytest.mark.testcase("TC-TI-023")
-@pytest.mark.requirement("US-TI-DYN-004")
-@allure.severity(allure.severity_level.NORMAL)
-@allure.description_html(markdown_to_html("""
-Verify that menu elements can disappear on page reload.
+@e2e_test(
+    epic="The Internet E2E",
+    feature="Dynamic Elements",
+    story="Disappearing Elements",
+    testcase="TC-TI-023",
+    requirement="US-TI-DYN-004",
+    app="the_internet",
+    severity=allure.severity_level.NORMAL,
+    title="Elements disappear on page reload",
+    link="https://the-internet.herokuapp.com/",
+    description="""
+    Verify that menu elements can disappear on page reload.
 
-**Test Steps:**
-1. Navigate to disappearing elements page
-2. Get initial menu item count
-3. Reload page multiple times
-4. Verify menu count varies (Gallery element disappears)
+    **Test Steps:**
+    1. Navigate to disappearing elements page
+    2. Get initial menu item count
+    3. Reload page multiple times
+    4. Verify menu count varies (Gallery element disappears)
 
-**Test Coverage:**
-- Handling disappearing elements
-- Dynamic menu behavior
-- Page reload effects
+    **Test Coverage:**
+    - Handling disappearing elements
+    - Dynamic menu behavior
+    - Page reload effects
 
-**Business Value:**
-Tests robustness against intermittent UI elements.
-"""))
+    **Business Value:**
+    Tests robustness against intermittent UI elements.
+    """,
+)
 def test_disappearing_elements(disappearing_page, the_internet_config):
     """TC-TI-023: Verify elements can disappear on reload."""
 

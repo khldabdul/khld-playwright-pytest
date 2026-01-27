@@ -14,44 +14,51 @@ import pytest
 import allure
 from playwright.sync_api import expect
 
-from infrastructure.utils.allure_helpers import markdown_to_html
+from infrastructure.utils.allure_helpers import e2e_test
 
 
 @allure.epic("Sauce Demo E2E")
 @allure.feature("Checkout")
-@allure.story("Complete Purchase")
 @allure.label("layer", "e2e")
 @allure.label("type", "functional")
 @allure.label("app", "sauce_demo")
 @pytest.mark.app("sauce_demo")
 @pytest.mark.e2e
-@pytest.mark.critical
-@pytest.mark.testcase("TC-SD-030")
-@pytest.mark.requirement("US-CHECKOUT-001")
-@pytest.mark.smoke
-@allure.severity(allure.severity_level.CRITICAL)
-@allure.description_html(markdown_to_html("""
-Verify that a user can complete the full checkout flow.
+@e2e_test(
+    epic="Sauce Demo E2E",
+    feature="Checkout",
+    story="Complete Purchase",
+    testcase="TC-SD-030",
+    requirement="US-CHECKOUT-001",
+    app="sauce_demo",
+    severity=allure.severity_level.CRITICAL,
+    critical=True,
+    smoke=True,
+    title="Complete checkout flow",
+    link="https://www.saucedemo.com/",
+    description="""
+    Verify that a user can complete the full checkout flow.
 
-**Test Steps:**
-1. Login to the application
-2. Add item to cart
-3. Navigate to cart
-4. Start checkout process
-5. Fill shipping information
-6. Review order on overview page
-7. Complete purchase
-8. Verify order completion
+    **Test Steps:**
+    1. Login to the application
+    2. Add item to cart
+    3. Navigate to cart
+    4. Start checkout process
+    5. Fill shipping information
+    6. Review order on overview page
+    7. Complete purchase
+    8. Verify order completion
 
-**Test Coverage:**
-- End-to-end purchase flow
-- Checkout form submission
-- Order summary display
-- Purchase completion
+    **Test Coverage:**
+    - End-to-end purchase flow
+    - Checkout form submission
+    - Order summary display
+    - Purchase completion
 
-**Business Value:**
-Core revenue-generating user journey for completing purchases.
-"""))
+    **Business Value:**
+    Core revenue-generating user journey for completing purchases.
+    """,
+)
 def test_complete_checkout_flow(
     login_page,
     inventory_page,

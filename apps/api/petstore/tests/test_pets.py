@@ -20,7 +20,7 @@ from typing import Any
 
 from requests import HTTPError
 
-from infrastructure.utils.allure_helpers import markdown_to_html
+from infrastructure.utils.allure_helpers import api_test
 
 
 def generate_random_string(length: int = 8) -> str:
@@ -63,22 +63,27 @@ class TestPetstorePets:
 
     @allure.story("Create Pet")
     @allure.title("Add new pet to store")
-    @allure.description_html(markdown_to_html("""
-    Verify that a new pet can be added to the store.
-
-    **Test Coverage:**
-    - Pet creation with valid data
-    - Response contains pet ID and name
-    - Pet data is persisted correctly
-
-    **Business Value:**
-    Core functionality for adding pets to the inventory.
-    """))
-    @allure.severity(allure.severity_level.CRITICAL)
     @allure.link("https://petstore.swagger.io/#/pet/addPet", name="API Docs")
-    @pytest.mark.testcase("TC-PS-001")
-    @pytest.mark.requirement("US-PET-001")
-    @pytest.mark.smoke
+    @api_test(
+        epic="Petstore API",
+        feature="Pet Management",
+        story="Create Pet",
+        testcase="TC-PS-001",
+        requirement="US-PET-001",
+        severity=allure.severity_level.CRITICAL,
+        smoke=True,
+        description="""
+        Verify that a new pet can be added to the store.
+
+        **Test Coverage:**
+        - Pet creation with valid data
+        - Response contains pet ID and name
+        - Pet data is persisted correctly
+
+        **Business Value:**
+        Core functionality for adding pets to the inventory.
+        """,
+    )
     def test_add_pet(self, petstore_client):
         """Test adding a new pet."""
         pet_id = random.randint(100000, 999999)
@@ -105,22 +110,27 @@ class TestPetstorePets:
 
     @allure.story("View Pet Details")
     @allure.title("Get pet by ID")
-    @allure.description_html(markdown_to_html("""
-    Verify that a pet can be retrieved by its ID.
-
-    **Test Coverage:**
-    - Retrieve pet by ID
-    - All pet fields are present
-    - Data accuracy is maintained
-
-    **Business Value:**
-    Essential for viewing individual pet information.
-    """))
-    @allure.severity(allure.severity_level.CRITICAL)
     @allure.link("https://petstore.swagger.io/#/pet/getPetById", name="API Docs")
-    @pytest.mark.testcase("TC-PS-002")
-    @pytest.mark.requirement("US-PET-002")
-    @pytest.mark.smoke
+    @api_test(
+        epic="Petstore API",
+        feature="Pet Management",
+        story="View Pet Details",
+        testcase="TC-PS-002",
+        requirement="US-PET-002",
+        severity=allure.severity_level.CRITICAL,
+        smoke=True,
+        description="""
+        Verify that a pet can be retrieved by its ID.
+
+        **Test Coverage:**
+        - Retrieve pet by ID
+        - All pet fields are present
+        - Data accuracy is maintained
+
+        **Business Value:**
+        Essential for viewing individual pet information.
+        """,
+    )
     def test_get_pet(self, petstore_client, new_pet):
         """Test retrieving a pet by ID."""
         pet_id = new_pet["id"]
@@ -134,21 +144,26 @@ class TestPetstorePets:
 
     @allure.story("Update Pet")
     @allure.title("Update pet information")
-    @allure.description_html(markdown_to_html("""
-    Verify that a pet's information can be updated.
-
-    **Test Coverage:**
-    - Pet update with modified data
-    - Changes are persisted correctly
-    - Data integrity is maintained
-
-    **Business Value:**
-    Enables users to modify pet details in the inventory.
-    """))
-    @allure.severity(allure.severity_level.NORMAL)
     @allure.link("https://petstore.swagger.io/#/pet/updatePet", name="API Docs")
-    @pytest.mark.testcase("TC-PS-004")
-    @pytest.mark.requirement("US-PET-003")
+    @api_test(
+        epic="Petstore API",
+        feature="Pet Management",
+        story="Update Pet",
+        testcase="TC-PS-004",
+        requirement="US-PET-003",
+        severity=allure.severity_level.NORMAL,
+        description="""
+        Verify that a pet's information can be updated.
+
+        **Test Coverage:**
+        - Pet update with modified data
+        - Changes are persisted correctly
+        - Data integrity is maintained
+
+        **Business Value:**
+        Enables users to modify pet details in the inventory.
+        """,
+    )
     def test_update_pet(self, petstore_client, new_pet):
         """Test updating a pet."""
         with allure.step("Update pet status and name"):
@@ -166,21 +181,26 @@ class TestPetstorePets:
 
     @allure.story("Search Pets")
     @allure.title("Find pets by status")
-    @allure.description_html(markdown_to_html("""
-    Verify that pets can be filtered by status.
-
-    **Test Coverage:**
-    - Filter pets by status (available, pending, sold)
-    - Results match filter criteria
-    - Response structure is correct
-
-    **Business Value:**
-    Enables users to find pets by their current status.
-    """))
-    @allure.severity(allure.severity_level.NORMAL)
     @allure.link("https://petstore.swagger.io/#/pet/findPetsByStatus", name="API Docs")
-    @pytest.mark.testcase("TC-PS-006")
-    @pytest.mark.requirement("US-PET-004")
+    @api_test(
+        epic="Petstore API",
+        feature="Pet Management",
+        story="Search Pets",
+        testcase="TC-PS-006",
+        requirement="US-PET-004",
+        severity=allure.severity_level.NORMAL,
+        description="""
+        Verify that pets can be filtered by status.
+
+        **Test Coverage:**
+        - Filter pets by status (available, pending, sold)
+        - Results match filter criteria
+        - Response structure is correct
+
+        **Business Value:**
+        Enables users to find pets by their current status.
+        """,
+    )
     def test_find_pets_by_status(self, petstore_client):
         """Test finding pets by status."""
         status = "available"
@@ -194,21 +214,26 @@ class TestPetstorePets:
 
     @allure.story("Delete Pet")
     @allure.title("Delete pet from store")
-    @allure.description_html(markdown_to_html("""
-    Verify that a pet can be deleted from the store.
-
-    **Test Coverage:**
-    - Pet deletion returns success
-    - Deleted pet is no longer accessible
-    - Proper HTTP status code (404) for deleted pets
-
-    **Business Value:**
-    Critical for inventory management and removal.
-    """))
-    @allure.severity(allure.severity_level.NORMAL)
     @allure.link("https://petstore.swagger.io/#/pet/deletePet", name="API Docs")
-    @pytest.mark.testcase("TC-PS-005")
-    @pytest.mark.requirement("US-PET-005")
+    @api_test(
+        epic="Petstore API",
+        feature="Pet Management",
+        story="Delete Pet",
+        testcase="TC-PS-005",
+        requirement="US-PET-005",
+        severity=allure.severity_level.NORMAL,
+        description="""
+        Verify that a pet can be deleted from the store.
+
+        **Test Coverage:**
+        - Pet deletion returns success
+        - Deleted pet is no longer accessible
+        - Proper HTTP status code (404) for deleted pets
+
+        **Business Value:**
+        Critical for inventory management and removal.
+        """,
+    )
     def test_delete_pet(self, petstore_client):
         """Test deleting a pet."""
         # Create a pet specifically to delete

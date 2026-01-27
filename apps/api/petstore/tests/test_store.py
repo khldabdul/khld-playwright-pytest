@@ -19,7 +19,7 @@ from datetime import datetime, timezone
 
 from requests import HTTPError
 
-from infrastructure.utils.allure_helpers import markdown_to_html
+from infrastructure.utils.allure_helpers import api_test
 
 
 @allure.epic("Petstore API")
@@ -33,22 +33,27 @@ class TestPetstoreStore:
 
     @allure.story("View Inventory")
     @allure.title("Get store inventory")
-    @allure.description_html(markdown_to_html("""
-    Verify that the store inventory can be retrieved.
-
-    **Test Coverage:**
-    - Retrieve inventory counts by status
-    - Response contains status categories
-    - Data structure is correct
-
-    **Business Value:**
-    Essential for monitoring store inventory levels.
-    """))
-    @allure.severity(allure.severity_level.NORMAL)
     @allure.link("https://petstore.swagger.io/#/store/getInventory", name="API Docs")
-    @pytest.mark.testcase("TC-PS-020")
-    @pytest.mark.requirement("US-STORE-001")
-    @pytest.mark.smoke
+    @api_test(
+        epic="Petstore API",
+        feature="Store Operations",
+        story="View Inventory",
+        testcase="TC-PS-020",
+        requirement="US-STORE-001",
+        severity=allure.severity_level.NORMAL,
+        smoke=True,
+        description="""
+        Verify that the store inventory can be retrieved.
+
+        **Test Coverage:**
+        - Retrieve inventory counts by status
+        - Response contains status categories
+        - Data structure is correct
+
+        **Business Value:**
+        Essential for monitoring store inventory levels.
+        """,
+    )
     def test_get_inventory(self, petstore_client):
         """Test retrieving store inventory."""
         with allure.step("Get store inventory"):
@@ -62,22 +67,27 @@ class TestPetstoreStore:
 
     @allure.story("Create Order")
     @allure.title("Place new order")
-    @allure.description_html(markdown_to_html("""
-    Verify that a new order can be placed successfully.
-
-    **Test Coverage:**
-    - Order creation with valid data
-    - Response contains order ID and details
-    - Order data is persisted correctly
-
-    **Business Value:**
-    Core functionality for processing customer orders.
-    """))
-    @allure.severity(allure.severity_level.CRITICAL)
     @allure.link("https://petstore.swagger.io/#/store/placeOrder", name="API Docs")
-    @pytest.mark.testcase("TC-PS-021")
-    @pytest.mark.requirement("US-STORE-002")
-    @pytest.mark.smoke
+    @api_test(
+        epic="Petstore API",
+        feature="Store Operations",
+        story="Create Order",
+        testcase="TC-PS-021",
+        requirement="US-STORE-002",
+        severity=allure.severity_level.CRITICAL,
+        smoke=True,
+        description="""
+        Verify that a new order can be placed successfully.
+
+        **Test Coverage:**
+        - Order creation with valid data
+        - Response contains order ID and details
+        - Order data is persisted correctly
+
+        **Business Value:**
+        Core functionality for processing customer orders.
+        """,
+    )
     def test_place_order(self, petstore_client):
         """Test placing an order."""
         order_id = random.randint(1, 9999)
@@ -105,21 +115,26 @@ class TestPetstoreStore:
 
     @allure.story("View Order Details")
     @allure.title("Get order by ID")
-    @allure.description_html(markdown_to_html("""
-    Verify that an order can be retrieved by its ID.
-
-    **Test Coverage:**
-    - Retrieve order by ID
-    - All order fields are present
-    - Data accuracy is maintained
-
-    **Business Value:**
-    Essential for viewing order details and tracking.
-    """))
-    @allure.severity(allure.severity_level.CRITICAL)
     @allure.link("https://petstore.swagger.io/#/store/getOrderById", name="API Docs")
-    @pytest.mark.testcase("TC-PS-022")
-    @pytest.mark.requirement("US-STORE-003")
+    @api_test(
+        epic="Petstore API",
+        feature="Store Operations",
+        story="View Order Details",
+        testcase="TC-PS-022",
+        requirement="US-STORE-003",
+        severity=allure.severity_level.CRITICAL,
+        description="""
+        Verify that an order can be retrieved by its ID.
+
+        **Test Coverage:**
+        - Retrieve order by ID
+        - All order fields are present
+        - Data accuracy is maintained
+
+        **Business Value:**
+        Essential for viewing order details and tracking.
+        """,
+    )
     def test_get_order(self, petstore_client):
         """Test retrieving an order by ID."""
         # Setup: Place an order
@@ -151,21 +166,26 @@ class TestPetstoreStore:
 
     @allure.story("Delete Order")
     @allure.title("Delete order")
-    @allure.description_html(markdown_to_html("""
-    Verify that an order can be deleted successfully.
-
-    **Test Coverage:**
-    - Order deletion returns success
-    - Deleted order is no longer accessible
-    - Proper HTTP status code (404) for deleted orders
-
-    **Business Value:**
-    Critical for order management and cancellation.
-    """))
-    @allure.severity(allure.severity_level.NORMAL)
     @allure.link("https://petstore.swagger.io/#/store/deleteOrder", name="API Docs")
-    @pytest.mark.testcase("TC-PS-023")
-    @pytest.mark.requirement("US-STORE-004")
+    @api_test(
+        epic="Petstore API",
+        feature="Store Operations",
+        story="Delete Order",
+        testcase="TC-PS-023",
+        requirement="US-STORE-004",
+        severity=allure.severity_level.NORMAL,
+        description="""
+        Verify that an order can be deleted successfully.
+
+        **Test Coverage:**
+        - Order deletion returns success
+        - Deleted order is no longer accessible
+        - Proper HTTP status code (404) for deleted orders
+
+        **Business Value:**
+        Critical for order management and cancellation.
+        """,
+    )
     def test_delete_order(self, petstore_client):
         """Test deleting an order."""
         # Setup: Place an order

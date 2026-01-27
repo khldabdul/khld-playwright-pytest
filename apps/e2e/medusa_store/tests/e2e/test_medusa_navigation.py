@@ -13,7 +13,7 @@ import pytest
 import allure
 from playwright.sync_api import expect
 
-from infrastructure.utils.allure_helpers import markdown_to_html
+from infrastructure.utils.allure_helpers import e2e_test
 
 
 @allure.epic("Medusa Store E2E")
@@ -26,29 +26,34 @@ from infrastructure.utils.allure_helpers import markdown_to_html
 class TestNavigation:
     """Test suite for store navigation."""
 
-    @allure.story("Homepage")
-    @allure.title("TC-MS-001: Homepage loads with products")
-    @allure.description_html(markdown_to_html("""
-    Verify that the homepage loads and displays products.
+    @e2e_test(
+        epic="Medusa Store E2E",
+        feature="Navigation",
+        story="Homepage",
+        title="TC-MS-001: Homepage loads with products",
+        description="""Verify that the homepage loads and displays products.
 
-    **Test Steps:**
-    1. Navigate to store homepage
-    2. Verify products are visible
-    3. Verify at least one product is displayed
+**Test Steps:**
+1. Navigate to store homepage
+2. Verify products are visible
+3. Verify at least one product is displayed
 
-    **Test Coverage:**
-    - Homepage loading
-    - Product display verification
-    - Store accessibility
+**Test Coverage:**
+- Homepage loading
+- Product display verification
+- Store accessibility
 
-    **Business Value:**
-    Critical first impression for store visitors.
-    """))
-    @allure.severity(allure.severity_level.CRITICAL)
-    @pytest.mark.critical
-    @pytest.mark.testcase("TC-MS-001")
-    @pytest.mark.requirement("US-MS-NAV-001")
-    @pytest.mark.smoke
+**Business Value:**
+Critical first impression for store visitors.
+""",
+        testcase="TC-MS-001",
+        requirement="US-MS-NAV-001",
+        app="medusa_store",
+        severity="critical",
+        link="https://demo.medusa-commerce.com/",
+        smoke=True,
+        critical=True
+    )
     def test_homepage_loads(self, store_page, medusa_store_config):
         """Test that homepage loads and displays products."""
         with allure.step("Navigate to store homepage"):
@@ -61,27 +66,32 @@ class TestNavigation:
             product_count = store_page.get_product_count()
             assert product_count > 0, f"Expected products on homepage, found {product_count}"
 
-    @allure.story("Category Navigation")
-    @allure.title("TC-MS-003: Category navigation works")
-    @allure.description_html(markdown_to_html("""
-    Verify that category navigation works correctly.
+    @e2e_test(
+        epic="Medusa Store E2E",
+        feature="Navigation",
+        story="Category Navigation",
+        title="TC-MS-003: Category navigation works",
+        description="""Verify that category navigation works correctly.
 
-    **Test Steps:**
-    1. Navigate to store homepage
-    2. Verify initial products are displayed
-    3. Verify navigation elements are present
+**Test Steps:**
+1. Navigate to store homepage
+2. Verify initial products are displayed
+3. Verify navigation elements are present
 
-    **Test Coverage:**
-    - Navigation menu accessibility
-    - Category link presence
-    - Navigation structure integrity
+**Test Coverage:**
+- Navigation menu accessibility
+- Category link presence
+- Navigation structure integrity
 
-    **Business Value:**
-    Enables users to browse products by category.
-    """))
-    @allure.severity(allure.severity_level.NORMAL)
-    @pytest.mark.testcase("TC-MS-003")
-    @pytest.mark.requirement("US-MS-NAV-002")
+**Business Value:**
+Enables users to browse products by category.
+""",
+        testcase="TC-MS-003",
+        requirement="US-MS-NAV-002",
+        app="medusa_store",
+        severity="normal",
+        link="https://demo.medusa-commerce.com/"
+    )
     def test_category_navigation(self, store_page, medusa_store_config):
         """Test navigation to product categories."""
         with allure.step("Navigate to store homepage"):

@@ -14,38 +14,45 @@ import pytest
 import allure
 from playwright.sync_api import expect
 
-from infrastructure.utils.allure_helpers import markdown_to_html
+from infrastructure.utils.allure_helpers import e2e_test
 
 
 @allure.epic("Sauce Demo E2E")
 @allure.feature("Checkout")
-@allure.story("Form Validation")
 @allure.label("layer", "e2e")
 @allure.label("type", "functional")
 @allure.label("app", "sauce_demo")
 @pytest.mark.app("sauce_demo")
 @pytest.mark.e2e
-@pytest.mark.testcase("TC-SD-031")
-@pytest.mark.requirement("US-CHECKOUT-002")
-@allure.severity(allure.severity_level.NORMAL)
-@allure.description_html(markdown_to_html("""
-Verify that checkout form validates required fields.
+@e2e_test(
+    epic="Sauce Demo E2E",
+    feature="Checkout",
+    story="Form Validation",
+    testcase="TC-SD-031",
+    requirement="US-CHECKOUT-002",
+    app="sauce_demo",
+    severity=allure.severity_level.NORMAL,
+    title="Checkout validation with empty fields",
+    link="https://www.saucedemo.com/",
+    description="""
+    Verify that checkout form validates required fields.
 
-**Test Steps:**
-1. Login to the application
-2. Add item to cart
-3. Navigate to checkout
-4. Attempt to continue with empty fields
-5. Verify error message appears
+    **Test Steps:**
+    1. Login to the application
+    2. Add item to cart
+    3. Navigate to checkout
+    4. Attempt to continue with empty fields
+    5. Verify error message appears
 
-**Test Coverage:**
-- Required field validation
-- Error message display
-- Form submission blocking
+    **Test Coverage:**
+    - Required field validation
+    - Error message display
+    - Form submission blocking
 
-**Business Value:**
-Ensures complete customer information is collected before order processing.
-"""))
+    **Business Value:**
+    Ensures complete customer information is collected before order processing.
+    """,
+)
 def test_checkout_empty_fields(
     login_page,
     inventory_page,
@@ -75,35 +82,42 @@ def test_checkout_empty_fields(
 
 @allure.epic("Sauce Demo E2E")
 @allure.feature("Checkout")
-@allure.story("Order Calculation")
 @allure.label("layer", "e2e")
 @allure.label("type", "functional")
 @allure.label("app", "sauce_demo")
 @pytest.mark.app("sauce_demo")
 @pytest.mark.e2e
-@pytest.mark.critical
-@pytest.mark.testcase("TC-SD-032")
-@pytest.mark.requirement("US-CHECKOUT-003")
-@pytest.mark.smoke
-@allure.severity(allure.severity_level.CRITICAL)
-@allure.description_html(markdown_to_html("""
-Verify that order totals are calculated correctly.
+@e2e_test(
+    epic="Sauce Demo E2E",
+    feature="Checkout",
+    story="Order Calculation",
+    testcase="TC-SD-032",
+    requirement="US-CHECKOUT-003",
+    app="sauce_demo",
+    severity=allure.severity_level.CRITICAL,
+    critical=True,
+    smoke=True,
+    title="Verify order total calculation",
+    link="https://www.saucedemo.com/",
+    description="""
+    Verify that order totals are calculated correctly.
 
-**Test Steps:**
-1. Login to the application
-2. Add products with known prices ($29.99 + $9.99)
-3. Navigate to checkout
-4. Fill shipping information
-5. Verify subtotal and total calculations
+    **Test Steps:**
+    1. Login to the application
+    2. Add products with known prices ($29.99 + $9.99)
+    3. Navigate to checkout
+    4. Fill shipping information
+    5. Verify subtotal and total calculations
 
-**Test Coverage:**
-- Price calculation accuracy
-- Tax calculation
-- Order summary display
+    **Test Coverage:**
+    - Price calculation accuracy
+    - Tax calculation
+    - Order summary display
 
-**Business Value:**
-Critical for accurate billing and customer trust.
-"""))
+    **Business Value:**
+    Critical for accurate billing and customer trust.
+    """,
+)
 def test_verify_order_total(
     login_page,
     inventory_page,
@@ -141,33 +155,40 @@ def test_verify_order_total(
 
 @allure.epic("Sauce Demo E2E")
 @allure.feature("Checkout")
-@allure.story("Cancel Checkout")
 @allure.label("layer", "e2e")
 @allure.label("type", "functional")
 @allure.label("app", "sauce_demo")
 @pytest.mark.app("sauce_demo")
 @pytest.mark.e2e
-@pytest.mark.testcase("TC-SD-033")
-@pytest.mark.requirement("US-CHECKOUT-004")
-@allure.severity(allure.severity_level.NORMAL)
-@allure.description_html(markdown_to_html("""
-Verify that checkout can be canceled and user returns to cart.
+@e2e_test(
+    epic="Sauce Demo E2E",
+    feature="Checkout",
+    story="Cancel Checkout",
+    testcase="TC-SD-033",
+    requirement="US-CHECKOUT-004",
+    app="sauce_demo",
+    severity=allure.severity_level.NORMAL,
+    title="Cancel checkout and return to cart",
+    link="https://www.saucedemo.com/",
+    description="""
+    Verify that checkout can be canceled and user returns to cart.
 
-**Test Steps:**
-1. Login to the application
-2. Add item to cart
-3. Navigate to checkout
-4. Click cancel button
-5. Verify redirect to cart page
+    **Test Steps:**
+    1. Login to the application
+    2. Add item to cart
+    3. Navigate to checkout
+    4. Click cancel button
+    5. Verify redirect to cart page
 
-**Test Coverage:**
-- Checkout cancellation
-- Return to cart navigation
-- Cart preservation after cancel
+    **Test Coverage:**
+    - Checkout cancellation
+    - Return to cart navigation
+    - Cart preservation after cancel
 
-**Business Value:**
-Enables users to review or modify cart before completing purchase.
-"""))
+    **Business Value:**
+    Enables users to review or modify cart before completing purchase.
+    """,
+)
 def test_cancel_checkout(
     login_page,
     inventory_page,

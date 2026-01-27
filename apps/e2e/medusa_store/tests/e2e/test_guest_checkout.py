@@ -15,24 +15,22 @@ import pytest
 import allure
 from playwright.sync_api import expect
 
-from infrastructure.utils.allure_helpers import markdown_to_html
+from infrastructure.utils.allure_helpers import e2e_test
 
 
 @allure.epic("Medusa Store E2E")
 @allure.feature("Checkout")
-@allure.story("Guest Checkout")
 @allure.label("layer", "e2e")
 @allure.label("type", "functional")
 @allure.label("app", "medusa_store")
 @pytest.mark.app("medusa_store")
 @pytest.mark.e2e
-@pytest.mark.critical
-@pytest.mark.testcase("TC-MS-040")
-@pytest.mark.requirement("US-MS-CHECKOUT-001")
-@pytest.mark.smoke
-@allure.severity(allure.severity_level.CRITICAL)
-@allure.description_html(markdown_to_html("""
-Verify complete guest checkout flow.
+@e2e_test(
+    epic="Medusa Store E2E",
+    feature="Checkout",
+    story="Guest Checkout",
+    title="TC-MS-040: Complete guest checkout flow",
+    description="""Verify complete guest checkout flow.
 
 **Test Steps:**
 1. Navigate to store
@@ -54,7 +52,15 @@ Verify complete guest checkout flow.
 
 **Business Value:**
 Core revenue-generating user journey for completing purchases.
-"""))
+""",
+    testcase="TC-MS-040",
+    requirement="US-MS-CHECKOUT-001",
+    app="medusa_store",
+    severity="critical",
+    link="https://demo.medusa-commerce.com/",
+    smoke=True,
+    critical=True
+)
 def test_guest_checkout_flow(
     store_page,
     product_page,

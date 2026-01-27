@@ -13,40 +13,47 @@ import pytest
 import allure
 from playwright.sync_api import expect
 
-from infrastructure.utils.allure_helpers import markdown_to_html
+from infrastructure.utils.allure_helpers import e2e_test
 
 
 @allure.epic("The Internet E2E")
 @allure.feature("Authentication")
-@allure.story("Form Authentication")
 @allure.label("layer", "e2e")
 @allure.label("type", "functional")
 @allure.label("app", "the_internet")
 @pytest.mark.app("the_internet")
 @pytest.mark.e2e
-@pytest.mark.critical
-@pytest.mark.testcase("TC-TI-002")
-@pytest.mark.requirement("US-TI-AUTH-001")
-@pytest.mark.smoke
-@allure.severity(allure.severity_level.CRITICAL)
-@allure.description_html(markdown_to_html("""
-Verify that a user can successfully log in with valid credentials.
+@e2e_test(
+    epic="The Internet E2E",
+    feature="Authentication",
+    story="Form Authentication",
+    testcase="TC-TI-002",
+    requirement="US-TI-AUTH-001",
+    app="the_internet",
+    severity=allure.severity_level.CRITICAL,
+    critical=True,
+    smoke=True,
+    title="Successful login",
+    link="https://the-internet.herokuapp.com/",
+    description="""
+    Verify that a user can successfully log in with valid credentials.
 
-**Test Steps:**
-1. Navigate to login page
-2. Enter valid username and password
-3. Click login button
-4. Verify success message appears
-5. Verify logout button is visible
+    **Test Steps:**
+    1. Navigate to login page
+    2. Enter valid username and password
+    3. Click login button
+    4. Verify success message appears
+    5. Verify logout button is visible
 
-**Test Coverage:**
-- Successful authentication flow
-- Session establishment
-- Post-login UI verification
+    **Test Coverage:**
+    - Successful authentication flow
+    - Session establishment
+    - Post-login UI verification
 
-**Business Value:**
-Critical user journey for accessing authenticated features.
-"""))
+    **Business Value:**
+    Critical user journey for accessing authenticated features.
+    """,
+)
 def test_login_success(login_page, the_internet_config):
     """TC-TI-002: Test successful login."""
     user = the_internet_config.test_users["default"]
@@ -64,32 +71,39 @@ def test_login_success(login_page, the_internet_config):
 
 @allure.epic("The Internet E2E")
 @allure.feature("Authentication")
-@allure.story("Form Authentication")
 @allure.label("layer", "e2e")
 @allure.label("type", "functional")
 @allure.label("app", "the_internet")
 @pytest.mark.app("the_internet")
 @pytest.mark.e2e
-@pytest.mark.testcase("TC-TI-003")
-@pytest.mark.requirement("US-TI-AUTH-002")
-@allure.severity(allure.severity_level.NORMAL)
-@allure.description_html(markdown_to_html("""
-Verify that login fails with invalid credentials.
+@e2e_test(
+    epic="The Internet E2E",
+    feature="Authentication",
+    story="Form Authentication",
+    testcase="TC-TI-003",
+    requirement="US-TI-AUTH-002",
+    app="the_internet",
+    severity=allure.severity_level.NORMAL,
+    title="Login with invalid credentials fails",
+    link="https://the-internet.herokuapp.com/",
+    description="""
+    Verify that login fails with invalid credentials.
 
-**Test Steps:**
-1. Navigate to login page
-2. Enter invalid username and password
-3. Click login button
-4. Verify error message appears
+    **Test Steps:**
+    1. Navigate to login page
+    2. Enter invalid username and password
+    3. Click login button
+    4. Verify error message appears
 
-**Test Coverage:**
-- Invalid credentials handling
-- Error message display
-- Authentication failure flow
+    **Test Coverage:**
+    - Invalid credentials handling
+    - Error message display
+    - Authentication failure flow
 
-**Business Value:**
-Ensures security by rejecting incorrect credentials.
-"""))
+    **Business Value:**
+    Ensures security by rejecting incorrect credentials.
+    """,
+)
 def test_login_failure(login_page, the_internet_config):
     """TC-TI-003: Test failed login."""
 

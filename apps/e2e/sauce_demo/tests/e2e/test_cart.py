@@ -15,36 +15,43 @@ import pytest
 import allure
 from playwright.sync_api import expect
 
-from infrastructure.utils.allure_helpers import markdown_to_html
+from infrastructure.utils.allure_helpers import e2e_test
 
 
 @allure.epic("Sauce Demo E2E")
 @allure.feature("Shopping Cart")
-@allure.story("Add to Cart")
 @allure.label("layer", "e2e")
 @allure.label("type", "functional")
 @allure.label("app", "sauce_demo")
 @pytest.mark.app("sauce_demo")
 @pytest.mark.e2e
-@pytest.mark.testcase("TC-SD-020")
-@pytest.mark.requirement("US-CART-002")
-@allure.severity(allure.severity_level.NORMAL)
-@allure.description_html(markdown_to_html("""
-Verify that multiple products can be added to the cart.
+@e2e_test(
+    epic="Sauce Demo E2E",
+    feature="Shopping Cart",
+    story="Add to Cart",
+    testcase="TC-SD-020",
+    requirement="US-CART-002",
+    app="sauce_demo",
+    severity=allure.severity_level.NORMAL,
+    title="Add multiple products to cart",
+    link="https://www.saucedemo.com/",
+    description="""
+    Verify that multiple products can be added to the cart.
 
-**Test Steps:**
-1. Login to the application
-2. Add 3 products to cart
-3. Verify cart badge shows correct count
+    **Test Steps:**
+    1. Login to the application
+    2. Add 3 products to cart
+    3. Verify cart badge shows correct count
 
-**Test Coverage:**
-- Multiple item addition
-- Cart counter accuracy
-- Button state changes
+    **Test Coverage:**
+    - Multiple item addition
+    - Cart counter accuracy
+    - Button state changes
 
-**Business Value:**
-Enables users to add multiple items to cart for bulk purchases.
-"""))
+    **Business Value:**
+    Enables users to add multiple items to cart for bulk purchases.
+    """,
+)
 def test_add_multiple_products(login_page, inventory_page, sauce_demo_config):
     """TC-SD-020: Add multiple products to cart."""
     user = sauce_demo_config.test_users["standard"]
@@ -64,34 +71,41 @@ def test_add_multiple_products(login_page, inventory_page, sauce_demo_config):
 
 @allure.epic("Sauce Demo E2E")
 @allure.feature("Shopping Cart")
-@allure.story("View Cart")
 @allure.label("layer", "e2e")
 @allure.label("type", "functional")
 @allure.label("app", "sauce_demo")
 @pytest.mark.app("sauce_demo")
 @pytest.mark.e2e
-@pytest.mark.critical
-@pytest.mark.testcase("TC-SD-021")
-@pytest.mark.requirement("US-CART-003")
-@pytest.mark.smoke
-@allure.severity(allure.severity_level.CRITICAL)
-@allure.description_html(markdown_to_html("""
-Verify that cart contents are displayed correctly.
+@e2e_test(
+    epic="Sauce Demo E2E",
+    feature="Shopping Cart",
+    story="View Cart",
+    testcase="TC-SD-021",
+    requirement="US-CART-003",
+    app="sauce_demo",
+    severity=allure.severity_level.CRITICAL,
+    critical=True,
+    smoke=True,
+    title="View cart contents",
+    link="https://www.saucedemo.com/",
+    description="""
+    Verify that cart contents are displayed correctly.
 
-**Test Steps:**
-1. Login to the application
-2. Add 2 products to cart
-3. Navigate to cart page
-4. Verify all products are displayed
+    **Test Steps:**
+    1. Login to the application
+    2. Add 2 products to cart
+    3. Navigate to cart page
+    4. Verify all products are displayed
 
-**Test Coverage:**
-- Cart page navigation
-- Product display in cart
-- Cart data accuracy
+    **Test Coverage:**
+    - Cart page navigation
+    - Product display in cart
+    - Cart data accuracy
 
-**Business Value:**
-Core functionality for reviewing selected items before checkout.
-"""))
+    **Business Value:**
+    Core functionality for reviewing selected items before checkout.
+    """,
+)
 def test_view_cart_contents(login_page, inventory_page, cart_page, sauce_demo_config):
     """TC-SD-021: View cart contents."""
     user = sauce_demo_config.test_users["standard"]
@@ -117,33 +131,40 @@ def test_view_cart_contents(login_page, inventory_page, cart_page, sauce_demo_co
 
 @allure.epic("Sauce Demo E2E")
 @allure.feature("Shopping Cart")
-@allure.story("Remove from Cart")
 @allure.label("layer", "e2e")
 @allure.label("type", "functional")
 @allure.label("app", "sauce_demo")
 @pytest.mark.app("sauce_demo")
 @pytest.mark.e2e
-@pytest.mark.testcase("TC-SD-022")
-@pytest.mark.requirement("US-CART-004")
-@allure.severity(allure.severity_level.NORMAL)
-@allure.description_html(markdown_to_html("""
-Verify that products can be removed from the cart.
+@e2e_test(
+    epic="Sauce Demo E2E",
+    feature="Shopping Cart",
+    story="Remove from Cart",
+    testcase="TC-SD-022",
+    requirement="US-CART-004",
+    app="sauce_demo",
+    severity=allure.severity_level.NORMAL,
+    title="Remove product from cart",
+    link="https://www.saucedemo.com/",
+    description="""
+    Verify that products can be removed from the cart.
 
-**Test Steps:**
-1. Login to the application
-2. Add 2 products to cart
-3. Navigate to cart page
-4. Remove one product
-5. Verify cart updates correctly
+    **Test Steps:**
+    1. Login to the application
+    2. Add 2 products to cart
+    3. Navigate to cart page
+    4. Remove one product
+    5. Verify cart updates correctly
 
-**Test Coverage:**
-- Product removal functionality
-- Cart counter update after removal
-- Cart data integrity
+    **Test Coverage:**
+    - Product removal functionality
+    - Cart counter update after removal
+    - Cart data integrity
 
-**Business Value:**
-Enables users to remove unwanted items from cart.
-"""))
+    **Business Value:**
+    Enables users to remove unwanted items from cart.
+    """,
+)
 def test_remove_product_from_cart(login_page, inventory_page, cart_page, sauce_demo_config):
     """TC-SD-022: Remove product from cart."""
     user = sauce_demo_config.test_users["standard"]
@@ -172,33 +193,40 @@ def test_remove_product_from_cart(login_page, inventory_page, cart_page, sauce_d
 
 @allure.epic("Sauce Demo E2E")
 @allure.feature("Shopping Cart")
-@allure.story("Continue Shopping")
 @allure.label("layer", "e2e")
 @allure.label("type", "functional")
 @allure.label("app", "sauce_demo")
 @pytest.mark.app("sauce_demo")
 @pytest.mark.e2e
-@pytest.mark.testcase("TC-SD-023")
-@pytest.mark.requirement("US-CART-005")
-@allure.severity(allure.severity_level.NORMAL)
-@allure.description_html(markdown_to_html("""
-Verify that user can continue shopping from cart.
+@e2e_test(
+    epic="Sauce Demo E2E",
+    feature="Shopping Cart",
+    story="Continue Shopping",
+    testcase="TC-SD-023",
+    requirement="US-CART-005",
+    app="sauce_demo",
+    severity=allure.severity_level.NORMAL,
+    title="Continue shopping from cart",
+    link="https://www.saucedemo.com/",
+    description="""
+    Verify that user can continue shopping from cart.
 
-**Test Steps:**
-1. Login to the application
-2. Add product to cart
-3. Navigate to cart page
-4. Click continue shopping
-5. Verify redirect to inventory page
+    **Test Steps:**
+    1. Login to the application
+    2. Add product to cart
+    3. Navigate to cart page
+    4. Click continue shopping
+    5. Verify redirect to inventory page
 
-**Test Coverage:**
-- Continue shopping navigation
-- Cart to inventory redirect
-- Shopping flow continuity
+    **Test Coverage:**
+    - Continue shopping navigation
+    - Cart to inventory redirect
+    - Shopping flow continuity
 
-**Business Value:**
-Enables users to easily return to shopping from cart view.
-"""))
+    **Business Value:**
+    Enables users to easily return to shopping from cart view.
+    """,
+)
 def test_continue_shopping(login_page, inventory_page, cart_page, sauce_demo_config):
     """TC-SD-023: Continue shopping from cart."""
     user = sauce_demo_config.test_users["standard"]

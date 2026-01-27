@@ -14,7 +14,7 @@ from __future__ import annotations
 import allure
 import pytest
 
-from infrastructure.utils.allure_helpers import markdown_to_html
+from infrastructure.utils.allure_helpers import api_test
 
 
 @allure.epic("Restful Booker API")
@@ -43,21 +43,26 @@ class TestBookingCRUD:
 
     @allure.story("List Bookings")
     @allure.title("Get all booking IDs")
-    @allure.description_html(markdown_to_html("""
-    Verify that the API returns a list of all booking IDs.
+    @api_test(
+        epic="Restful Booker API",
+        feature="Booking Management",
+        story="List Bookings",
+        testcase="TC-RB-020",
+        requirement="US-BOOKING-001",
+        severity=allure.severity_level.CRITICAL,
+        smoke=True,
+        description="""
+        Verify that the API returns a list of all booking IDs.
 
-    **Test Coverage:**
-    - Retrieve complete list of bookings
-    - Response contains bookingid field
-    - List structure is correct
+        **Test Coverage:**
+        - Retrieve complete list of bookings
+        - Response contains bookingid field
+        - List structure is correct
 
-    **Business Value:**
-    Essential for viewing all available bookings in the system.
-    """))
-    @allure.severity(allure.severity_level.CRITICAL)
-    @pytest.mark.testcase("TC-RB-020")
-    @pytest.mark.requirement("US-BOOKING-001")
-    @pytest.mark.smoke
+        **Business Value:**
+        Essential for viewing all available bookings in the system.
+        """,
+    )
     def test_get_all_bookings(self, restful_booker_client):
         """Test retrieving all booking IDs."""
         with allure.step("Get all bookings"):
@@ -70,21 +75,26 @@ class TestBookingCRUD:
 
     @allure.story("List Bookings")
     @allure.title("Get bookings with query filters")
-    @allure.description_html(markdown_to_html("""
-    Verify that bookings can be filtered by query parameters.
+    @api_test(
+        epic="Restful Booker API",
+        feature="Booking Management",
+        story="List Bookings",
+        testcase="TC-RB-021",
+        requirement="US-BOOKING-002",
+        severity=allure.severity_level.NORMAL,
+        regression=True,
+        description="""
+        Verify that bookings can be filtered by query parameters.
 
-    **Test Coverage:**
-    - Filter bookings by firstname and lastname
-    - Filter parameters are correctly applied
-    - Response structure is maintained
+        **Test Coverage:**
+        - Filter bookings by firstname and lastname
+        - Filter parameters are correctly applied
+        - Response structure is maintained
 
-    **Business Value:**
-    Enables users to find specific bookings efficiently.
-    """))
-    @allure.severity(allure.severity_level.NORMAL)
-    @pytest.mark.testcase("TC-RB-021")
-    @pytest.mark.requirement("US-BOOKING-002")
-    @pytest.mark.regression
+        **Business Value:**
+        Enables users to find specific bookings efficiently.
+        """,
+    )
     def test_get_bookings_with_filter(self, restful_booker_client):
         """Test retrieving bookings with query filters."""
         with allure.step("Get bookings filtered by name"):
@@ -99,21 +109,26 @@ class TestBookingCRUD:
 
     @allure.story("View Booking Details")
     @allure.title("Get single booking by ID")
-    @allure.description_html(markdown_to_html("""
-    Verify that a single booking can be retrieved by its ID.
+    @api_test(
+        epic="Restful Booker API",
+        feature="Booking Management",
+        story="View Booking Details",
+        testcase="TC-RB-022",
+        requirement="US-BOOKING-003",
+        severity=allure.severity_level.CRITICAL,
+        smoke=True,
+        description="""
+        Verify that a single booking can be retrieved by its ID.
 
-    **Test Coverage:**
-    - Retrieve specific booking by ID
-    - All booking fields are present
-    - Data accuracy is maintained
+        **Test Coverage:**
+        - Retrieve specific booking by ID
+        - All booking fields are present
+        - Data accuracy is maintained
 
-    **Business Value:**
-    Core functionality for viewing individual booking details.
-    """))
-    @allure.severity(allure.severity_level.CRITICAL)
-    @pytest.mark.testcase("TC-RB-022")
-    @pytest.mark.requirement("US-BOOKING-003")
-    @pytest.mark.smoke
+        **Business Value:**
+        Core functionality for viewing individual booking details.
+        """,
+    )
     def test_get_single_booking(self, restful_booker_client):
         """Test retrieving a single booking."""
         with allure.step("Get list of bookings"):
@@ -132,21 +147,26 @@ class TestBookingCRUD:
 
     @allure.story("View Booking Details")
     @allure.title("Get non-existent booking returns 404")
-    @allure.description_html(markdown_to_html("""
-    Verify that requesting a non-existent booking returns proper error.
+    @api_test(
+        epic="Restful Booker API",
+        feature="Booking Management",
+        story="View Booking Details",
+        testcase="TC-RB-023",
+        requirement="US-BOOKING-004",
+        severity=allure.severity_level.NORMAL,
+        regression=True,
+        description="""
+        Verify that requesting a non-existent booking returns proper error.
 
-    **Test Coverage:**
-    - Invalid booking ID handling
-    - Proper error response
-    - Error handling for edge cases
+        **Test Coverage:**
+        - Invalid booking ID handling
+        - Proper error response
+        - Error handling for edge cases
 
-    **Business Value:**
-    Ensures graceful error handling for invalid requests.
-    """))
-    @allure.severity(allure.severity_level.NORMAL)
-    @pytest.mark.testcase("TC-RB-023")
-    @pytest.mark.requirement("US-BOOKING-004")
-    @pytest.mark.regression
+        **Business Value:**
+        Ensures graceful error handling for invalid requests.
+        """,
+    )
     def test_get_nonexistent_booking(self, restful_booker_client):
         """Test that getting a non-existent booking returns 404."""
         with allure.step("Attempt to get booking with invalid ID"):
@@ -155,21 +175,26 @@ class TestBookingCRUD:
 
     @allure.story("Create Booking")
     @allure.title("Create new booking")
-    @allure.description_html(markdown_to_html("""
-    Verify that a new booking can be created successfully.
+    @api_test(
+        epic="Restful Booker API",
+        feature="Booking Management",
+        story="Create Booking",
+        testcase="TC-RB-024",
+        requirement="US-BOOKING-005",
+        severity=allure.severity_level.CRITICAL,
+        smoke=True,
+        description="""
+        Verify that a new booking can be created successfully.
 
-    **Test Coverage:**
-    - Booking creation with valid data
-    - Response contains bookingid
-    - Booking data is persisted correctly
+        **Test Coverage:**
+        - Booking creation with valid data
+        - Response contains bookingid
+        - Booking data is persisted correctly
 
-    **Business Value:**
-    Core functionality for reservation management.
-    """))
-    @allure.severity(allure.severity_level.CRITICAL)
-    @pytest.mark.testcase("TC-RB-024")
-    @pytest.mark.requirement("US-BOOKING-005")
-    @pytest.mark.smoke
+        **Business Value:**
+        Core functionality for reservation management.
+        """,
+    )
     def test_create_booking(self, restful_booker_client, sample_booking):
         """Test creating a new booking."""
         with allure.step("Create booking"):
@@ -183,21 +208,26 @@ class TestBookingCRUD:
 
     @allure.story("Update Booking")
     @allure.title("Update booking with PUT (full update)")
-    @allure.description_html(markdown_to_html("""
-    Verify that a booking can be fully updated using PUT method.
+    @api_test(
+        epic="Restful Booker API",
+        feature="Booking Management",
+        story="Update Booking",
+        testcase="TC-RB-025",
+        requirement="US-BOOKING-006",
+        severity=allure.severity_level.CRITICAL,
+        regression=True,
+        description="""
+        Verify that a booking can be fully updated using PUT method.
 
-    **Test Coverage:**
-    - Full booking update (all fields)
-    - Changes are persisted correctly
-    - Authentication is required
+        **Test Coverage:**
+        - Full booking update (all fields)
+        - Changes are persisted correctly
+        - Authentication is required
 
-    **Business Value:**
-    Enables users to modify their booking details completely.
-    """))
-    @allure.severity(allure.severity_level.CRITICAL)
-    @pytest.mark.testcase("TC-RB-025")
-    @pytest.mark.requirement("US-BOOKING-006")
-    @pytest.mark.regression
+        **Business Value:**
+        Enables users to modify their booking details completely.
+        """,
+    )
     def test_update_booking(self, authenticated_client, sample_booking):
         """Test updating a booking with PUT (full update)."""
         with allure.step("Create a booking first"):
@@ -218,21 +248,26 @@ class TestBookingCRUD:
 
     @allure.story("Update Booking")
     @allure.title("Partially update booking with PATCH")
-    @allure.description_html(markdown_to_html("""
-    Verify that a booking can be partially updated using PATCH method.
+    @api_test(
+        epic="Restful Booker API",
+        feature="Booking Management",
+        story="Update Booking",
+        testcase="TC-RB-026",
+        requirement="US-BOOKING-007",
+        severity=allure.severity_level.NORMAL,
+        regression=True,
+        description="""
+        Verify that a booking can be partially updated using PATCH method.
 
-    **Test Coverage:**
-    - Partial booking update (only specified fields)
-    - Other fields remain unchanged
-    - Authentication is required
+        **Test Coverage:**
+        - Partial booking update (only specified fields)
+        - Other fields remain unchanged
+        - Authentication is required
 
-    **Business Value:**
-    Allows users to update individual booking fields efficiently.
-    """))
-    @allure.severity(allure.severity_level.NORMAL)
-    @pytest.mark.testcase("TC-RB-026")
-    @pytest.mark.requirement("US-BOOKING-007")
-    @pytest.mark.regression
+        **Business Value:**
+        Allows users to update individual booking fields efficiently.
+        """,
+    )
     def test_partial_update_booking(self, authenticated_client, sample_booking):
         """Test partially updating a booking with PATCH."""
         with allure.step("Create a booking first"):
@@ -252,21 +287,26 @@ class TestBookingCRUD:
 
     @allure.story("Update Booking")
     @allure.title("Update booking fails without authentication")
-    @allure.description_html(markdown_to_html("""
-    Verify that booking update fails without proper authentication.
+    @api_test(
+        epic="Restful Booker API",
+        feature="Booking Management",
+        story="Update Booking",
+        testcase="TC-RB-028",
+        requirement="US-BOOKING-008",
+        severity=allure.severity_level.NORMAL,
+        regression=True,
+        description="""
+        Verify that booking update fails without proper authentication.
 
-    **Test Coverage:**
-    - Authentication requirement enforcement
-    - Security validation for update operations
-    - Error handling for unauthorized access
+        **Test Coverage:**
+        - Authentication requirement enforcement
+        - Security validation for update operations
+        - Error handling for unauthorized access
 
-    **Business Value:**
-    Ensures security by preventing unauthorized booking modifications.
-    """))
-    @allure.severity(allure.severity_level.NORMAL)
-    @pytest.mark.testcase("TC-RB-028")
-    @pytest.mark.requirement("US-BOOKING-008")
-    @pytest.mark.regression
+        **Business Value:**
+        Ensures security by preventing unauthorized booking modifications.
+        """,
+    )
     def test_update_without_token(self, restful_booker_client, sample_booking):
         """Test that update fails without authentication token."""
         with allure.step("Create a booking first"):
@@ -279,21 +319,26 @@ class TestBookingCRUD:
 
     @allure.story("Delete Booking")
     @allure.title("Delete booking")
-    @allure.description_html(markdown_to_html("""
-    Verify that a booking can be deleted successfully.
+    @api_test(
+        epic="Restful Booker API",
+        feature="Booking Management",
+        story="Delete Booking",
+        testcase="TC-RB-027",
+        requirement="US-BOOKING-009",
+        severity=allure.severity_level.CRITICAL,
+        regression=True,
+        description="""
+        Verify that a booking can be deleted successfully.
 
-    **Test Coverage:**
-    - Booking deletion returns success
-    - Deleted booking is no longer accessible
-    - Authentication is required
+        **Test Coverage:**
+        - Booking deletion returns success
+        - Deleted booking is no longer accessible
+        - Authentication is required
 
-    **Business Value:**
-    Critical for booking cancellation and account management.
-    """))
-    @allure.severity(allure.severity_level.CRITICAL)
-    @pytest.mark.testcase("TC-RB-027")
-    @pytest.mark.requirement("US-BOOKING-009")
-    @pytest.mark.regression
+        **Business Value:**
+        Critical for booking cancellation and account management.
+        """,
+    )
     def test_delete_booking(self, authenticated_client, sample_booking):
         """Test deleting a booking."""
         with allure.step("Create a booking first"):

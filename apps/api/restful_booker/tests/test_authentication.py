@@ -13,7 +13,7 @@ from __future__ import annotations
 import allure
 import pytest
 
-from infrastructure.utils.allure_helpers import markdown_to_html
+from infrastructure.utils.allure_helpers import api_test
 
 
 @allure.epic("Restful Booker API")
@@ -27,21 +27,26 @@ class TestAuthentication:
 
     @allure.story("Health Check")
     @allure.title("API health check - ping service")
-    @allure.description_html(markdown_to_html("""
-    Verify that the API service is responsive and available.
+    @api_test(
+        epic="Restful Booker API",
+        feature="Authentication",
+        story="Health Check",
+        testcase="TC-RB-001",
+        requirement="US-AUTH-001",
+        severity=allure.severity_level.CRITICAL,
+        smoke=True,
+        description="""
+        Verify that the API service is responsive and available.
 
-    **Test Coverage:**
-    - API health check endpoint
-    - Service availability verification
-    - Basic connectivity check
+        **Test Coverage:**
+        - API health check endpoint
+        - Service availability verification
+        - Basic connectivity check
 
-    **Business Value:**
-    Critical for monitoring API availability and uptime.
-    """))
-    @allure.severity(allure.severity_level.CRITICAL)
-    @pytest.mark.testcase("TC-RB-001")
-    @pytest.mark.requirement("US-AUTH-001")
-    @pytest.mark.smoke
+        **Business Value:**
+        Critical for monitoring API availability and uptime.
+        """,
+    )
     def test_ping_service(self, restful_booker_client):
         """Test that the API health check endpoint responds."""
         with allure.step("Ping the API"):
@@ -52,22 +57,27 @@ class TestAuthentication:
 
     @allure.story("Token Creation")
     @allure.title("Create authentication token with valid credentials")
-    @allure.description_html(markdown_to_html("""
-    Verify that an authentication token can be created with valid credentials.
-
-    **Test Coverage:**
-    - Token creation with valid credentials
-    - Token format validation
-    - Token is properly generated
-
-    **Business Value:**
-    Core authentication mechanism for secure API access.
-    """))
-    @allure.severity(allure.severity_level.CRITICAL)
     @allure.link("https://restful-booker.herokuapp.com/apidoc/index.html#header-Auth", name="API Docs")
-    @pytest.mark.testcase("TC-RB-010")
-    @pytest.mark.requirement("US-AUTH-002")
-    @pytest.mark.smoke
+    @api_test(
+        epic="Restful Booker API",
+        feature="Authentication",
+        story="Token Creation",
+        testcase="TC-RB-010",
+        requirement="US-AUTH-002",
+        severity=allure.severity_level.CRITICAL,
+        smoke=True,
+        description="""
+        Verify that an authentication token can be created with valid credentials.
+
+        **Test Coverage:**
+        - Token creation with valid credentials
+        - Token format validation
+        - Token is properly generated
+
+        **Business Value:**
+        Core authentication mechanism for secure API access.
+        """,
+    )
     def test_create_token_valid_credentials(self, restful_booker_client):
         """Test successful token creation with valid credentials."""
         with allure.step("Create token with admin/password123"):
@@ -80,21 +90,26 @@ class TestAuthentication:
 
     @allure.story("Token Creation")
     @allure.title("Token creation fails with invalid credentials")
-    @allure.description_html(markdown_to_html("""
-    Verify that token creation fails with invalid credentials.
+    @api_test(
+        epic="Restful Booker API",
+        feature="Authentication",
+        story="Token Creation",
+        testcase="TC-RB-011",
+        requirement="US-AUTH-003",
+        severity=allure.severity_level.NORMAL,
+        regression=True,
+        description="""
+        Verify that token creation fails with invalid credentials.
 
-    **Test Coverage:**
-    - Authentication failure handling
-    - Invalid credential rejection
-    - Error message clarity
+        **Test Coverage:**
+        - Authentication failure handling
+        - Invalid credential rejection
+        - Error message clarity
 
-    **Business Value:**
-    Ensures security by rejecting invalid authentication attempts.
-    """))
-    @allure.severity(allure.severity_level.NORMAL)
-    @pytest.mark.testcase("TC-RB-011")
-    @pytest.mark.requirement("US-AUTH-003")
-    @pytest.mark.regression
+        **Business Value:**
+        Ensures security by rejecting invalid authentication attempts.
+        """,
+    )
     def test_create_token_invalid_credentials(self, restful_booker_client):
         """Test that token creation fails with invalid credentials."""
         with allure.step("Attempt to create token with wrong password"):

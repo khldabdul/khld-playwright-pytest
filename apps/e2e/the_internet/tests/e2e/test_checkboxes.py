@@ -13,37 +13,44 @@ import pytest
 import allure
 from playwright.sync_api import expect
 
-from infrastructure.utils.allure_helpers import markdown_to_html
+from infrastructure.utils.allure_helpers import e2e_test
 
 
 @allure.epic("The Internet E2E")
 @allure.feature("Form Elements")
-@allure.story("Checkboxes")
 @allure.label("layer", "e2e")
 @allure.label("type", "functional")
 @allure.label("app", "the_internet")
 @pytest.mark.app("the_internet")
 @pytest.mark.e2e
-@pytest.mark.testcase("TC-TI-010")
-@pytest.mark.requirement("US-TI-FORM-001")
-@pytest.mark.smoke
-@allure.severity(allure.severity_level.NORMAL)
-@allure.description_html(markdown_to_html("""
-Verify that checkboxes can be checked and unchecked.
+@e2e_test(
+    epic="The Internet E2E",
+    feature="Form Elements",
+    story="Checkboxes",
+    testcase="TC-TI-010",
+    requirement="US-TI-FORM-001",
+    app="the_internet",
+    severity=allure.severity_level.NORMAL,
+    smoke=True,
+    title="Checkbox toggle",
+    link="https://the-internet.herokuapp.com/",
+    description="""
+    Verify that checkboxes can be checked and unchecked.
 
-**Test Steps:**
-1. Navigate to checkboxes page
-2. Toggle checkbox 1 to checked
-3. Toggle checkbox 2 to unchecked
-4. Verify both states
+    **Test Steps:**
+    1. Navigate to checkboxes page
+    2. Toggle checkbox 1 to checked
+    3. Toggle checkbox 2 to unchecked
+    4. Verify both states
 
-**Test Coverage:**
-- Checkbox state manipulation
-- State verification after toggle
+    **Test Coverage:**
+    - Checkbox state manipulation
+    - State verification after toggle
 
-**Business Value:**
-Core UI interaction for form controls and settings.
-"""))
+    **Business Value:**
+    Core UI interaction for form controls and settings.
+    """,
+)
 def test_checkboxes(checkboxes_page, the_internet_config):
     """TC-TI-010: Test checkbox interactions."""
 

@@ -14,7 +14,7 @@ import pytest
 import allure
 from playwright.sync_api import expect
 
-from infrastructure.utils.allure_helpers import markdown_to_html
+from infrastructure.utils.allure_helpers import e2e_test
 
 
 @allure.epic("The Internet E2E")
@@ -25,10 +25,17 @@ from infrastructure.utils.allure_helpers import markdown_to_html
 @allure.label("app", "the_internet")
 @pytest.mark.app("the_internet")
 @pytest.mark.e2e
-@pytest.mark.testcase("TC-TI-050")
-@pytest.mark.requirement("US-TI-FRAME-001")
-@allure.severity(allure.severity_level.NORMAL)
-@allure.description_html(markdown_to_html("""
+@e2e_test(
+    epic="The Internet E2E",
+    feature="Frames & Windows",
+    story="iFrame Editor",
+    testcase="TC-TI-050",
+    requirement="US-TI-FRAME-001",
+    app="the_internet",
+    severity=allure.severity_level.NORMAL,
+    title="Access iFrame TinyMCE editor",
+    link="https://the-internet.herokuapp.com/iframe",
+    description="""
 Verify that iFrame content can be accessed and read.
 
 **Test Steps:**
@@ -44,7 +51,8 @@ Verify that iFrame content can be accessed and read.
 
 **Business Value:}
 Tests WYSIWYG editor integration patterns.
-"""))
+""",
+)
 def test_iframe_editor(iframe_page, the_internet_config):
     """TC-TI-050: Access iFrame TinyMCE editor."""
 
@@ -67,10 +75,17 @@ def test_iframe_editor(iframe_page, the_internet_config):
 @allure.label("app", "the_internet")
 @pytest.mark.app("the_internet")
 @pytest.mark.e2e
-@pytest.mark.testcase("TC-TI-051")
-@pytest.mark.requirement("US-TI-FRAME-002")
-@allure.severity(allure.severity_level.NORMAL)
-@allure.description_html(markdown_to_html("""
+@e2e_test(
+    epic="The Internet E2E",
+    feature="Frames & Windows",
+    story="Nested Frames",
+    testcase="TC-TI-051",
+    requirement="US-TI-FRAME-002",
+    app="the_internet",
+    severity=allure.severity_level.NORMAL,
+    title="Read content from nested frames",
+    link="https://the-internet.herokuapp.com/nested_frames",
+    description="""
 Verify that content can be read from nested frames.
 
 **Test Steps:**
@@ -88,7 +103,8 @@ Verify that content can be read from nested frames.
 
 **Business Value:}
 Tests complex frame hierarchy handling.
-"""))
+""",
+)
 def test_nested_frames(nested_frames_page, the_internet_config):
     """TC-TI-051: Read content from nested frames."""
 
@@ -116,10 +132,17 @@ def test_nested_frames(nested_frames_page, the_internet_config):
 @allure.label("app", "the_internet")
 @pytest.mark.app("the_internet")
 @pytest.mark.e2e
-@pytest.mark.testcase("TC-TI-052")
-@pytest.mark.requirement("US-TI-WIN-001")
-@allure.severity(allure.severity_level.NORMAL)
-@allure.description_html(markdown_to_html("""
+@e2e_test(
+    epic="The Internet E2E",
+    feature="Frames & Windows",
+    story="Multiple Windows",
+    testcase="TC-TI-052",
+    requirement="US-TI-WIN-001",
+    app="the_internet",
+    severity=allure.severity_level.NORMAL,
+    title="Handle multiple windows/tabs",
+    link="https://the-internet.herokuapp.com/windows",
+    description="""
 Verify that multiple browser windows can be handled.
 
 **Test Steps:**
@@ -135,7 +158,8 @@ Verify that multiple browser windows can be handled.
 
 **Business Value:}
 Tests handling of popups and new windows.
-"""))
+""",
+)
 def test_multiple_windows(multiple_windows_page, the_internet_config, page):
     """TC-TI-052: Handle multiple windows/tabs."""
 

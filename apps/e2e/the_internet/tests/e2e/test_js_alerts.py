@@ -14,7 +14,7 @@ import pytest
 import allure
 from playwright.sync_api import expect
 
-from infrastructure.utils.allure_helpers import markdown_to_html
+from infrastructure.utils.allure_helpers import e2e_test
 
 
 @allure.epic("The Internet E2E")
@@ -25,10 +25,17 @@ from infrastructure.utils.allure_helpers import markdown_to_html
 @allure.label("app", "the_internet")
 @pytest.mark.app("the_internet")
 @pytest.mark.e2e
-@pytest.mark.testcase("TC-TI-040")
-@pytest.mark.requirement("US-TI-ALERT-001")
-@allure.severity(allure.severity_level.NORMAL)
-@allure.description_html(markdown_to_html("""
+@e2e_test(
+    epic="The Internet E2E",
+    feature="JavaScript Dialogs",
+    story="Alert Handling",
+    testcase="TC-TI-040",
+    requirement="US-TI-ALERT-001",
+    app="the_internet",
+    severity=allure.severity_level.NORMAL,
+    title="Handle JavaScript alert",
+    link="https://the-internet.herokuapp.com/javascript_alerts",
+    description="""
 Verify that JavaScript alert can be handled.
 
 **Test Steps:**
@@ -44,7 +51,8 @@ Verify that JavaScript alert can be handled.
 
 **Business Value:}
 Tests browser dialog handling capabilities.
-"""))
+""",
+)
 def test_js_alert(js_alerts_page, the_internet_config):
     """TC-TI-040: Handle JavaScript alert."""
 
@@ -68,10 +76,17 @@ def test_js_alert(js_alerts_page, the_internet_config):
 @allure.label("app", "the_internet")
 @pytest.mark.app("the_internet")
 @pytest.mark.e2e
-@pytest.mark.testcase("TC-TI-041")
-@pytest.mark.requirement("US-TI-ALERT-002")
-@allure.severity(allure.severity_level.NORMAL)
-@allure.description_html(markdown_to_html("""
+@e2e_test(
+    epic="The Internet E2E",
+    feature="JavaScript Dialogs",
+    story="Confirm Dialog",
+    testcase="TC-TI-041",
+    requirement="US-TI-ALERT-002",
+    app="the_internet",
+    severity=allure.severity_level.NORMAL,
+    title="Handle JavaScript confirm - Accept",
+    link="https://the-internet.herokuapp.com/javascript_alerts",
+    description="""
 Verify that confirm dialog can be accepted.
 
 **Test Steps:**
@@ -87,7 +102,8 @@ Verify that confirm dialog can be accepted.
 
 **Business Value:}
 Tests user confirmation flow handling.
-"""))
+""",
+)
 def test_js_confirm_accept(js_alerts_page, the_internet_config):
     """TC-TI-041: Handle JavaScript confirm - Accept."""
 
@@ -111,10 +127,17 @@ def test_js_confirm_accept(js_alerts_page, the_internet_config):
 @allure.label("app", "the_internet")
 @pytest.mark.app("the_internet")
 @pytest.mark.e2e
-@pytest.mark.testcase("TC-TI-042")
-@pytest.mark.requirement("US-TI-ALERT-003")
-@allure.severity(allure.severity_level.NORMAL)
-@allure.description_html(markdown_to_html("""
+@e2e_test(
+    epic="The Internet E2E",
+    feature="JavaScript Dialogs",
+    story="Confirm Dialog",
+    testcase="TC-TI-042",
+    requirement="US-TI-ALERT-003",
+    app="the_internet",
+    severity=allure.severity_level.NORMAL,
+    title="Handle JavaScript confirm - Dismiss",
+    link="https://the-internet.herokuapp.com/javascript_alerts",
+    description="""
 Verify that confirm dialog can be dismissed.
 
 **Test Steps:**
@@ -130,7 +153,8 @@ Verify that confirm dialog can be dismissed.
 
 **Business Value:}
 Tests user cancellation flow handling.
-"""))
+""",
+)
 def test_js_confirm_dismiss(js_alerts_page, the_internet_config):
     """TC-TI-042: Handle JavaScript confirm - Dismiss."""
 
@@ -154,10 +178,17 @@ def test_js_confirm_dismiss(js_alerts_page, the_internet_config):
 @allure.label("app", "the_internet")
 @pytest.mark.app("the_internet")
 @pytest.mark.e2e
-@pytest.mark.testcase("TC-TI-043")
-@pytest.mark.requirement("US-TI-ALERT-004")
-@allure.severity(allure.severity_level.NORMAL)
-@allure.description_html(markdown_to_html("""
+@e2e_test(
+    epic="The Internet E2E",
+    feature="JavaScript Dialogs",
+    story="Prompt Dialog",
+    testcase="TC-TI-043",
+    requirement="US-TI-ALERT-004",
+    app="the_internet",
+    severity=allure.severity_level.NORMAL,
+    title="Handle JavaScript prompt",
+    link="https://the-internet.herokuapp.com/javascript_alerts",
+    description="""
 Verify that prompt dialog can accept text input.
 
 **Test Steps:**
@@ -173,7 +204,8 @@ Verify that prompt dialog can accept text input.
 
 **Business Value:}
 Tests user input handling in dialog flows.
-"""))
+""",
+)
 def test_js_prompt(js_alerts_page, the_internet_config):
     """TC-TI-043: Handle JavaScript prompt."""
     test_text = "Hello Playwright"

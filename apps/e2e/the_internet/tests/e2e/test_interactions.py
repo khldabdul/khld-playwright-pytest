@@ -14,7 +14,7 @@ import pytest
 import allure
 from playwright.sync_api import expect
 
-from infrastructure.utils.allure_helpers import markdown_to_html
+from infrastructure.utils.allure_helpers import e2e_test
 
 
 @allure.epic("The Internet E2E")
@@ -25,10 +25,17 @@ from infrastructure.utils.allure_helpers import markdown_to_html
 @allure.label("app", "the_internet")
 @pytest.mark.app("the_internet")
 @pytest.mark.e2e
-@pytest.mark.testcase("TC-TI-030")
-@pytest.mark.requirement("US-TI-INT-001")
-@allure.severity(allure.severity_level.NORMAL)
-@allure.description_html(markdown_to_html("""
+@e2e_test(
+    epic="The Internet E2E",
+    feature="User Interactions",
+    story="Drag and Drop",
+    testcase="TC-TI-030",
+    requirement="US-TI-INT-001",
+    app="the_internet",
+    severity=allure.severity_level.NORMAL,
+    title="Drag and drop columns",
+    link="https://the-internet.herokuapp.com/drag_and_drop",
+    description="""
 Verify that elements can be dragged and dropped.
 
 **Test Steps:**
@@ -44,7 +51,8 @@ Verify that elements can be dragged and dropped.
 
 **Business Value:}
 Tests common drag-and-drop UI patterns in web apps.
-"""))
+""",
+)
 def test_drag_and_drop(drag_drop_page, the_internet_config):
     """TC-TI-030: Drag and drop columns."""
 
@@ -71,10 +79,17 @@ def test_drag_and_drop(drag_drop_page, the_internet_config):
 @allure.label("app", "the_internet")
 @pytest.mark.app("the_internet")
 @pytest.mark.e2e
-@pytest.mark.testcase("TC-TI-031")
-@pytest.mark.requirement("US-TI-INT-002")
-@allure.severity(allure.severity_level.NORMAL)
-@allure.description_html(markdown_to_html("""
+@e2e_test(
+    epic="The Internet E2E",
+    feature="User Interactions",
+    story="Hover Effects",
+    testcase="TC-TI-031",
+    requirement="US-TI-INT-002",
+    app="the_internet",
+    severity=allure.severity_level.NORMAL,
+    title="Hover to display hidden info",
+    link="https://the-internet.herokuapp.com/hovers",
+    description="""
 Verify that hover reveals hidden user information.
 
 **Test Steps:**
@@ -91,7 +106,8 @@ Verify that hover reveals hidden user information.
 
 **Business Value:}
 Tests hover-based UI patterns for contextual information.
-"""))
+""",
+)
 def test_hover(hover_page, the_internet_config):
     """TC-TI-031: Hover to display hidden info."""
 
@@ -117,10 +133,17 @@ def test_hover(hover_page, the_internet_config):
 @allure.label("app", "the_internet")
 @pytest.mark.app("the_internet")
 @pytest.mark.e2e
-@pytest.mark.testcase("TC-TI-032")
-@pytest.mark.requirement("US-TI-INT-003")
-@allure.severity(allure.severity_level.NORMAL)
-@allure.description_html(markdown_to_html("""
+@e2e_test(
+    epic="The Internet E2E",
+    feature="User Interactions",
+    story="Table Sorting",
+    testcase="TC-TI-032",
+    requirement="US-TI-INT-003",
+    app="the_internet",
+    severity=allure.severity_level.NORMAL,
+    title="Sort data tables by column",
+    link="https://the-internet.herokuapp.com/tables",
+    description="""
 Verify that data tables can be sorted by column.
 
 **Test Steps:**
@@ -136,7 +159,8 @@ Verify that data tables can be sorted by column.
 
 **Business Value:}
 Tests sortable data grid patterns in enterprise applications.
-"""))
+""",
+)
 def test_sortable_tables(tables_page, the_internet_config):
     """TC-TI-032: Sort data tables by column."""
 
