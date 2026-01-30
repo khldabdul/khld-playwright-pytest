@@ -1,0 +1,73 @@
+name: Deploy Reports to VPS
+
+on:
+  workflow_call:
+    inputs:
+      report-name:
+        description: 'Artifact name containing the reports'
+        required: true
+        type: string
+      report-type:
+        description: 'Type of report (e2e, api, smoke)'
+        required: false
+        type: string
+        default: 'e2e'
+    secrets:
+      VPS_SSH_KEY:
+        required: true
+      VPS_HOST:
+        required: true
+      VPS_USER:
+        required: true
+      VPS_DEPLOY_PATH:
+        required: true
+
+jobs:
+  deploy:
+    name: Deploy to VPS
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Download reports
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{ inputs.report-name }}
+          path: reports/
+
+      - name: Setup SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.VPS_SSH_KEY }}" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          ssh-keyscan -H ${{ secrets.VPS_HOST }} >> ~/.ssh/known_hosts
+
+      - name: Deploy reports
+        env:
+          VPS_HOST: ${{ secrets.VPS_HOST }}
+          VPS_USER: ${{ secrets.VPS_USER }}
+          VPS_DEPLOY_PATH: ${{ secrets.VPS_DEPLOY_PATH }}
+        run: |
+          TIMESTAMP=$(date +%Y%m%d_%H%M%S)
+          REPORT_TYPE="${{ inputs.report-type }}"
+          REPORT_PATH="${VPS_DEPLOY_PATH}/${REPORT_TYPE}/${TIMESTAMP}"
+          
+          # Create remote directory
+          ssh -i ~/.ssh/deploy_key ${VPS_USER}@${VPS_HOST} "mkdir -p ${REPORT_PATH}"
+          
+          # Upload reports
+          rsync -avz --delete \
+            -e "ssh -i ~/.ssh/deploy_key" \
+            reports/ \
+            ${VPS_USER}@${VPS_HOST}:${REPORT_PATH}/
+          
+          # Update latest symlink
+          ssh -i ~/.ssh/deploy_key ${VPS_USER}@${VPS_HOST} "
+            cd ${VPS_DEPLOY_PATH}/${REPORT_TYPE}
+            rm -f latest
+            ln -s ${TIMESTAMP} latest
+            
+            # Keep only last 10 reports
+            ls -1d */ 2>/dev/null | grep -v latest | head -n -10 | xargs -r rm -rf
+          "
+          
+          echo "::notice::Reports deployed to ${VPS_DEPLOY_PATH}/${REPORT_TYPE}/latest/"

@@ -26,6 +26,7 @@ class AppConfig:
     viewport: dict[str, int] = field(default_factory=lambda: {"width": 1920, "height": 1080})
     auth_config: dict[str, Any] = field(default_factory=dict)
     test_users: dict[str, Any] = field(default_factory=dict)
+    extra_config: dict[str, Any] = field(default_factory=dict)
 
     @classmethod
     def from_yaml(cls, config_path: Path, environment: str) -> "AppConfig":
@@ -52,6 +53,12 @@ class AppConfig:
         # Get settings
         settings = config.get("settings", {})
 
+        # Known keys to exclude from extra_config
+        known_keys = {
+            "name", "display_name", "type", "base_urls", "settings", "auth", "test_users", "notes"
+        }
+        extra_config = {k: v for k, v in config.items() if k not in known_keys}
+
         return cls(
             name=config.get("name", "unknown"),
             display_name=config.get("display_name", config.get("name", "Unknown App")),
@@ -63,6 +70,7 @@ class AppConfig:
             viewport=settings.get("viewport", {"width": 1920, "height": 1080}),
             auth_config=config.get("auth", {}),
             test_users=config.get("test_users", {}),
+            extra_config=extra_config,
         )
 
 

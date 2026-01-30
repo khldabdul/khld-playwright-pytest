@@ -24,3 +24,7 @@ endpoints:
 
 settings:
   default_timeout: 30000
+
+# Additional configuration
+extra_config:
+  api_key: "reqres_c3c7dc55078b4da5b6c83a939c8890ff"

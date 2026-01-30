@@ -1,0 +1,1 @@
+"""ReqRes API app."""

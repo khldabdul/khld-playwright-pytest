@@ -6,10 +6,16 @@ This module provides:
 - App marker registration and filtering
 - Session-scoped fixtures for shared resources
 - Browser context configuration
+- Environment information attachment for Allure reports
 """
 
+import json
+import os
+import platform
+from datetime import datetime
 from pathlib import Path
 
+import allure
 import pytest
 from playwright.sync_api import Playwright
 
@@ -22,11 +28,13 @@ from infrastructure.fixtures.session import (
     screenshots_dir,
     traces_dir,
     videos_dir,
+    run_id,
 )
 from infrastructure.fixtures.app_factory import (
     app_configs,
     current_app,
 )
+# Import unified reporting hooks for enhanced Allure integration
 from infrastructure.hooks.unified_reporting import (
     pytest_runtest_makereport,
     attach_screenshot,
@@ -85,10 +93,12 @@ def pytest_configure(config):
     # Create test results directories
     results_dir = Path("test-results")
     results_dir.mkdir(exist_ok=True)
-    (results_dir / "allure-results").mkdir(exist_ok=True)
+    Path("allure-results").mkdir(exist_ok=True)  # Allure results in root
+    Path("allure-results/history").mkdir(exist_ok=True)  # History tracking
     (results_dir / "screenshots").mkdir(exist_ok=True)
     (results_dir / "traces").mkdir(exist_ok=True)
     (results_dir / "videos").mkdir(exist_ok=True)
+    (results_dir / "allure-history").mkdir(exist_ok=True)  # Persistent history storage
 
 
 def pytest_collection_modifyitems(items, config):
@@ -179,6 +189,143 @@ def browser_type_launch_args(browser_type_launch_args, env_config):
     }
 
 
+@pytest.fixture(scope="session", autouse=True)
+def attach_run_information(request, run_id: str):
+    """
+    Attach run information to Allure for test history tracking.
+
+    This fixture attaches session-level metadata that helps track
+    test execution history across multiple runs in Allure reports.
+
+    Information attached:
+    - Run ID: Unique identifier for this test run
+    - Run timestamp: When this run started
+    - Environment: Which environment is being tested
+    """
+    import sys
+
+    run_info = {
+        "run_id": run_id,
+        "timestamp": datetime.now().isoformat(),
+        "environment": request.config.getoption("--env", "dev"),
+        "python_version": sys.version.split()[0],
+        "pytest_version": pytest.__version__,
+        "platform": platform.platform(),
+    }
+
+    # Add run info as a JSON attachment
+    allure.attach(
+        json.dumps(run_info, indent=2, default=str),
+        name="📊 Run Information",
+        attachment_type=allure.attachment_type.JSON,
+    )
+
+    # Also attach as human-readable text
+    run_text = "\n".join([
+        "## Test Run Information",
+        "",
+        f"| Key | Value |",
+        f"|-----|-------|",
+        f"| Run ID | {run_info['run_id']} |",
+        f"| Timestamp | {run_info['timestamp']} |",
+        f"| Environment | {run_info['environment']} |",
+        f"| Python | {run_info['python_version']} |",
+        f"| Platform | {run_info['platform']} |",
+    ])
+
+    allure.attach(
+        run_text,
+        name="📊 Run Info (Summary)",
+        attachment_type=allure.attachment_type.TEXT,
+    )
+
+
+@pytest.fixture(scope="session", autouse=True)
+def attach_environment_information(request):
+    """
+    Attach environment information to Allure report.
+
+    This fixture automatically attaches comprehensive environment details
+    to every test run, including:
+    - System information (OS, platform, hostname)
+    - Python and pytest versions
+    - Test environment (dev/staging/production)
+    - Parallel execution worker ID (if applicable)
+
+    This information is crucial for:
+    - Reproducing failed tests accurately
+    - Tracking flakiness across environments
+    - Understanding test execution context
+    """
+    import sys
+
+    env_info = {
+        "environment": request.config.getoption("--env", "dev"),
+        "python_version": sys.version,
+        "platform": platform.platform(),
+        "system": f"{platform.system()} {platform.release()}",
+        "processor": platform.processor(),
+        "python_implementation": platform.python_implementation(),
+        "hostname": platform.node(),
+    }
+
+    # Add pytest version
+    try:
+        env_info["pytest_version"] = pytest.__version__
+    except AttributeError:
+        env_info["pytest_version"] = "unknown"
+
+    # Add parallel execution info (if using xdist)
+    worker_id = os.getenv("PYTEST_XDIST_WORKER", "master")
+    if worker_id != "master":
+        env_info["worker_id"] = worker_id
+        env_info["parallel_execution"] = True
+    else:
+        env_info["parallel_execution"] = False
+
+    # Add CI/CD information (if available)
+    if os.getenv("CI"):
+        env_info["ci_environment"] = True
+        env_info["ci_provider"] = os.getenv("CI_PROVIDER", "unknown")
+        if os.getenv("GITHUB_ACTIONS"):
+            env_info["ci_provider"] = "GitHub Actions"
+            env_info["run_id"] = os.getenv("GITHUB_RUN_ID", "unknown")
+        elif os.getenv("GITLAB_CI"):
+            env_info["ci_provider"] = "GitLab CI"
+        elif os.getenv("JENKINS_HOME"):
+            env_info["ci_provider"] = "Jenkins"
+
+    # Attach to Allure report
+    allure.attach(
+        json.dumps(env_info, indent=2, default=str),
+        name="🖥️ Environment Information",
+        attachment_type=allure.attachment_type.JSON,
+    )
+
+    # Also attach as a human-readable table
+    env_table = "\n".join([
+        "## Environment Information",
+        "",
+        f"| Key | Value |",
+        f"|-----|-------|",
+        f"| Environment | {env_info['environment']} |",
+        f"| Python | {env_info['python_version'].split()[0]} |",
+        f"| Platform | {env_info['platform']} |",
+        f"| System | {env_info['system']} |",
+        f"| Hostname | {env_info['hostname']} |",
+        f"| Pytest | {env_info['pytest_version']} |",
+        f"| Parallel | {'Yes (' + worker_id + ')' if env_info['parallel_execution'] else 'No'} |",
+    ] + [
+        f"| CI | {env_info.get('ci_provider', 'N/A')} |",
+    ] if env_info.get("ci_environment") else [])
+
+    allure.attach(
+        env_table,
+        name="🖥️ Environment (Summary)",
+        attachment_type=allure.attachment_type.TEXT,
+    )
+
+
 # Re-export fixtures to make them available
 __all__ = [
     "environment",
@@ -190,6 +337,7 @@ __all__ = [
     "videos_dir",
     "app_configs",
     "current_app",
+    "run_id",
     "attach_screenshot",
     "allure_step",
 ]

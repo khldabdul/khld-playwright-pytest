@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import os
+from datetime import datetime
 from pathlib import Path
 from typing import Any
 
@@ -142,3 +143,15 @@ def get_env_variable(name: str, default: str | None = None) -> str | None:
         Environment variable value or default
     """
     return os.environ.get(name, default)
+
+
+@pytest.fixture(scope="session")
+def run_id() -> str:
+    """
+    Generate a unique run ID for this test session.
+
+    Used for tracking test history in Allure reports.
+    The run ID is based on timestamp and includes environment info.
+    """
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    return f"run_{timestamp}"

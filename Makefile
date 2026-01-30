@@ -1,6 +1,13 @@
 # Makefile for E2E Test Automation Framework
 
-.PHONY: install install-dev install-browsers test test-smoke test-admin test-customer report clean help
+# Virtual environment path
+VENV := .venv
+PYTHON := $(VENV)/bin/python
+PIP := $(VENV)/bin/pip
+PYTEST := $(PYTHON) -m pytest
+PLAYWRIGHT := $(VENV)/bin/playwright
+
+.PHONY: install install-dev install-browsers test test-smoke test-sauce-demo test-the-internet report clean help
 
 # Default target
 help:
@@ -12,10 +19,19 @@ help:
 	@echo "  make install-browsers Install Playwright browsers"
 	@echo ""
 	@echo "  make test             Run all tests"
+	@echo "  make test ARGS='...'  Run tests with custom arguments"
+	@echo "  make test-api         Run API tests (parallel)"
+	@echo "  make test-e2e         Run E2E tests"
 	@echo "  make test-smoke       Run smoke tests only"
-	@echo "  make test-admin       Run admin portal tests"
-	@echo "  make test-customer    Run customer portal tests"
+	@echo "  make test-smoke-fast  Run smoke tests (parallel, no Allure)"
+	@echo "  make test-sauce-demo  Run Sauce Demo tests"
+	@echo "  make test-the-internet Run The Internet tests"
 	@echo "  make test-headed      Run tests with visible browser"
+	@echo "  make test-parallel    Run tests in parallel"
+	@echo "  make test-with-video  Run tests with video recording"
+	@echo "  make test-with-trace  Run tests with trace recording"
+	@echo "  make test-with-har    Run E2E tests with HAR (network) recording"
+	@echo "  make test-with-all-artifacts Run E2E with video, trace, and HAR"
 	@echo ""
 	@echo "  make report           Generate and open Allure report"
 	@echo "  make report-serve     Serve Allure report on local server"
@@ -25,67 +41,128 @@ help:
 	@echo "  make typecheck        Run type checking"
 	@echo ""
 	@echo "  make clean            Clean test artifacts"
+	@echo ""
+	@echo "Examples:"
+	@echo "  make test ARGS='apps/e2e/sauce_demo/tests/e2e/test_login.py'"
+	@echo "  make test ARGS='-k \"test_login\" -v'"
+	@echo "  make test ARGS='--headed'"
 
 # Installation
 install:
-	pip install -e .
+	$(PIP) install -e .
 
 install-dev:
-	pip install -e ".[dev]"
+	$(PIP) install -e ".[dev]"
 
 install-browsers:
-	playwright install chromium
-	playwright install firefox
-	playwright install webkit
+	$(PLAYWRIGHT) install chromium
+	$(PLAYWRIGHT) install firefox
+	$(PLAYWRIGHT) install webkit
 
 setup: install-dev install-browsers
 	@echo "Setup complete!"
 
 # Testing - all tests are in apps/ directory
+# Usage: make test ARGS='your pytest arguments here'
 test:
-	pytest apps/ -v --alluredir=test-results/allure-results
+	mkdir -p allure-results
+	$(PYTEST) apps/ --alluredir=allure-results $(ARGS)
 
 test-smoke:
-	pytest apps/ -v -m smoke --alluredir=test-results/allure-results
+	mkdir -p allure-results
+	$(PYTEST) apps/ -m smoke --alluredir=allure-results
 
 test-regression:
-	pytest apps/ -v -m regression --alluredir=test-results/allure-results
+	mkdir -p allure-results
+	$(PYTEST) apps/ -m regression --alluredir=allure-results
 
-test-admin:
-	pytest apps/admin_portal/ -v --alluredir=test-results/allure-results
+test-sauce-demo:
+	mkdir -p allure-results
+	$(PYTEST) apps/e2e/sauce_demo/ --alluredir=allure-results
 
-test-customer:
-	pytest apps/customer_portal/ -v --alluredir=test-results/allure-results
+test-the-internet:
+	mkdir -p allure-results
+	$(PYTEST) apps/e2e/the_internet/ --alluredir=allure-results
 
 test-headed:
-	pytest apps/ -v --headed --alluredir=test-results/allure-results
+	mkdir -p allure-results
+	$(PYTEST) apps/ --headed --alluredir=allure-results
 
 test-debug:
-	pytest apps/ -v --headed --slowmo=500 --alluredir=test-results/allure-results
+	mkdir -p allure-results
+	$(PYTEST) apps/ --headed --slowmo=500 --alluredir=allure-results
 
 test-staging:
-	pytest apps/ -v --env staging --alluredir=test-results/allure-results
+	mkdir -p allure-results
+	$(PYTEST) apps/ --env staging --alluredir=allure-results
 
 test-with-video:
-	pytest apps/ -v --video=on --alluredir=test-results/allure-results
+	mkdir -p allure-results
+	$(PYTEST) apps/ --video=on --alluredir=allure-results
 
 test-with-trace:
-	pytest apps/ -v --tracing=on --alluredir=test-results/allure-results
+	mkdir -p allure-results
+	$(PYTEST) apps/ --tracing=on --alluredir=allure-results
+
+test-with-har:
+	mkdir -p allure-results
+	PLAYWRIGHT_HAR=true $(PYTEST) apps/e2e/ --alluredir=allure-results
+
+test-with-all-artifacts:
+	mkdir -p allure-results
+	PLAYWRIGHT_HAR=true $(PYTEST) apps/e2e/ --video=on --tracing=on --alluredir=allure-results
+
+# API and E2E specific
+test-api:
+	mkdir -p allure-results
+	$(PYTEST) apps/api/ -n auto --alluredir=allure-results
+
+test-e2e:
+	mkdir -p allure-results
+	$(PYTEST) apps/e2e/ --alluredir=allure-results
+
+test-smoke-fast:
+	$(PYTEST) -m smoke -n auto --tb=short
 
 # Parallel testing
 test-parallel:
-	pytest apps/ -v -n auto --alluredir=test-results/allure-results
+	mkdir -p allure-results
+	$(PYTEST) apps/ -n auto --alluredir=allure-results
 
 # Reports
 report:
-	allure generate test-results/allure-results --clean -o test-results/allure-report
+	@echo "Generating Allure report with history..."
+	@if [ -d "test-results/allure-history" ]; then \
+		cp -r test-results/allure-history allure-results/history; \
+	fi
+	allure generate allure-results -o test-results/allure-report
+	@if [ -d "allure-results/history" ]; then \
+		rm -rf test-results/allure-history && \
+		cp -r allure-results/history test-results/allure-history; \
+	fi
 	allure open test-results/allure-report
 
 report-generate:
-	allure generate test-results/allure-results --clean -o test-results/allure-report
+	@echo "Generating Allure report with history..."
+	@if [ -d "test-results/allure-history" ]; then \
+		cp -r test-results/allure-history allure-results/history; \
+	fi
+	allure generate allure-results -o test-results/allure-report
+	@if [ -d "allure-results/history" ]; then \
+		rm -rf test-results/allure-history && \
+		cp -r allure-results/history test-results/allure-history; \
+	fi
 
 report-serve:
-	allure serve test-results/allure-results
+	@echo "Serving Allure report with history..."
+	@if [ -d "test-results/allure-history" ]; then \
+		cp -r test-results/allure-history allure-results/history; \
+	fi
+	allure serve allure-results
+
+report-clean:
+	allure generate allure-results --clean -o test-results/allure-report
+	@echo "Report generated without history (clean mode)"
 
 # Code quality
 lint:
@@ -115,3 +192,14 @@ clean-reports:
 	rm -rf test-results/screenshots/
 	rm -rf test-results/traces/
 	rm -rf test-results/videos/
+	rm -rf test-results/hars/
+	@echo "Note: test-results/allure-history/ preserved for test history tracking"
+
+clean-all:
+	rm -rf test-results/
+	rm -rf allure-results/
+	rm -rf .pytest_cache/
+	rm -rf **/__pycache__/
+	rm -rf *.egg-info/
+	rm -rf .mypy_cache/
+	rm -rf .ruff_cache/
